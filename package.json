@@ -1,0 +1,49 @@
+{
+  "name": "lumina-marketplace",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "typecheck": "turbo typecheck",
+    "test": "turbo test",
+    "db:generate": "yarn workspace @lumina/db generate",
+    "db:migrate": "yarn workspace @lumina/db migrate",
+    "db:push": "yarn workspace @lumina/db push",
+    "db:studio": "yarn workspace @lumina/db studio",
+    "db:seed": "yarn workspace @lumina/db seed",
+    "db:index": "yarn workspace @lumina/db index",
+    "db:reset": "yarn db:push && yarn db:seed && yarn db:index",
+    "prepare": "husky",
+    "clean": "turbo clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.6.1",
+    "@commitlint/config-conventional": "^19.6.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
+    "prettier": "^3.4.2",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.3"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  },
+  "packageManager": "yarn@4.6.0",
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
