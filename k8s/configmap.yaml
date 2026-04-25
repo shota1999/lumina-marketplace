@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: lumina-config
+  namespace: lumina-marketplace
+data:
+  NODE_ENV: "production"
+  MEILISEARCH_HOST: "http://meilisearch:7700"
+  REDIS_URL: "redis://redis:6379"
+  NEXT_PUBLIC_APP_URL: "https://lumina.example.com"
+  NEXT_PUBLIC_MEILISEARCH_HOST: "https://search.lumina.example.com"
+  HEALTH_PORT: "3001"
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://jaeger:4317"
