@@ -1,0 +1,34 @@
+{
+  "name": "@lumina/db",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema/index.ts",
+    "./client": "./src/client.ts"
+  },
+  "scripts": {
+    "generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate",
+    "push": "drizzle-kit push",
+    "studio": "drizzle-kit studio",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
+    "seed": "tsx --env-file=../../.env src/seed/index.ts",
+    "index": "tsx --env-file=../../.env src/seed/index-meilisearch.ts"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.38.3",
+    "meilisearch": "^0.46.0",
+    "postgres": "^3.4.5"
+  },
+  "devDependencies": {
+    "@lumina/config": "workspace:*",
+    "@types/node": "^22.10.6",
+    "drizzle-kit": "^0.30.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}
