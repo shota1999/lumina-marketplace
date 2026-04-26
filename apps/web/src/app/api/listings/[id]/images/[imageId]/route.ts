@@ -5,6 +5,7 @@ import { eq, and } from 'drizzle-orm';
 
 import { errorResponse, successResponse } from '@/lib/api-response';
 import { getCurrentUser } from '@/lib/auth';
+import { blockDemoMutation } from '@/lib/demo-guard';
 import { deleteObject } from '@/lib/services/upload';
 
 async function verifyHostOwnership(listingId: string, userId: string) {
@@ -24,6 +25,8 @@ export async function DELETE(
     if (!user || (user.role !== 'host' && user.role !== 'admin')) {
       return errorResponse({ code: 'UNAUTHORIZED', message: 'Host access required' }, 401);
     }
+    const blocked = blockDemoMutation(user);
+    if (blocked) return blocked;
 
     const { id, imageId } = await params;
 

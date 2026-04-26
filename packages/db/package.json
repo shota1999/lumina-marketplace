@@ -20,12 +20,14 @@
     "index": "tsx --env-file=../../.env src/seed/index-meilisearch.ts"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "drizzle-orm": "^0.38.3",
     "meilisearch": "^0.46.0",
     "postgres": "^3.4.5"
   },
   "devDependencies": {
     "@lumina/config": "workspace:*",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.10.6",
     "drizzle-kit": "^0.30.2",
     "tsx": "^4.19.2",

@@ -5,6 +5,7 @@ import { getDb, listings } from '@lumina/db';
 import { updateListingSchema } from '@lumina/shared';
 
 import { getCurrentUser } from '@/lib/auth';
+import { blockDemoMutation } from '@/lib/demo-guard';
 import { enqueueIndexingJob } from '@/lib/queue';
 import { logger } from '@/lib/logger';
 
@@ -68,6 +69,8 @@ export async function PATCH(request: NextRequest) {
       { status: 403 },
     );
   }
+  const blocked = blockDemoMutation(admin);
+  if (blocked) return blocked;
 
   try {
     const { id, ...body } = (await request.json()) as { id: string } & Record<string, unknown>;

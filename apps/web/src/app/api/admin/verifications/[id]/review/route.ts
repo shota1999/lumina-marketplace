@@ -4,6 +4,7 @@ import { reviewVerificationSchema } from '@lumina/shared';
 
 import { errorResponse, safeParseBody, successResponse } from '@/lib/api-response';
 import { getCurrentUser } from '@/lib/auth';
+import { blockDemoMutation } from '@/lib/demo-guard';
 import { reviewVerification } from '@/lib/services/verification';
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -12,6 +13,8 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     if (!user || user.role !== 'admin') {
       return errorResponse({ code: 'UNAUTHORIZED', message: 'Admin access required' }, 401);
     }
+    const blocked = blockDemoMutation(user);
+    if (blocked) return blocked;
 
     const { id } = await params;
 

@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import { sql } from 'drizzle-orm';
 
 import { getDb } from '../client';
@@ -18,12 +19,16 @@ import {
 } from '../schema/index';
 
 // ---------------------------------------------------------------------------
-// Pre-hashed passwords (bcrypt, 12 rounds)
+// Passwords
 // ---------------------------------------------------------------------------
-// "admin123"
-const HASH_ADMIN = '$2a$12$LJ3wFdQHfGdmFbKCHfXOCeC6EJl.v0VZ9FLGo.5bU2AUO5IqCGCNW';
-// "password" — used for demo guest accounts
-const HASH_PASSWORD = '$2a$12$LJ3wFdQHfGdmFbKCHfXOCeC6EJl.v0VZ9FLGo.5bU2AUO5IqCGCNW';
+// Admin password is overridable via DEMO_ADMIN_PASSWORD so the public deploy
+// can ship without exposing the local-dev "admin123" credential. Hashed at
+// seed time so deploys can rotate the secret by changing one env var.
+const ADMIN_PASSWORD_PLAINTEXT = process.env['DEMO_ADMIN_PASSWORD'] ?? 'admin123';
+const HASH_ADMIN = bcrypt.hashSync(ADMIN_PASSWORD_PLAINTEXT, 12);
+// Guest demo accounts keep the documented "admin123" password — these
+// accounts are intentionally public for recruiters to explore the app.
+const HASH_PASSWORD = bcrypt.hashSync('admin123', 12);
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -1243,8 +1248,10 @@ async function seed() {
   console.log('\n========================================');
   console.log('Seed complete!');
   console.log('========================================\n');
+  const adminPwLabel =
+    process.env['DEMO_ADMIN_PASSWORD'] ? '(from DEMO_ADMIN_PASSWORD env)' : 'admin123';
   console.log('Demo accounts:');
-  console.log('  admin@lumina.dev   / admin123  (admin)');
+  console.log(`  admin@lumina.dev   / ${adminPwLabel}  (admin)`);
   console.log('  host@lumina.dev    / admin123  (host)');
   console.log('  guest@lumina.dev   / admin123  (guest)');
   console.log('  traveler@lumina.dev/ admin123  (guest)');

@@ -2146,7 +2146,9 @@ __metadata:
   resolution: "@lumina/db@workspace:packages/db"
   dependencies:
     "@lumina/config": "workspace:*"
+    "@types/bcryptjs": "npm:^2.4.6"
     "@types/node": "npm:^22.10.6"
+    bcryptjs: "npm:^2.4.3"
     drizzle-kit: "npm:^0.30.2"
     drizzle-orm: "npm:^0.38.3"
     meilisearch: "npm:^0.46.0"
