@@ -6,10 +6,7 @@ import { eq, and, or, asc } from 'drizzle-orm';
 import { errorResponse, successResponse } from '@/lib/api-response';
 import { getCurrentUser } from '@/lib/auth';
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const user = await getCurrentUser();
     if (!user) {
@@ -23,10 +20,7 @@ export async function GET(
     const conversation = await db.query.conversations.findFirst({
       where: and(
         eq(conversations.id, id),
-        or(
-          eq(conversations.hostId, user.id),
-          eq(conversations.guestId, user.id),
-        ),
+        or(eq(conversations.hostId, user.id), eq(conversations.guestId, user.id)),
       ),
       with: {
         listing: true,
@@ -44,8 +38,7 @@ export async function GET(
       orderBy: [asc(messages.createdAt)],
     });
 
-    const otherUser =
-      conversation.hostId === user.id ? conversation.guest : conversation.host;
+    const otherUser = conversation.hostId === user.id ? conversation.guest : conversation.host;
 
     return successResponse({
       id: conversation.id,

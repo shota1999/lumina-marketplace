@@ -28,26 +28,26 @@ function getTransporter(): nodemailer.Transporter {
 
 const EMAIL_FROM = process.env['EMAIL_FROM'] ?? 'noreply@luminarentals.com';
 
-export async function sendEmail(
-  to: string,
-  subject: string,
-  html: string,
-): Promise<void> {
+export async function sendEmail(to: string, subject: string, html: string): Promise<void> {
   const recipientDomain = to.split('@')[1] ?? 'unknown';
 
-  return withSpan('email.send', {
-    [SpanAttr.EMAIL_TEMPLATE]: subject,
-    [SpanAttr.EMAIL_RECIPIENT_DOMAIN]: recipientDomain,
-  }, async () => {
-    const transport = getTransporter();
+  return withSpan(
+    'email.send',
+    {
+      [SpanAttr.EMAIL_TEMPLATE]: subject,
+      [SpanAttr.EMAIL_RECIPIENT_DOMAIN]: recipientDomain,
+    },
+    async () => {
+      const transport = getTransporter();
 
-    await transport.sendMail({
-      from: EMAIL_FROM,
-      to,
-      subject,
-      html,
-    });
-  });
+      await transport.sendMail({
+        from: EMAIL_FROM,
+        to,
+        subject,
+        html,
+      });
+    },
+  );
 }
 
 export async function sendBookingConfirmation(
@@ -108,10 +108,7 @@ export async function sendNewMessageNotification(
   await sendEmail(recipientEmail, subject, html);
 }
 
-export async function sendPasswordResetEmail(
-  email: string,
-  resetUrl: string,
-): Promise<void> {
+export async function sendPasswordResetEmail(email: string, resetUrl: string): Promise<void> {
   const subject = 'Reset your Lumina password';
   const html = `
     <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">

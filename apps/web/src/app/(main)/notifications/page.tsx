@@ -29,13 +29,41 @@ interface Notification {
 }
 
 const iconMap: Record<string, { icon: React.ElementType; bg: string; color: string }> = {
-  booking_confirmed: { icon: CheckCircle2, bg: 'bg-green-100 dark:bg-green-950/30', color: 'text-green-600 dark:text-green-400' },
-  booking_cancelled: { icon: XCircle, bg: 'bg-red-100 dark:bg-red-950/30', color: 'text-red-600 dark:text-red-400' },
-  new_message: { icon: MessageSquare, bg: 'bg-blue-100 dark:bg-blue-950/30', color: 'text-blue-600 dark:text-blue-400' },
-  new_review: { icon: Star, bg: 'bg-amber-100 dark:bg-amber-950/30', color: 'text-amber-600 dark:text-amber-400' },
-  payment_received: { icon: DollarSign, bg: 'bg-emerald-100 dark:bg-emerald-950/30', color: 'text-emerald-600 dark:text-emerald-400' },
-  payout_sent: { icon: Wallet, bg: 'bg-purple-100 dark:bg-purple-950/30', color: 'text-purple-600 dark:text-purple-400' },
-  verification_update: { icon: ShieldCheck, bg: 'bg-slate-100 dark:bg-slate-800', color: 'text-slate-600 dark:text-slate-400' },
+  booking_confirmed: {
+    icon: CheckCircle2,
+    bg: 'bg-green-100 dark:bg-green-950/30',
+    color: 'text-green-600 dark:text-green-400',
+  },
+  booking_cancelled: {
+    icon: XCircle,
+    bg: 'bg-red-100 dark:bg-red-950/30',
+    color: 'text-red-600 dark:text-red-400',
+  },
+  new_message: {
+    icon: MessageSquare,
+    bg: 'bg-blue-100 dark:bg-blue-950/30',
+    color: 'text-blue-600 dark:text-blue-400',
+  },
+  new_review: {
+    icon: Star,
+    bg: 'bg-amber-100 dark:bg-amber-950/30',
+    color: 'text-amber-600 dark:text-amber-400',
+  },
+  payment_received: {
+    icon: DollarSign,
+    bg: 'bg-emerald-100 dark:bg-emerald-950/30',
+    color: 'text-emerald-600 dark:text-emerald-400',
+  },
+  payout_sent: {
+    icon: Wallet,
+    bg: 'bg-purple-100 dark:bg-purple-950/30',
+    color: 'text-purple-600 dark:text-purple-400',
+  },
+  verification_update: {
+    icon: ShieldCheck,
+    bg: 'bg-slate-100 dark:bg-slate-800',
+    color: 'text-slate-600 dark:text-slate-400',
+  },
 };
 
 function getTimeAgo(dateStr: string): string {
@@ -88,7 +116,11 @@ export default function NotificationsPage() {
         if (data?.success) setNotifications(data.data ?? []);
       })
       .catch(() => {
-        toast({ title: 'Error', description: 'Failed to load notifications', variant: 'destructive' });
+        toast({
+          title: 'Error',
+          description: 'Failed to load notifications',
+          variant: 'destructive',
+        });
       })
       .finally(() => setLoading(false));
   }, []);
@@ -157,15 +189,8 @@ export default function NotificationsPage() {
           )}
         </div>
         {unreadCount > 0 && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleMarkAllRead}
-            disabled={markingAll}
-          >
-            {markingAll ? (
-              <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
-            ) : null}
+          <Button variant="outline" size="sm" onClick={handleMarkAllRead} disabled={markingAll}>
+            {markingAll ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : null}
             Mark all read
           </Button>
         )}
@@ -178,9 +203,7 @@ export default function NotificationsPage() {
           <h2 className="mb-1 text-lg font-semibold text-slate-900 dark:text-slate-50">
             All caught up!
           </h2>
-          <p className="text-sm text-slate-400">
-            No notifications to display right now.
-          </p>
+          <p className="text-sm text-slate-400">No notifications to display right now.</p>
         </div>
       ) : (
         <div className="space-y-2">

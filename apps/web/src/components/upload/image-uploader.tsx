@@ -64,12 +64,11 @@ export function ImageUploader({
           body: JSON.stringify({ fileName: `image.${ext}`, contentType: file.type, listingId }),
         });
         const presignJson = await presignRes.json();
-        if (!presignRes.ok) throw new Error(presignJson.error?.message ?? 'Failed to get upload URL');
+        if (!presignRes.ok)
+          throw new Error(presignJson.error?.message ?? 'Failed to get upload URL');
 
         const { uploadUrl, publicUrl, storageKey } = presignJson.data;
-        setUploading((prev) =>
-          prev.map((u) => (u.id === uploadId ? { ...u, progress: 30 } : u)),
-        );
+        setUploading((prev) => prev.map((u) => (u.id === uploadId ? { ...u, progress: 30 } : u)));
 
         // 2. Upload to S3
         await fetch(uploadUrl, {
@@ -77,9 +76,7 @@ export function ImageUploader({
           headers: { 'Content-Type': file.type },
           body: file,
         });
-        setUploading((prev) =>
-          prev.map((u) => (u.id === uploadId ? { ...u, progress: 70 } : u)),
-        );
+        setUploading((prev) => prev.map((u) => (u.id === uploadId ? { ...u, progress: 70 } : u)));
 
         // 3. Register image
         const registerRes = await fetch(`/api/listings/${listingId}/images`, {
@@ -95,7 +92,8 @@ export function ImageUploader({
           }),
         });
         const registerJson = await registerRes.json();
-        if (!registerRes.ok) throw new Error(registerJson.error?.message ?? 'Failed to register image');
+        if (!registerRes.ok)
+          throw new Error(registerJson.error?.message ?? 'Failed to register image');
 
         setUploading((prev) => prev.filter((u) => u.id !== uploadId));
         const newImage: UploadedImage = {
@@ -261,19 +259,11 @@ export function ImageUploader({
             <div
               key={img.id}
               className={`group relative overflow-hidden rounded-xl ring-1 transition-all ${
-                img.isPrimary
-                  ? 'ring-2 ring-amber-400'
-                  : 'ring-slate-200 dark:ring-slate-700'
+                img.isPrimary ? 'ring-2 ring-amber-400' : 'ring-slate-200 dark:ring-slate-700'
               }`}
             >
               <div className="relative aspect-[4/3]">
-                <Image
-                  src={img.url}
-                  alt={img.alt}
-                  fill
-                  className="object-cover"
-                  sizes="200px"
-                />
+                <Image src={img.url} alt={img.alt} fill className="object-cover" sizes="200px" />
               </div>
               {img.isPrimary && (
                 <span className="absolute left-2 top-2 rounded-full bg-amber-400 px-2 py-0.5 text-[10px] font-bold text-white">

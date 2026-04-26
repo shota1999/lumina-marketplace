@@ -80,13 +80,20 @@ export async function GET(request: NextRequest) {
       };
     });
 
-    log.info('Autocomplete results', { q, destinations: destinations.length, listings: listingResults.length });
+    log.info('Autocomplete results', {
+      q,
+      destinations: destinations.length,
+      listings: listingResults.length,
+    });
     log.done(200);
 
     return successResponse({ destinations, listings: listingResults });
   } catch (error) {
     captureError(error, { requestId, route: 'GET /api/search/autocomplete' });
     log.done(500);
-    return errorResponse({ code: 'INTERNAL_ERROR', message: 'Failed to fetch autocomplete results' }, 500);
+    return errorResponse(
+      { code: 'INTERNAL_ERROR', message: 'Failed to fetch autocomplete results' },
+      500,
+    );
   }
 }

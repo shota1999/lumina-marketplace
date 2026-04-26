@@ -16,10 +16,7 @@ export async function GET() {
 
     const db = getDb();
     const result = await db.query.conversations.findMany({
-      where: or(
-        eq(conversations.hostId, user.id),
-        eq(conversations.guestId, user.id),
-      ),
+      where: or(eq(conversations.hostId, user.id), eq(conversations.guestId, user.id)),
       with: {
         listing: true,
         host: true,
@@ -38,12 +35,7 @@ export async function GET() {
         count: sql<number>`count(*)::int`,
       })
       .from(messages)
-      .where(
-        and(
-          ne(messages.senderId, user.id),
-          ne(messages.status, 'read'),
-        ),
-      )
+      .where(and(ne(messages.senderId, user.id), ne(messages.status, 'read')))
       .groupBy(messages.conversationId);
 
     const unreadByConversation = new Map(
@@ -110,11 +102,7 @@ export async function POST(request: NextRequest) {
     // Check for existing conversation
     const existing = await db.query.conversations.findFirst({
       where: (c, { and, eq: e }) =>
-        and(
-          e(c.listingId, listingId),
-          e(c.guestId, user.id),
-          e(c.hostId, hostId),
-        ),
+        and(e(c.listingId, listingId), e(c.guestId, user.id), e(c.hostId, hostId)),
     });
 
     let conversationId: string;

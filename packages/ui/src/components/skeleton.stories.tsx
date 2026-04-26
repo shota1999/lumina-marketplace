@@ -37,7 +37,7 @@ export const CardSkeleton: Story = {
 
 export const FormSkeleton: Story = {
   render: () => (
-    <div className="space-y-4 w-[300px]">
+    <div className="w-[300px] space-y-4">
       <Skeleton className="h-4 w-[80px]" />
       <Skeleton className="h-10 w-full" />
       <Skeleton className="h-4 w-[120px]" />

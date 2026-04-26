@@ -6,11 +6,11 @@ import { Button } from '@lumina/ui';
 export default function ListingNotFound() {
   return (
     <div className="container flex min-h-[60vh] flex-col items-center justify-center py-16 text-center">
-      <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-secondary">
-        <Search className="h-10 w-10 text-muted-foreground" />
+      <div className="bg-secondary mb-6 flex h-20 w-20 items-center justify-center rounded-full">
+        <Search className="text-muted-foreground h-10 w-10" />
       </div>
       <h1 className="mb-2 text-2xl font-bold">Listing not found</h1>
-      <p className="mb-8 max-w-md text-muted-foreground">
+      <p className="text-muted-foreground mb-8 max-w-md">
         The listing you&apos;re looking for may have been removed, renamed, or is temporarily
         unavailable.
       </p>

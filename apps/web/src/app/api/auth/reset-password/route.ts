@@ -25,7 +25,10 @@ export async function POST(request: NextRequest) {
     if (!rl.allowed) {
       log.warn('Rate limited');
       log.done(429);
-      return errorResponse({ code: 'RATE_LIMITED', message: 'Too many requests. Try again later.' }, 429);
+      return errorResponse(
+        { code: 'RATE_LIMITED', message: 'Too many requests. Try again later.' },
+        429,
+      );
     }
 
     const bodyResult = await safeParseBody(request);
@@ -33,7 +36,10 @@ export async function POST(request: NextRequest) {
 
     const parsed = resetPasswordSchema.safeParse(bodyResult.data);
     if (!parsed.success) {
-      return errorResponse({ code: 'VALIDATION_ERROR', message: 'Token and password (min 8 chars) are required' }, 400);
+      return errorResponse(
+        { code: 'VALIDATION_ERROR', message: 'Token and password (min 8 chars) are required' },
+        400,
+      );
     }
 
     const { token, password } = parsed.data;
@@ -58,7 +64,10 @@ export async function POST(request: NextRequest) {
     if (!record) {
       log.warn('Invalid or expired reset token');
       log.done(400);
-      return errorResponse({ code: 'INVALID_TOKEN', message: 'This reset link is invalid or has expired' }, 400);
+      return errorResponse(
+        { code: 'INVALID_TOKEN', message: 'This reset link is invalid or has expired' },
+        400,
+      );
     }
 
     // Update password

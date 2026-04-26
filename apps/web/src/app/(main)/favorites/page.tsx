@@ -32,10 +32,10 @@ export default function FavoritesPage() {
     <div className="container py-16">
       {/* Header */}
       <header className="mb-12">
-        <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-slate-50 mb-2">
+        <h1 className="mb-2 text-4xl font-extrabold tracking-tight text-slate-900 dark:text-slate-50">
           Your Favorites
         </h1>
-        <p className="text-slate-500 dark:text-slate-400 font-medium">
+        <p className="font-medium text-slate-500 dark:text-slate-400">
           Manage your curated collection of premium stays and experiences.
         </p>
       </header>
@@ -48,19 +48,20 @@ export default function FavoritesPage() {
         </div>
       ) : favorites.length === 0 ? (
         /* Empty state */
-        <div className="flex flex-col items-center justify-center py-32 text-center max-w-md mx-auto">
-          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 mb-6">
+        <div className="mx-auto flex max-w-md flex-col items-center justify-center py-32 text-center">
+          <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
             <Heart className="h-9 w-9 text-slate-400 dark:text-slate-500" />
           </div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-3">
+          <h2 className="mb-3 text-2xl font-bold text-slate-900 dark:text-slate-50">
             No favorites yet
           </h2>
-          <p className="text-slate-500 dark:text-slate-400 leading-relaxed mb-8">
-            Heart listings you love to save them here for later. Your dream getaway is just a click away.
+          <p className="mb-8 leading-relaxed text-slate-500 dark:text-slate-400">
+            Heart listings you love to save them here for later. Your dream getaway is just a click
+            away.
           </p>
           <Link
             href="/search"
-            className="inline-flex items-center justify-center rounded-lg bg-slate-900 dark:bg-slate-50 px-10 py-4 text-sm font-bold text-white dark:text-slate-900 shadow-lg shadow-slate-900/10 transition-opacity hover:opacity-90"
+            className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-10 py-4 text-sm font-bold text-white shadow-lg shadow-slate-900/10 transition-opacity hover:opacity-90 dark:bg-slate-50 dark:text-slate-900"
           >
             Browse listings
           </Link>
@@ -83,7 +84,7 @@ export default function FavoritesPage() {
           {/* Load more */}
           {favorites.length >= 6 && (
             <div className="mt-20 flex justify-center">
-              <button className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-8 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800">
+              <button className="rounded-lg border border-slate-200 bg-white px-8 py-3 text-sm font-semibold text-slate-900 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-50 dark:hover:bg-slate-800">
                 Show more results
               </button>
             </div>

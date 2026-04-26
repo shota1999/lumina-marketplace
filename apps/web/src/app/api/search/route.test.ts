@@ -145,9 +145,7 @@ describe('GET /api/search', () => {
 
   it('filters by property type (category)', async () => {
     const mockSearchResults = {
-      hits: [
-        { id: 'listing-1', title: 'Luxury Villa', category: 'villa', pricePerNight: 500 },
-      ],
+      hits: [{ id: 'listing-1', title: 'Luxury Villa', category: 'villa', pricePerNight: 500 }],
       totalHits: 1,
       page: 1,
       totalPages: 1,

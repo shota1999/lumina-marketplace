@@ -24,7 +24,7 @@ export const Default: Story = {
         <p>Card content goes here.</p>
       </CardContent>
       <CardFooter>
-        <p className="text-sm text-muted-foreground">Card footer</p>
+        <p className="text-muted-foreground text-sm">Card footer</p>
       </CardFooter>
     </Card>
   ),
@@ -68,7 +68,7 @@ export const Simple: Story = {
         <div className="flex items-center space-x-4 rounded-md border p-4">
           <div className="flex-1 space-y-1">
             <p className="text-sm font-medium leading-none">Push Notifications</p>
-            <p className="text-sm text-muted-foreground">Send notifications to device.</p>
+            <p className="text-muted-foreground text-sm">Send notifications to device.</p>
           </div>
         </div>
       </CardContent>

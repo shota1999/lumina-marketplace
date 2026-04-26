@@ -27,14 +27,12 @@ test.describe('Booking Flow', () => {
 
     // Date picker and guest count should be present
     await expect(
-      page.getByRole('button', { name: /date|check.?in|select date/i }).or(
-        page.getByLabel(/date|check.?in/i),
-      ),
+      page
+        .getByRole('button', { name: /date|check.?in|select date/i })
+        .or(page.getByLabel(/date|check.?in/i)),
     ).toBeVisible();
     await expect(
-      page.getByRole('spinbutton', { name: /guest/i }).or(
-        page.getByLabel(/guest/i),
-      ),
+      page.getByRole('spinbutton', { name: /guest/i }).or(page.getByLabel(/guest/i)),
     ).toBeVisible();
   });
 
@@ -69,8 +67,6 @@ test.describe('Booking Flow', () => {
 
     await expect(page.getByLabel(/email/i)).toBeVisible();
     await expect(page.getByLabel(/password/i)).toBeVisible();
-    await expect(
-      page.getByRole('button', { name: /sign in|log in/i }),
-    ).toBeVisible();
+    await expect(page.getByRole('button', { name: /sign in|log in/i })).toBeVisible();
   });
 });

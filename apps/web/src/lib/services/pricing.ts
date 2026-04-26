@@ -33,11 +33,7 @@ interface PricingRuleRow {
   isActive: boolean;
 }
 
-function doesRuleApply(
-  rule: PricingRuleRow,
-  date: Date,
-  totalNights: number,
-): boolean {
+function doesRuleApply(rule: PricingRuleRow, date: Date, totalNights: number): boolean {
   const config = rule.config ?? {};
 
   switch (rule.type) {
@@ -64,11 +60,7 @@ function doesRuleApply(
   }
 }
 
-function applyAdjustment(
-  price: number,
-  adjustment: number,
-  adjustmentType: string,
-): number {
+function applyAdjustment(price: number, adjustment: number, adjustmentType: string): number {
   if (adjustmentType === 'percent') {
     return price * (1 + adjustment / 100);
   }
@@ -95,12 +87,7 @@ export async function calculatePriceQuote(
   const rules = await db
     .select()
     .from(pricingRules)
-    .where(
-      and(
-        eq(pricingRules.listingId, listingId),
-        eq(pricingRules.isActive, true),
-      ),
-    )
+    .where(and(eq(pricingRules.listingId, listingId), eq(pricingRules.isActive, true)))
     .orderBy(pricingRules.priority);
 
   const dates = getDatesBetween(startDate, endDate);

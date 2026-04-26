@@ -21,7 +21,10 @@ export async function GET(request: NextRequest) {
     if (!rl.allowed) {
       log.done(429);
       return NextResponse.json(
-        { success: false, error: { code: 'RATE_LIMITED', message: 'Too many requests. Try again later.' } },
+        {
+          success: false,
+          error: { code: 'RATE_LIMITED', message: 'Too many requests. Try again later.' },
+        },
         { status: 429 },
       );
     }
@@ -72,27 +75,39 @@ export async function GET(request: NextRequest) {
     // For natural language queries, try semantic search first (pgvector embeddings)
     if (params.query && isNaturalLanguageQuery(params.query) && process.env['OPENAI_API_KEY']) {
       try {
-        const result = await withSpan('search.query', {
-          [SpanAttr.SEARCH_QUERY]: params.query,
-          [SpanAttr.SEARCH_ENGINE]: 'semantic',
-        }, () => searchViaSemantic(params, unavailableListingIds));
+        const result = await withSpan(
+          'search.query',
+          {
+            [SpanAttr.SEARCH_QUERY]: params.query,
+            [SpanAttr.SEARCH_ENGINE]: 'semantic',
+          },
+          () => searchViaSemantic(params, unavailableListingIds),
+        );
         log.done(200);
         return NextResponse.json({ success: true, data: result });
       } catch (semanticError) {
-        captureError(semanticError, { requestId, route: 'GET /api/search', fallback: 'meilisearch' });
+        captureError(semanticError, {
+          requestId,
+          route: 'GET /api/search',
+          fallback: 'meilisearch',
+        });
         // Fall through to Meilisearch
       }
     }
 
     // Try Meilisearch (primary for keyword search)
     try {
-      const result = await withSpan('search.query', {
-        [SpanAttr.SEARCH_QUERY]: params.query ?? '',
-        [SpanAttr.SEARCH_ENGINE]: 'meilisearch',
-      }, async () => {
-        const r = await searchViaMeilisearch(params, unavailableListingIds);
-        return r;
-      });
+      const result = await withSpan(
+        'search.query',
+        {
+          [SpanAttr.SEARCH_QUERY]: params.query ?? '',
+          [SpanAttr.SEARCH_ENGINE]: 'meilisearch',
+        },
+        async () => {
+          const r = await searchViaMeilisearch(params, unavailableListingIds);
+          return r;
+        },
+      );
       log.done(200);
       return NextResponse.json({ success: true, data: result });
     } catch (meiliError) {
@@ -101,10 +116,14 @@ export async function GET(request: NextRequest) {
     }
 
     // DB fallback when Meilisearch is unavailable
-    const result = await withSpan('search.query', {
-      [SpanAttr.SEARCH_QUERY]: params.query ?? '',
-      [SpanAttr.SEARCH_ENGINE]: 'database',
-    }, () => searchViaDatabase(params, unavailableListingIds));
+    const result = await withSpan(
+      'search.query',
+      {
+        [SpanAttr.SEARCH_QUERY]: params.query ?? '',
+        [SpanAttr.SEARCH_ENGINE]: 'database',
+      },
+      () => searchViaDatabase(params, unavailableListingIds),
+    );
     log.done(200);
     return NextResponse.json({ success: true, data: result });
   } catch (error) {
@@ -156,7 +175,9 @@ async function searchViaMeilisearch(
     filter.push(`(city = "${loc}" OR country = "${loc}")`);
   }
   if (params.bounds) {
-    filter.push(`_geo(${params.bounds.south}, ${params.bounds.west}, ${params.bounds.north}, ${params.bounds.east})`);
+    filter.push(
+      `_geo(${params.bounds.south}, ${params.bounds.west}, ${params.bounds.north}, ${params.bounds.east})`,
+    );
   }
 
   const sortMap: Record<string, string[]> = {
@@ -235,16 +256,23 @@ async function searchViaDatabase(
   }
   if (params.location) {
     const loc = `%${params.location}%`;
-    conditions.push(
-      or(ilike(listings.city, loc), ilike(listings.country, loc))!,
-    );
+    conditions.push(or(ilike(listings.city, loc), ilike(listings.country, loc))!);
   }
   if (unavailableListingIds.length > 0) {
-    conditions.push(sql`${listings.id} NOT IN (${sql.join(unavailableListingIds.map((id) => sql`${id}`), sql`, `)})`);
+    conditions.push(
+      sql`${listings.id} NOT IN (${sql.join(
+        unavailableListingIds.map((id) => sql`${id}`),
+        sql`, `,
+      )})`,
+    );
   }
   if (params.category?.length) {
     conditions.push(
-      or(...params.category.map((c) => eq(listings.category, c as typeof listings.category.enumValues[number])))!,
+      or(
+        ...params.category.map((c) =>
+          eq(listings.category, c as (typeof listings.category.enumValues)[number]),
+        ),
+      )!,
     );
   }
   if (params.priceMin !== undefined) {
@@ -359,10 +387,7 @@ async function searchViaDatabase(
  * Detects if a query is natural language (vs keyword search).
  * Natural language queries benefit from semantic/embedding search.
  */
-async function findUnavailableListingIds(
-  checkIn: string,
-  checkOut: string,
-): Promise<string[]> {
+async function findUnavailableListingIds(checkIn: string, checkOut: string): Promise<string[]> {
   try {
     const db = getDb();
     const rows = await db
@@ -400,7 +425,22 @@ function isNaturalLanguageQuery(query: string): boolean {
   const words = query.trim().split(/\s+/);
   // Heuristic: 4+ words or contains common natural language indicators
   if (words.length >= 4) return true;
-  const nlIndicators = ['with', 'near', 'for', 'that', 'has', 'where', 'cozy', 'quiet', 'romantic', 'family', 'luxury', 'peaceful', 'modern', 'rustic'];
+  const nlIndicators = [
+    'with',
+    'near',
+    'for',
+    'that',
+    'has',
+    'where',
+    'cozy',
+    'quiet',
+    'romantic',
+    'family',
+    'luxury',
+    'peaceful',
+    'modern',
+    'rustic',
+  ];
   return words.some((w) => nlIndicators.includes(w.toLowerCase()));
 }
 
@@ -421,14 +461,15 @@ async function searchViaSemantic(
   const offset = (page - 1) * limit;
 
   // Build filter conditions
-  const conditions = [
-    eq(listings.status, 'published'),
-    sql`${listings.embedding} IS NOT NULL`,
-  ];
+  const conditions = [eq(listings.status, 'published'), sql`${listings.embedding} IS NOT NULL`];
 
   if (params.category?.length) {
     conditions.push(
-      or(...params.category.map((c) => eq(listings.category, c as typeof listings.category.enumValues[number])))!,
+      or(
+        ...params.category.map((c) =>
+          eq(listings.category, c as (typeof listings.category.enumValues)[number]),
+        ),
+      )!,
     );
   }
   if (params.priceMin !== undefined) {
@@ -442,12 +483,15 @@ async function searchViaSemantic(
   }
   if (params.location) {
     const loc = `%${params.location}%`;
-    conditions.push(
-      or(ilike(listings.city, loc), ilike(listings.country, loc))!,
-    );
+    conditions.push(or(ilike(listings.city, loc), ilike(listings.country, loc))!);
   }
   if (unavailableListingIds.length > 0) {
-    conditions.push(sql`${listings.id} NOT IN (${sql.join(unavailableListingIds.map((id) => sql`${id}`), sql`, `)})`);
+    conditions.push(
+      sql`${listings.id} NOT IN (${sql.join(
+        unavailableListingIds.map((id) => sql`${id}`),
+        sql`, `,
+      )})`,
+    );
   }
 
   const vectorStr = `[${queryEmbedding.join(',')}]`;
@@ -475,7 +519,9 @@ async function searchViaSemantic(
       reviewCount: listings.reviewCount,
       featured: listings.featured,
       createdAt: listings.createdAt,
-      similarity: sql<number>`1 - (${listings.embedding} <=> ${vectorStr}::vector)`.as('similarity'),
+      similarity: sql<number>`1 - (${listings.embedding} <=> ${vectorStr}::vector)`.as(
+        'similarity',
+      ),
     })
     .from(listings)
     .where(and(...conditions))
@@ -519,7 +565,13 @@ async function searchViaSemantic(
     totalHits,
     page,
     totalPages: Math.ceil(totalHits / limit),
-    facets: { category: {}, amenities: {}, city: {}, country: {}, priceRange: { min: 0, max: 10000 } },
+    facets: {
+      category: {},
+      amenities: {},
+      city: {},
+      country: {},
+      priceRange: { min: 0, max: 10000 },
+    },
     facetStats: {},
     processingTimeMs: Date.now() - startMs,
     searchEngine: 'semantic' as const,

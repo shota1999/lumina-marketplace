@@ -16,9 +16,7 @@ export async function PATCH() {
     await db
       .update(notifications)
       .set({ readAt: new Date() })
-      .where(
-        eq(notifications.userId, user.id),
-      );
+      .where(eq(notifications.userId, user.id));
 
     return successResponse({ success: true });
   } catch (error) {

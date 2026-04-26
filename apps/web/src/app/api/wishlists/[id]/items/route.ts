@@ -7,10 +7,7 @@ import { addToWishlistSchema } from '@lumina/shared';
 import { errorResponse, safeParseBody, successResponse } from '@/lib/api-response';
 import { getCurrentUser } from '@/lib/auth';
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const user = await getCurrentUser();
     if (!user) {
@@ -65,6 +62,9 @@ export async function POST(
 
     return successResponse(item, 201);
   } catch {
-    return errorResponse({ code: 'INTERNAL_ERROR', message: 'Failed to add item to wishlist' }, 500);
+    return errorResponse(
+      { code: 'INTERNAL_ERROR', message: 'Failed to add item to wishlist' },
+      500,
+    );
   }
 }

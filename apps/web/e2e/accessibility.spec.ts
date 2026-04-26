@@ -21,9 +21,7 @@ test.describe('Accessibility', () => {
 
     // Tab to email
     await page.keyboard.press('Tab');
-    const emailFocused = await page.evaluate(
-      () => document.activeElement?.tagName.toLowerCase(),
-    );
+    const emailFocused = await page.evaluate(() => document.activeElement?.tagName.toLowerCase());
     expect(['input', 'a']).toContain(emailFocused);
   });
 

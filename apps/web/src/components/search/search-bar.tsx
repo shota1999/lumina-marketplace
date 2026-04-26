@@ -1,6 +1,6 @@
 'use client';
 
-import { Loader2, MapPin, Search, Tag, X } from 'lucide-react';
+import { ArrowRight, Loader2, MapPin, Search, Tag, X } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
@@ -12,7 +12,7 @@ import {
   type KeyboardEvent,
 } from 'react';
 
-import { Button, Input } from '@lumina/ui';
+import { cn } from '@lumina/ui';
 
 import { useDebouncedValue } from '@/hooks/use-debounce';
 
@@ -36,7 +36,7 @@ interface Suggestion {
 interface SearchBarProps {
   defaultValue?: string;
   placeholder?: string;
-  size?: 'default' | 'lg';
+  size?: 'compact' | 'default' | 'lg';
   onQueryChange?: (query: string) => void;
   autoFocus?: boolean;
 }
@@ -183,50 +183,94 @@ export function SearchBar({
   }, []);
 
   const isLg = size === 'lg';
+  const isCompact = size === 'compact';
+
+  const formClassName = isCompact
+    ? 'group relative flex h-12 w-full items-center gap-2 rounded-2xl border border-slate-200 bg-white pl-4 pr-1.5 transition-all duration-200 hover:border-slate-300 focus-within:border-slate-900 focus-within:shadow-[0_4px_16px_-4px_rgba(15,23,42,0.12)] focus-within:ring-2 focus-within:ring-slate-900/5 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700 dark:focus-within:border-slate-50 dark:focus-within:ring-slate-50/10'
+    : cn(
+        'group relative flex w-full items-center overflow-hidden rounded-full border border-slate-200 bg-white pr-1.5 shadow-[0_4px_16px_-6px_rgba(15,23,42,0.08)] transition-all duration-300 hover:border-slate-300 hover:shadow-[0_8px_28px_-8px_rgba(15,23,42,0.16)] focus-within:border-slate-900 focus-within:shadow-[0_10px_32px_-8px_rgba(15,23,42,0.22)] focus-within:ring-4 focus-within:ring-slate-900/5 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700 dark:focus-within:border-slate-50 dark:focus-within:ring-slate-50/5',
+        isLg ? 'h-16 pl-6' : 'h-12 pl-5',
+      );
 
   return (
     <div ref={containerRef} className="relative w-full">
-      <form onSubmit={handleSubmit} role="search" aria-label="Search listings" className="flex w-full gap-2">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            ref={inputRef}
-            type="text"
-            role="combobox"
-            aria-expanded={showSuggestions && allItems.length > 0}
-            aria-autocomplete="list"
-            aria-controls="search-suggestions"
-            autoComplete="off"
-            autoFocus={autoFocus}
-            placeholder={placeholder}
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              setShowSuggestions(true);
-            }}
-            onFocus={() => {
-              if (suggestions && query.length >= 2) setShowSuggestions(true);
-            }}
-            onKeyDown={handleKeyDown}
-            className={isLg ? 'h-12 pl-10 pr-10 text-base' : 'pl-10 pr-10'}
+      <form
+        onSubmit={handleSubmit}
+        role="search"
+        aria-label="Search listings"
+        className={formClassName}
+      >
+        <Search
+          className={cn(
+            'shrink-0 text-slate-400 transition-colors duration-200 group-focus-within:text-slate-900 dark:group-focus-within:text-slate-50',
+            isLg ? 'h-5 w-5' : 'h-4 w-4',
+          )}
+          strokeWidth={2.25}
+        />
+        <input
+          ref={inputRef}
+          type="text"
+          role="combobox"
+          aria-expanded={showSuggestions && allItems.length > 0}
+          aria-autocomplete="list"
+          aria-controls="search-suggestions"
+          autoComplete="off"
+          autoFocus={autoFocus}
+          placeholder={placeholder}
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setShowSuggestions(true);
+          }}
+          onFocus={() => {
+            if (suggestions && query.length >= 2) setShowSuggestions(true);
+          }}
+          onKeyDown={handleKeyDown}
+          className={cn(
+            'min-w-0 flex-1 border-0 bg-transparent text-slate-900 outline-none placeholder:text-slate-400 dark:text-slate-50 dark:placeholder:text-slate-500',
+            isLg ? 'h-full px-4 text-base' : isCompact ? 'h-full text-sm' : 'h-full px-3 text-sm',
+          )}
+        />
+        {suggestLoading && (
+          <Loader2
+            className={cn('shrink-0 animate-spin text-slate-400', isLg ? 'h-4 w-4' : 'h-3.5 w-3.5')}
           />
-          {query && (
-            <button
-              type="button"
-              onClick={clearQuery}
-              aria-label="Clear search"
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          )}
-          {suggestLoading && (
-            <Loader2 className="absolute right-9 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-muted-foreground" />
-          )}
-        </div>
-        <Button type="submit" size={isLg ? 'lg' : 'default'}>
-          Search
-        </Button>
+        )}
+        {query && !suggestLoading && (
+          <button
+            type="button"
+            onClick={clearQuery}
+            aria-label="Clear search"
+            className={cn(
+              'flex shrink-0 items-center justify-center rounded-full text-slate-400 transition-all hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200',
+              isLg ? 'mr-1 h-9 w-9' : 'h-7 w-7',
+              !isCompact && !isLg && 'mr-1',
+            )}
+          >
+            <X className={isLg ? 'h-4 w-4' : 'h-3.5 w-3.5'} />
+          </button>
+        )}
+        {isCompact ? (
+          <button
+            type="submit"
+            aria-label="Search"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-900 text-white shadow-sm transition-all duration-200 hover:bg-slate-800 hover:shadow-md active:scale-[0.95] dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-200"
+          >
+            <ArrowRight className="h-4 w-4" strokeWidth={2.5} />
+          </button>
+        ) : (
+          <button
+            type="submit"
+            aria-label="Search"
+            className={cn(
+              'flex shrink-0 items-center justify-center gap-2 rounded-full bg-slate-900 font-bold text-white shadow-sm transition-all duration-300 hover:bg-slate-800 hover:shadow-md active:scale-[0.97] dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-200',
+              isLg ? 'h-[3.25rem] px-7 text-sm' : 'h-9 px-5 text-sm',
+            )}
+          >
+            <Search className={isLg ? 'h-4 w-4' : 'h-3.5 w-3.5'} strokeWidth={2.5} />
+            <span className="hidden sm:inline">Search</span>
+          </button>
+        )}
       </form>
 
       {/* Suggestions dropdown */}
@@ -234,12 +278,12 @@ export function SearchBar({
         <div
           id="search-suggestions"
           role="listbox"
-          className="absolute left-0 right-0 top-full z-50 mt-1 overflow-hidden rounded-lg border bg-background shadow-lg"
+          className="bg-background absolute left-0 right-0 top-full z-50 mt-1 overflow-hidden rounded-lg border shadow-lg"
         >
           {/* Category suggestions */}
           {suggestions!.categories.length > 0 && (
             <div className="border-b px-2 py-1.5">
-              <p className="px-2 py-1 text-xs font-medium text-muted-foreground">Categories</p>
+              <p className="text-muted-foreground px-2 py-1 text-xs font-medium">Categories</p>
               {suggestions!.categories.map((cat, i) => {
                 const globalIdx = i;
                 return (
@@ -248,12 +292,14 @@ export function SearchBar({
                     role="option"
                     aria-selected={activeIndex === globalIdx}
                     className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm ${
-                      activeIndex === globalIdx ? 'bg-accent text-accent-foreground' : 'hover:bg-accent/50'
+                      activeIndex === globalIdx
+                        ? 'bg-accent text-accent-foreground'
+                        : 'hover:bg-accent/50'
                     }`}
                     onMouseEnter={() => setActiveIndex(globalIdx)}
                     onClick={() => navigateToSearch('', { category: cat.value })}
                   >
-                    <Tag className="h-3.5 w-3.5 text-muted-foreground" />
+                    <Tag className="text-muted-foreground h-3.5 w-3.5" />
                     {cat.text}
                   </button>
                 );
@@ -264,7 +310,7 @@ export function SearchBar({
           {/* Location suggestions */}
           {suggestions!.locations.length > 0 && (
             <div className="border-b px-2 py-1.5">
-              <p className="px-2 py-1 text-xs font-medium text-muted-foreground">Destinations</p>
+              <p className="text-muted-foreground px-2 py-1 text-xs font-medium">Destinations</p>
               {suggestions!.locations.map((loc, i) => {
                 const globalIdx = suggestions!.categories.length + i;
                 return (
@@ -273,12 +319,14 @@ export function SearchBar({
                     role="option"
                     aria-selected={activeIndex === globalIdx}
                     className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm ${
-                      activeIndex === globalIdx ? 'bg-accent text-accent-foreground' : 'hover:bg-accent/50'
+                      activeIndex === globalIdx
+                        ? 'bg-accent text-accent-foreground'
+                        : 'hover:bg-accent/50'
                     }`}
                     onMouseEnter={() => setActiveIndex(globalIdx)}
                     onClick={() => navigateToSearch(loc.text)}
                   >
-                    <MapPin className="h-3.5 w-3.5 text-muted-foreground" />
+                    <MapPin className="text-muted-foreground h-3.5 w-3.5" />
                     {loc.text}
                   </button>
                 );
@@ -289,7 +337,7 @@ export function SearchBar({
           {/* Listing suggestions */}
           {suggestions!.listings.length > 0 && (
             <div className="px-2 py-1.5">
-              <p className="px-2 py-1 text-xs font-medium text-muted-foreground">Listings</p>
+              <p className="text-muted-foreground px-2 py-1 text-xs font-medium">Listings</p>
               {suggestions!.listings.map((listing, i) => {
                 const globalIdx =
                   suggestions!.categories.length + suggestions!.locations.length + i;
@@ -300,7 +348,9 @@ export function SearchBar({
                     role="option"
                     aria-selected={activeIndex === globalIdx}
                     className={`flex w-full items-center justify-between rounded-md px-2 py-1.5 text-sm ${
-                      activeIndex === globalIdx ? 'bg-accent text-accent-foreground' : 'hover:bg-accent/50'
+                      activeIndex === globalIdx
+                        ? 'bg-accent text-accent-foreground'
+                        : 'hover:bg-accent/50'
                     }`}
                     onMouseEnter={() => setActiveIndex(globalIdx)}
                     onClick={() => setShowSuggestions(false)}
@@ -311,7 +361,7 @@ export function SearchBar({
                         className="truncate font-medium"
                         dangerouslySetInnerHTML={{ __html: listing.highlight }}
                       />
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-muted-foreground text-xs">
                         {listing.city}, {listing.country} &middot; {listing.category}
                       </p>
                     </div>
@@ -327,7 +377,7 @@ export function SearchBar({
           {/* Total results teaser */}
           {suggestions!.total > 0 && (
             <button
-              className="flex w-full items-center gap-2 border-t px-4 py-2.5 text-sm text-muted-foreground hover:bg-accent/50"
+              className="text-muted-foreground hover:bg-accent/50 flex w-full items-center gap-2 border-t px-4 py-2.5 text-sm"
               onClick={() => navigateToSearch(query)}
             >
               <Search className="h-3.5 w-3.5" />

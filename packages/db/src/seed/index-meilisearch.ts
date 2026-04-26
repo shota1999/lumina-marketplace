@@ -73,15 +73,7 @@ async function indexListings() {
       '_geo',
     ],
     sortableAttributes: ['pricePerNight', 'rating', 'reviewCount', 'createdAt'],
-    rankingRules: [
-      'words',
-      'typo',
-      'proximity',
-      'attribute',
-      'sort',
-      'exactness',
-      'rating:desc',
-    ],
+    rankingRules: ['words', 'typo', 'proximity', 'attribute', 'sort', 'exactness', 'rating:desc'],
     typoTolerance: {
       enabled: true,
       minWordSizeForTypos: { oneTypo: 4, twoTypos: 8 },

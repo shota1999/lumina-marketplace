@@ -40,9 +40,10 @@ export async function GET() {
         maxGuests: l.maxGuests,
         bedrooms: l.bedrooms,
         bathrooms: l.bathrooms,
-        primaryImage: l.images?.find((i: { isPrimary: boolean }) => i.isPrimary)?.url
-          ?? l.images?.[0]?.url
-          ?? null,
+        primaryImage:
+          l.images?.find((i: { isPrimary: boolean }) => i.isPrimary)?.url ??
+          l.images?.[0]?.url ??
+          null,
         createdAt: l.createdAt,
       })),
     });

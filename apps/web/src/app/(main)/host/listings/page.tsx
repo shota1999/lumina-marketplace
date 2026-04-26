@@ -52,13 +52,33 @@ interface HostListing {
 }
 
 const CATEGORIES = [
-  'villa', 'apartment', 'cabin', 'treehouse', 'boat', 'castle', 'farmhouse', 'penthouse',
+  'villa',
+  'apartment',
+  'cabin',
+  'treehouse',
+  'boat',
+  'castle',
+  'farmhouse',
+  'penthouse',
 ] as const;
 
 const AMENITY_OPTIONS = [
-  'wifi', 'pool', 'hot-tub', 'kitchen', 'parking', 'air-conditioning',
-  'gym', 'fireplace', 'washer', 'dryer', 'balcony', 'garden',
-  'beach-access', 'ski-in', 'pet-friendly', 'ev-charger',
+  'wifi',
+  'pool',
+  'hot-tub',
+  'kitchen',
+  'parking',
+  'air-conditioning',
+  'gym',
+  'fireplace',
+  'washer',
+  'dryer',
+  'balcony',
+  'garden',
+  'beach-access',
+  'ski-in',
+  'pet-friendly',
+  'ev-charger',
 ];
 
 const statusColors: Record<string, string> = {
@@ -81,8 +101,8 @@ function ListingCard({ listing }: { listing: HostListing }) {
               className="object-cover"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-muted">
-              <ImageOff className="h-8 w-8 text-muted-foreground" />
+            <div className="bg-muted flex h-full w-full items-center justify-center">
+              <ImageOff className="text-muted-foreground h-8 w-8" />
             </div>
           )}
         </div>
@@ -93,30 +113,45 @@ function ListingCard({ listing }: { listing: HostListing }) {
                 <Link href={`/listings/${listing.slug}`} className="font-semibold hover:underline">
                   {listing.title}
                 </Link>
-                <p className="mt-0.5 flex items-center gap-1 text-sm text-muted-foreground">
+                <p className="text-muted-foreground mt-0.5 flex items-center gap-1 text-sm">
                   <MapPin className="h-3 w-3" />
                   {listing.city}, {listing.country}
                 </p>
               </div>
-              <Badge className={statusColors[listing.status] ?? ''}>
-                {listing.status}
-              </Badge>
+              <Badge className={statusColors[listing.status] ?? ''}>{listing.status}</Badge>
             </div>
-            <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm text-muted-foreground">
-              <span className="font-semibold text-foreground">
-                {formatPrice(listing.pricePerNight, listing.currency)}<span className="font-normal text-muted-foreground"> /night</span>
+            <div className="text-muted-foreground mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm">
+              <span className="text-foreground font-semibold">
+                {formatPrice(listing.pricePerNight, listing.currency)}
+                <span className="text-muted-foreground font-normal"> /night</span>
               </span>
               <span className="flex items-center gap-1">
                 <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
                 {listing.rating.toFixed(1)} ({listing.reviewCount})
               </span>
-              <span className="flex items-center gap-1"><Users className="h-3.5 w-3.5" />{listing.maxGuests}</span>
-              <span className="flex items-center gap-1"><Bed className="h-3.5 w-3.5" />{listing.bedrooms}</span>
-              <span className="flex items-center gap-1"><Bath className="h-3.5 w-3.5" />{listing.bathrooms}</span>
+              <span className="flex items-center gap-1">
+                <Users className="h-3.5 w-3.5" />
+                {listing.maxGuests}
+              </span>
+              <span className="flex items-center gap-1">
+                <Bed className="h-3.5 w-3.5" />
+                {listing.bedrooms}
+              </span>
+              <span className="flex items-center gap-1">
+                <Bath className="h-3.5 w-3.5" />
+                {listing.bathrooms}
+              </span>
             </div>
           </div>
-          <div className="mt-3 flex items-center justify-between border-t pt-3 text-xs text-muted-foreground">
-            <span>Listed {new Date(listing.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+          <div className="text-muted-foreground mt-3 flex items-center justify-between border-t pt-3 text-xs">
+            <span>
+              Listed{' '}
+              {new Date(listing.createdAt).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+              })}
+            </span>
             <Button variant="outline" size="sm" asChild>
               <Link href={`/listings/${listing.slug}`}>
                 <ExternalLink className="mr-1.5 h-3 w-3" />
@@ -160,7 +195,10 @@ export default function HostListingsPage() {
   useEffect(() => {
     fetch('/api/listings/mine')
       .then((r) => {
-        if (r.status === 401) { setError('UNAUTHORIZED'); return null; }
+        if (r.status === 401) {
+          setError('UNAUTHORIZED');
+          return null;
+        }
         return r.json();
       })
       .then((data) => {
@@ -202,38 +240,61 @@ export default function HostListingsPage() {
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        toast({ title: 'Create failed', description: data.error?.message ?? 'Something went wrong', variant: 'destructive' });
+        toast({
+          title: 'Create failed',
+          description: data.error?.message ?? 'Something went wrong',
+          variant: 'destructive',
+        });
         return;
       }
 
       toast({ title: 'Listing created', description: 'Your new listing is now live' });
       // Add to local state
-      setListings((prev) => [{
-        id: data.data.id,
-        title: data.data.title,
-        slug: data.data.slug,
-        category: data.data.category,
-        status: data.data.status,
-        pricePerNight: Number(data.data.pricePerNight),
-        currency: data.data.currency,
-        city: data.data.city,
-        country: data.data.country,
-        rating: 0,
-        reviewCount: 0,
-        maxGuests: data.data.maxGuests,
-        bedrooms: data.data.bedrooms,
-        bathrooms: data.data.bathrooms,
-        primaryImage: null,
-        createdAt: data.data.createdAt,
-      }, ...prev]);
+      setListings((prev) => [
+        {
+          id: data.data.id,
+          title: data.data.title,
+          slug: data.data.slug,
+          category: data.data.category,
+          status: data.data.status,
+          pricePerNight: Number(data.data.pricePerNight),
+          currency: data.data.currency,
+          city: data.data.city,
+          country: data.data.country,
+          rating: 0,
+          reviewCount: 0,
+          maxGuests: data.data.maxGuests,
+          bedrooms: data.data.bedrooms,
+          bathrooms: data.data.bathrooms,
+          primaryImage: null,
+          createdAt: data.data.createdAt,
+        },
+        ...prev,
+      ]);
       setShowForm(false);
       setForm({
-        title: '', description: '', category: 'villa', pricePerNight: '', currency: 'USD',
-        address: '', city: '', state: '', country: '', lat: '', lng: '',
-        maxGuests: '4', bedrooms: '2', bathrooms: '1', amenities: [],
+        title: '',
+        description: '',
+        category: 'villa',
+        pricePerNight: '',
+        currency: 'USD',
+        address: '',
+        city: '',
+        state: '',
+        country: '',
+        lat: '',
+        lng: '',
+        maxGuests: '4',
+        bedrooms: '2',
+        bathrooms: '1',
+        amenities: [],
       });
     } catch {
-      toast({ title: 'Network error', description: 'Could not create listing', variant: 'destructive' });
+      toast({
+        title: 'Network error',
+        description: 'Could not create listing',
+        variant: 'destructive',
+      });
     } finally {
       setCreating(false);
     }
@@ -241,11 +302,19 @@ export default function HostListingsPage() {
 
   async function handleGenerateDescription() {
     if (!form.title || form.title.length < 3) {
-      toast({ title: 'Title required', description: 'Enter a title before generating a description', variant: 'destructive' });
+      toast({
+        title: 'Title required',
+        description: 'Enter a title before generating a description',
+        variant: 'destructive',
+      });
       return;
     }
     if (!form.city || !form.country) {
-      toast({ title: 'Location required', description: 'Enter city and country before generating', variant: 'destructive' });
+      toast({
+        title: 'Location required',
+        description: 'Enter city and country before generating',
+        variant: 'destructive',
+      });
       return;
     }
 
@@ -272,7 +341,11 @@ export default function HostListingsPage() {
 
       if (!res.ok) {
         const err = await res.json();
-        toast({ title: 'Generation failed', description: err.error?.message ?? 'Try again later', variant: 'destructive' });
+        toast({
+          title: 'Generation failed',
+          description: err.error?.message ?? 'Try again later',
+          variant: 'destructive',
+        });
         return;
       }
 
@@ -291,7 +364,11 @@ export default function HostListingsPage() {
 
       toast({ title: 'Description generated', description: 'Review and edit as needed' });
     } catch {
-      toast({ title: 'Generation failed', description: 'Could not connect to AI service', variant: 'destructive' });
+      toast({
+        title: 'Generation failed',
+        description: 'Could not connect to AI service',
+        variant: 'destructive',
+      });
     } finally {
       setGeneratingAI(false);
     }
@@ -300,11 +377,9 @@ export default function HostListingsPage() {
   if (error === 'UNAUTHORIZED') {
     return (
       <div className="container flex min-h-[60vh] flex-col items-center justify-center py-20 text-center">
-        <Users className="mb-4 h-12 w-12 text-muted-foreground" />
+        <Users className="text-muted-foreground mb-4 h-12 w-12" />
         <h1 className="mb-2 text-2xl font-bold">Host access required</h1>
-        <p className="mb-6 text-muted-foreground">
-          You need a host account to manage listings.
-        </p>
+        <p className="text-muted-foreground mb-6">You need a host account to manage listings.</p>
         <div className="flex gap-3">
           <Button asChild>
             <Link href="/auth/login">Sign in</Link>
@@ -335,7 +410,7 @@ export default function HostListingsPage() {
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">My listings</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-sm">
             {listings.length} listing{listings.length !== 1 ? 's' : ''}
           </p>
         </div>
@@ -394,7 +469,7 @@ export default function HostListingsPage() {
                     rows={6}
                   />
                   {generatingAI && (
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-muted-foreground text-xs">
                       AI is writing your description. You can edit it when it&apos;s done.
                     </p>
                   )}
@@ -404,10 +479,12 @@ export default function HostListingsPage() {
                   <select
                     value={form.category}
                     onChange={(e) => setForm({ ...form, category: e.target.value })}
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="border-input bg-background ring-offset-background focus-visible:ring-ring flex h-10 w-full rounded-md border px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2"
                   >
                     {CATEGORIES.map((c) => (
-                      <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>
+                      <option key={c} value={c}>
+                        {c.charAt(0).toUpperCase() + c.slice(1)}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -562,9 +639,13 @@ export default function HostListingsPage() {
               <div className="flex gap-3">
                 <Button type="submit" disabled={creating}>
                   {creating ? (
-                    <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Creating...</>
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Creating...
+                    </>
                   ) : (
-                    <><Plus className="mr-2 h-4 w-4" /> Create listing</>
+                    <>
+                      <Plus className="mr-2 h-4 w-4" /> Create listing
+                    </>
                   )}
                 </Button>
                 <Button type="button" variant="ghost" onClick={() => setShowForm(false)}>
@@ -579,9 +660,9 @@ export default function HostListingsPage() {
       {/* Listings */}
       {listings.length === 0 && !showForm ? (
         <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-20 text-center">
-          <Plus className="mb-4 h-12 w-12 text-muted-foreground" />
+          <Plus className="text-muted-foreground mb-4 h-12 w-12" />
           <h2 className="mb-2 text-lg font-semibold">No listings yet</h2>
-          <p className="mb-6 max-w-sm text-sm text-muted-foreground">
+          <p className="text-muted-foreground mb-6 max-w-sm text-sm">
             Create your first listing to start welcoming guests to your property.
           </p>
           <Button onClick={() => setShowForm(true)}>

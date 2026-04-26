@@ -33,19 +33,30 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     if (!rl.allowed) {
       log.warn('Rate limited', { userId: user.id });
       log.done(429);
-      return errorResponse({ code: 'RATE_LIMITED', message: 'Too many requests. Try again later.' }, 429);
+      return errorResponse(
+        { code: 'RATE_LIMITED', message: 'Too many requests. Try again later.' },
+        429,
+      );
     }
 
     const { id } = await params;
     log.info('Booking confirmation attempt', { userId: user.id, bookingId: id });
 
-    const result = await withSpan('booking.confirm', {
-      [SpanAttr.BOOKING_ID]: id,
-      [SpanAttr.USER_ID]: user.id,
-    }, () => confirmBooking(id, user.id, { requestId, log }));
+    const result = await withSpan(
+      'booking.confirm',
+      {
+        [SpanAttr.BOOKING_ID]: id,
+        [SpanAttr.USER_ID]: user.id,
+      },
+      () => confirmBooking(id, user.id, { requestId, log }),
+    );
 
     if (!result.success) {
-      log.warn('Booking confirmation rejected', { userId: user.id, bookingId: id, code: result.code });
+      log.warn('Booking confirmation rejected', {
+        userId: user.id,
+        bookingId: id,
+        code: result.code,
+      });
       log.done(400);
       return businessErrorResponse(result.code, result.message);
     }

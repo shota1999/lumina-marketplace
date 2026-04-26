@@ -1,7 +1,7 @@
 export default function MessagesLoading() {
   return (
     <div className="mx-auto max-w-7xl px-6 py-8">
-      <div className="flex gap-6" style={{ minHeight: "calc(100vh - 12rem)" }}>
+      <div className="flex gap-6" style={{ minHeight: 'calc(100vh - 12rem)' }}>
         {/* Sidebar list */}
         <div className="w-80 flex-shrink-0 space-y-2 rounded-xl border border-slate-200 p-4 dark:border-slate-800">
           {Array.from({ length: 6 }).map((_, i) => (

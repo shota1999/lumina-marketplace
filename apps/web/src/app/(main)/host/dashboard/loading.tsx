@@ -4,10 +4,7 @@ export default function DashboardLoading() {
       {/* 4 stat cards */}
       <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {Array.from({ length: 4 }).map((_, i) => (
-          <div
-            key={i}
-            className="rounded-xl border border-slate-200 p-6 dark:border-slate-800"
-          >
+          <div key={i} className="rounded-xl border border-slate-200 p-6 dark:border-slate-800">
             <div className="mb-3 h-3 w-1/2 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
             <div className="h-8 w-3/4 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
           </div>

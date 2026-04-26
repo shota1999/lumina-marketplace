@@ -15,10 +15,7 @@ async function verifyHostOwnership(listingId: string, userId: string) {
   return listing;
 }
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const user = await getCurrentUser();
     if (!user || (user.role !== 'host' && user.role !== 'admin')) {
@@ -33,10 +30,7 @@ export async function GET(
     }
 
     const db = getDb();
-    const rules = await db
-      .select()
-      .from(pricingRules)
-      .where(eq(pricingRules.listingId, id));
+    const rules = await db.select().from(pricingRules).where(eq(pricingRules.listingId, id));
 
     return successResponse(rules);
   } catch (error) {
@@ -44,10 +38,7 @@ export async function GET(
   }
 }
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const user = await getCurrentUser();
     if (!user || (user.role !== 'host' && user.role !== 'admin')) {
@@ -67,7 +58,7 @@ export async function POST(
     }
 
     const parsed = createPricingRuleSchema.safeParse({
-      ...bodyResult.data as Record<string, unknown>,
+      ...(bodyResult.data as Record<string, unknown>),
       listingId: id,
     });
     if (!parsed.success) {

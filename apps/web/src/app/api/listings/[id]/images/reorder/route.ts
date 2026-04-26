@@ -15,10 +15,7 @@ async function verifyHostOwnership(listingId: string, userId: string) {
   return listing;
 }
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const user = await getCurrentUser();
     if (!user || (user.role !== 'host' && user.role !== 'admin')) {
@@ -52,12 +49,7 @@ export async function PATCH(
       db
         .update(listingImages)
         .set({ sortOrder: index })
-        .where(
-          and(
-            eq(listingImages.id, imageId),
-            eq(listingImages.listingId, id),
-          ),
-        ),
+        .where(and(eq(listingImages.id, imageId), eq(listingImages.listingId, id))),
     );
 
     await Promise.all(updates);

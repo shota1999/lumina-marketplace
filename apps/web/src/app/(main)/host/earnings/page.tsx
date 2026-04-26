@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  ArrowDownRight,
-  ArrowUpRight,
-  DollarSign,
-  TrendingUp,
-  Wallet,
-} from 'lucide-react';
+import { ArrowDownRight, ArrowUpRight, DollarSign, TrendingUp, Wallet } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { formatPrice } from '@lumina/shared';
@@ -53,8 +47,14 @@ function StatCard({
               {value}
             </p>
             {trend && (
-              <p className={`mt-1 flex items-center gap-0.5 text-xs ${trendUp ? 'text-green-600' : 'text-red-500'}`}>
-                {trendUp ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
+              <p
+                className={`mt-1 flex items-center gap-0.5 text-xs ${trendUp ? 'text-green-600' : 'text-red-500'}`}
+              >
+                {trendUp ? (
+                  <ArrowUpRight className="h-3 w-3" />
+                ) : (
+                  <ArrowDownRight className="h-3 w-3" />
+                )}
                 {trend}
               </p>
             )}
@@ -129,9 +129,7 @@ export default function HostEarningsPage() {
         <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
           Earnings
         </h1>
-        <p className="mt-1 text-sm text-slate-500">
-          Track your revenue and payout history
-        </p>
+        <p className="mt-1 text-sm text-slate-500">Track your revenue and payout history</p>
       </div>
 
       {/* Stat Cards */}
@@ -173,10 +171,7 @@ export default function HostEarningsPage() {
             {monthlyEarnings.map((m, i) => {
               const pct = Math.max((m.amount / maxEarning) * 100, 4);
               return (
-                <div
-                  key={i}
-                  className="group relative flex w-full flex-col items-center"
-                >
+                <div key={i} className="group relative flex w-full flex-col items-center">
                   <span className="absolute -top-7 text-[10px] font-bold text-slate-700 opacity-0 transition-opacity group-hover:opacity-100 dark:text-slate-300">
                     {formatPrice(m.amount)}
                   </span>

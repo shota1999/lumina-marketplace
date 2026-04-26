@@ -3,7 +3,12 @@ import { NextRequest } from 'next/server';
 import { createBookingSchema } from '@lumina/shared';
 import { withSpan, SpanAttr } from '@lumina/telemetry';
 
-import { businessErrorResponse, errorResponse, safeParseBody, successResponse } from '@/lib/api-response';
+import {
+  businessErrorResponse,
+  errorResponse,
+  safeParseBody,
+  successResponse,
+} from '@/lib/api-response';
 import { getCurrentUser } from '@/lib/auth';
 import { captureError } from '@/lib/error-capture';
 import { checkIdempotencyKey } from '@/lib/idempotency';
@@ -31,7 +36,10 @@ export async function POST(request: NextRequest) {
       if (!isNew) {
         log.warn('Duplicate request blocked', { userId: user.id, idempotencyKey });
         log.done(409);
-        return errorResponse({ code: 'IDEMPOTENT_REJECT', message: 'Duplicate request — booking already submitted' }, 409);
+        return errorResponse(
+          { code: 'IDEMPOTENT_REJECT', message: 'Duplicate request — booking already submitted' },
+          409,
+        );
       }
     }
 
@@ -39,7 +47,10 @@ export async function POST(request: NextRequest) {
     if (!rl.allowed) {
       log.warn('Rate limited', { userId: user.id });
       log.done(429);
-      return errorResponse({ code: 'RATE_LIMITED', message: 'Too many requests. Try again later.' }, 429);
+      return errorResponse(
+        { code: 'RATE_LIMITED', message: 'Too many requests. Try again later.' },
+        429,
+      );
     }
 
     log.info('Booking attempt', { userId: user.id });
@@ -58,10 +69,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await withSpan('booking.create', {
-      [SpanAttr.USER_ID]: user.id,
-      [SpanAttr.BOOKING_LISTING_ID]: parsed.data.listingId,
-    }, () => createBooking({ ...parsed.data, userId: user.id, requestId, log }));
+    const result = await withSpan(
+      'booking.create',
+      {
+        [SpanAttr.USER_ID]: user.id,
+        [SpanAttr.BOOKING_LISTING_ID]: parsed.data.listingId,
+      },
+      () => createBooking({ ...parsed.data, userId: user.id, requestId, log }),
+    );
 
     if (!result.success) {
       log.warn('Booking rejected', { userId: user.id, code: result.code });

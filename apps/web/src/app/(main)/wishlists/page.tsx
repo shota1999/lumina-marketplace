@@ -20,7 +20,7 @@ interface Wishlist {
 
 function WishlistCardSkeleton() {
   return (
-    <div className="overflow-hidden rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-slate-100 dark:ring-slate-800">
+    <div className="overflow-hidden rounded-2xl bg-white ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
       <Skeleton className="aspect-[4/3] w-full rounded-none" />
       <div className="flex flex-col gap-2 p-5">
         <Skeleton className="h-5 w-2/3" />
@@ -90,7 +90,7 @@ export default function WishlistsPage() {
       {/* Header */}
       <header className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">
+          <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">
             Collections
           </p>
           <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-slate-50">
@@ -109,7 +109,7 @@ export default function WishlistsPage() {
       {/* Inline create form */}
       {showForm && (
         <div className="mb-10 rounded-2xl bg-white p-6 ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4">
+          <p className="mb-4 text-[10px] font-bold uppercase tracking-widest text-slate-400">
             Create Collection
           </p>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
@@ -163,14 +163,14 @@ export default function WishlistsPage() {
         </div>
       ) : wishlists.length === 0 ? (
         /* Empty state */
-        <div className="flex flex-col items-center justify-center py-32 text-center max-w-md mx-auto">
-          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 mb-6">
+        <div className="mx-auto flex max-w-md flex-col items-center justify-center py-32 text-center">
+          <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
             <Heart className="h-9 w-9 text-slate-400 dark:text-slate-500" />
           </div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-3">
+          <h2 className="mb-3 text-2xl font-bold text-slate-900 dark:text-slate-50">
             No collections yet
           </h2>
-          <p className="text-slate-500 dark:text-slate-400 leading-relaxed mb-8">
+          <p className="mb-8 leading-relaxed text-slate-500 dark:text-slate-400">
             Organize your favorite listings into collections. Group by trip, destination, or vibe.
           </p>
           <button

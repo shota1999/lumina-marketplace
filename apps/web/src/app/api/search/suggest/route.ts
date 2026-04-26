@@ -76,6 +76,9 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     logger.error('Suggest failed', { error: String(error) });
-    return NextResponse.json({ success: true, data: { listings: [], locations: [], categories: [], total: 0 } });
+    return NextResponse.json({
+      success: true,
+      data: { listings: [], locations: [], categories: [], total: 0 },
+    });
   }
 }

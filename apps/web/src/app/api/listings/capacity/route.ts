@@ -39,10 +39,7 @@ export async function GET() {
       buckets.push({ guests: g, count: fit });
     }
 
-    return NextResponse.json(
-      { max, total, buckets },
-      { headers: { 'Cache-Control': 'no-store' } },
-    );
+    return NextResponse.json({ max, total, buckets }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (err) {
     const e = err as { message?: unknown; code?: unknown; stack?: unknown; name?: unknown };
     return NextResponse.json(

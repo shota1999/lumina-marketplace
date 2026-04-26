@@ -49,12 +49,7 @@ export async function PATCH(
     const [updated] = await db
       .update(wishlistItems)
       .set({ note: parsed.data.note })
-      .where(
-        and(
-          eq(wishlistItems.id, itemId),
-          eq(wishlistItems.wishlistId, id),
-        ),
-      )
+      .where(and(eq(wishlistItems.id, itemId), eq(wishlistItems.wishlistId, id)))
       .returning();
 
     if (!updated) {
@@ -63,7 +58,10 @@ export async function PATCH(
 
     return successResponse(updated);
   } catch {
-    return errorResponse({ code: 'INTERNAL_ERROR', message: 'Failed to update wishlist item' }, 500);
+    return errorResponse(
+      { code: 'INTERNAL_ERROR', message: 'Failed to update wishlist item' },
+      500,
+    );
   }
 }
 
@@ -91,15 +89,13 @@ export async function DELETE(
 
     await db
       .delete(wishlistItems)
-      .where(
-        and(
-          eq(wishlistItems.id, itemId),
-          eq(wishlistItems.wishlistId, id),
-        ),
-      );
+      .where(and(eq(wishlistItems.id, itemId), eq(wishlistItems.wishlistId, id)));
 
     return successResponse({ deleted: true });
   } catch {
-    return errorResponse({ code: 'INTERNAL_ERROR', message: 'Failed to remove wishlist item' }, 500);
+    return errorResponse(
+      { code: 'INTERNAL_ERROR', message: 'Failed to remove wishlist item' },
+      500,
+    );
   }
 }

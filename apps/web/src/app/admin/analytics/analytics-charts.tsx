@@ -30,9 +30,7 @@ export function EventTrendChart({ data }: { data: DailyDataPoint[] }) {
   return (
     <div className="rounded-xl bg-white p-6 shadow-sm dark:bg-slate-900">
       <div className="mb-6">
-        <h4 className="text-lg font-bold text-slate-900 dark:text-slate-50">
-          Event Trends
-        </h4>
+        <h4 className="text-lg font-bold text-slate-900 dark:text-slate-50">Event Trends</h4>
         <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
           Daily activity over the last 30 days
         </p>
@@ -61,11 +59,7 @@ export function EventTrendChart({ data }: { data: DailyDataPoint[] }) {
               tickLine={false}
               axisLine={false}
             />
-            <YAxis
-              tick={{ fontSize: 11, fill: '#94a3b8' }}
-              tickLine={false}
-              axisLine={false}
-            />
+            <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} tickLine={false} axisLine={false} />
             <Tooltip
               contentStyle={{
                 backgroundColor: '#0f172a',
@@ -126,18 +120,25 @@ export function ConversionFunnelChart({ data }: { data: FunnelStep[] }) {
   return (
     <div className="rounded-xl bg-white p-6 shadow-sm dark:bg-slate-900">
       <div className="mb-6">
-        <h4 className="text-lg font-bold text-slate-900 dark:text-slate-50">
-          Conversion Funnel
-        </h4>
+        <h4 className="text-lg font-bold text-slate-900 dark:text-slate-50">Conversion Funnel</h4>
         <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
           User journey from view to booking
         </p>
       </div>
       <div className="h-[250px] w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} layout="vertical" margin={{ top: 0, right: 20, left: 0, bottom: 0 }}>
+          <BarChart
+            data={data}
+            layout="vertical"
+            margin={{ top: 0, right: 20, left: 0, bottom: 0 }}
+          >
             <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" horizontal={false} />
-            <XAxis type="number" tick={{ fontSize: 11, fill: '#94a3b8' }} tickLine={false} axisLine={false} />
+            <XAxis
+              type="number"
+              tick={{ fontSize: 11, fill: '#94a3b8' }}
+              tickLine={false}
+              axisLine={false}
+            />
             <YAxis
               dataKey="name"
               type="category"
@@ -183,9 +184,7 @@ export function EventDistributionChart({ data }: { data: PieSlice[] }) {
   return (
     <div className="rounded-xl bg-white p-6 shadow-sm dark:bg-slate-900">
       <div className="mb-6">
-        <h4 className="text-lg font-bold text-slate-900 dark:text-slate-50">
-          Event Distribution
-        </h4>
+        <h4 className="text-lg font-bold text-slate-900 dark:text-slate-50">Event Distribution</h4>
         <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
           Breakdown by interaction type
         </p>
@@ -223,13 +222,8 @@ export function EventDistributionChart({ data }: { data: PieSlice[] }) {
         <div className="space-y-3">
           {data.map((slice) => (
             <div key={slice.name} className="flex items-center gap-3">
-              <span
-                className="h-3 w-3 rounded-full"
-                style={{ backgroundColor: slice.fill }}
-              />
-              <span className="text-sm text-slate-600 dark:text-slate-400">
-                {slice.name}
-              </span>
+              <span className="h-3 w-3 rounded-full" style={{ backgroundColor: slice.fill }} />
+              <span className="text-sm text-slate-600 dark:text-slate-400">{slice.name}</span>
               <span className="text-sm font-bold text-slate-900 dark:text-slate-50">
                 {total > 0 ? ((slice.value / total) * 100).toFixed(0) : 0}%
               </span>

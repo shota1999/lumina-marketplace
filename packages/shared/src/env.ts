@@ -2,10 +2,7 @@ import { z } from 'zod';
 
 // Treats empty strings (common in .env files with unset optional keys) as undefined
 // so that `.optional()` URL/string fields don't fail validation.
-const optionalUrl = z.preprocess(
-  (v) => (v === '' ? undefined : v),
-  z.string().url().optional(),
-);
+const optionalUrl = z.preprocess((v) => (v === '' ? undefined : v), z.string().url().optional());
 const optionalNonEmpty = z.preprocess(
   (v) => (v === '' ? undefined : v),
   z.string().min(1).optional(),

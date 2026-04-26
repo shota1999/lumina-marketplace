@@ -43,19 +43,20 @@ export function getAnalyticsQueue(): Queue {
  * The search-indexer will extract the trace context to link its spans
  * back to the originating request.
  */
-export async function enqueueIndexingJob(
-  jobName: string,
-  data: Record<string, unknown>,
-) {
-  return withSpan('queue.enqueue', {
-    [SpanAttr.QUEUE_NAME]: QUEUE_NAMES.indexing,
-    [SpanAttr.QUEUE_JOB_NAME]: jobName,
-  }, async () => {
-    const queue = getIndexingQueue();
-    const job = await queue.add(jobName, {
-      ...data,
-      _traceContext: injectTraceContext(),
-    });
-    return job;
-  });
+export async function enqueueIndexingJob(jobName: string, data: Record<string, unknown>) {
+  return withSpan(
+    'queue.enqueue',
+    {
+      [SpanAttr.QUEUE_NAME]: QUEUE_NAMES.indexing,
+      [SpanAttr.QUEUE_JOB_NAME]: jobName,
+    },
+    async () => {
+      const queue = getIndexingQueue();
+      const job = await queue.add(jobName, {
+        ...data,
+        _traceContext: injectTraceContext(),
+      });
+      return job;
+    },
+  );
 }

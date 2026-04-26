@@ -31,7 +31,9 @@ export async function GET(request: NextRequest) {
   const status = url.searchParams.get('status');
 
   const db = getDb();
-  const conditions = status ? eq(listings.status, status as 'draft' | 'published' | 'archived') : undefined;
+  const conditions = status
+    ? eq(listings.status, status as 'draft' | 'published' | 'archived')
+    : undefined;
 
   const [data, countResult] = await Promise.all([
     db.query.listings.findMany({
@@ -91,7 +93,8 @@ export async function PATCH(request: NextRequest) {
     if (input.title !== undefined) updateData['title'] = input.title;
     if (input.description !== undefined) updateData['description'] = input.description;
     if (input.category !== undefined) updateData['category'] = input.category;
-    if (input.pricePerNight !== undefined) updateData['pricePerNight'] = String(input.pricePerNight);
+    if (input.pricePerNight !== undefined)
+      updateData['pricePerNight'] = String(input.pricePerNight);
     if (input.amenities !== undefined) updateData['amenities'] = input.amenities;
     if (input.maxGuests !== undefined) updateData['maxGuests'] = input.maxGuests;
     if (input.bedrooms !== undefined) updateData['bedrooms'] = input.bedrooms;

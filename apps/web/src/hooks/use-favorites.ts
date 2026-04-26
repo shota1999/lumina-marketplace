@@ -39,7 +39,11 @@ export function useFavorites() {
       });
       const json = await res.json();
       if (!res.ok || !json.success) {
-        throw new Error(json.error?.code === 'UNAUTHORIZED' ? 'LOGIN_REQUIRED' : json.error?.message ?? 'Failed to update favorites');
+        throw new Error(
+          json.error?.code === 'UNAUTHORIZED'
+            ? 'LOGIN_REQUIRED'
+            : (json.error?.message ?? 'Failed to update favorites'),
+        );
       }
       return json;
     },
@@ -51,7 +55,15 @@ export function useFavorites() {
       queryClient.setQueryData<FavoriteItem[]>(['favorites'], (old = []) =>
         wasInList
           ? old.filter((f) => f.listingId !== listingId)
-          : [...old, { id: `temp-${listingId}`, listingId, userId: '', createdAt: new Date().toISOString() }],
+          : [
+              ...old,
+              {
+                id: `temp-${listingId}`,
+                listingId,
+                userId: '',
+                createdAt: new Date().toISOString(),
+              },
+            ],
       );
 
       return { previous, wasInList };

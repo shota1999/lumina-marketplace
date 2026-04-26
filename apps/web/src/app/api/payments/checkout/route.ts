@@ -30,6 +30,9 @@ export async function POST(request: NextRequest) {
 
     return successResponse(session, 201);
   } catch (error) {
-    return errorResponse({ code: 'INTERNAL_ERROR', message: 'Failed to create checkout session' }, 500);
+    return errorResponse(
+      { code: 'INTERNAL_ERROR', message: 'Failed to create checkout session' },
+      500,
+    );
   }
 }

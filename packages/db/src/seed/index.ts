@@ -317,6 +317,506 @@ const SAMPLE_LISTINGS = [
     ],
     // Scenario: additional cabin for "similar listings" results
   },
+  // 11. Parisian apartment
+  {
+    title: 'Charming Apartment near the Eiffel Tower',
+    description:
+      'A classic Haussmannian apartment with wrought-iron balconies, herringbone floors, and a peek of the Eiffel Tower from the salon. Walk to cafés in the 7th arrondissement.',
+    category: 'apartment' as const,
+    pricePerNight: '410',
+    city: 'Paris',
+    state: 'Île-de-France',
+    country: 'France',
+    lat: '48.8566',
+    lng: '2.3522',
+    amenities: ['wifi', 'kitchen', 'elevator', 'tv', 'heating', 'washer'],
+    maxGuests: 4,
+    bedrooms: 2,
+    bathrooms: 1,
+    featured: true,
+    photos: [
+      'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200&q=80',
+      'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&q=80',
+      'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=1200&q=80',
+      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1200&q=80',
+      'https://images.unsplash.com/photo-1502672023488-70e25813eb80?w=1200&q=80',
+    ],
+  },
+  // 12. New York penthouse
+  {
+    title: 'Skyline Penthouse in Manhattan',
+    description:
+      'Two-floor penthouse above Tribeca with a private rooftop, soaking tub, and uninterrupted views from the Hudson to the Empire State Building.',
+    category: 'penthouse' as const,
+    pricePerNight: '2400',
+    city: 'New York',
+    state: 'New York',
+    country: 'United States',
+    lat: '40.7191',
+    lng: '-74.0089',
+    amenities: ['wifi', 'gym', 'air-conditioning', 'elevator', 'balcony', 'tv', 'kitchen'],
+    maxGuests: 6,
+    bedrooms: 3,
+    bathrooms: 3,
+    featured: true,
+    photos: [
+      'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&q=80',
+      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1200&q=80',
+      'https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=1200&q=80',
+      'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&q=80',
+      'https://images.unsplash.com/photo-1551038247-3d9af20df552?w=1200&q=80',
+    ],
+  },
+  // 13. Bali villa
+  {
+    title: 'Jungle Villa with Infinity Pool in Ubud',
+    description:
+      'Open-air villa surrounded by rice terraces. Private infinity pool, daily breakfast, and a yoga deck overlooking the river.',
+    category: 'villa' as const,
+    pricePerNight: '380',
+    city: 'Ubud',
+    state: 'Bali',
+    country: 'Indonesia',
+    lat: '-8.5069',
+    lng: '115.2625',
+    amenities: ['wifi', 'pool', 'kitchen', 'air-conditioning', 'garden', 'breakfast'],
+    maxGuests: 4,
+    bedrooms: 2,
+    bathrooms: 2,
+    featured: true,
+    photos: [
+      'https://images.unsplash.com/photo-1582610116397-edb318620f90?w=1200&q=80',
+      'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&q=80',
+      'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=1200&q=80',
+      'https://images.unsplash.com/photo-1540541338287-41700207dee6?w=1200&q=80',
+      'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80',
+    ],
+  },
+  // 14. Norwegian cabin
+  {
+    title: 'Fjord Cabin in Geiranger',
+    description:
+      'Hand-built timber cabin perched above the Geirangerfjord. Wood-fired sauna, panoramic glass walls, and northern lights in winter.',
+    category: 'cabin' as const,
+    pricePerNight: '610',
+    city: 'Geiranger',
+    state: 'Møre og Romsdal',
+    country: 'Norway',
+    lat: '62.1009',
+    lng: '7.2058',
+    amenities: ['wifi', 'kitchen', 'fireplace', 'sauna', 'heating', 'parking'],
+    maxGuests: 5,
+    bedrooms: 2,
+    bathrooms: 1,
+    featured: false,
+    photos: [
+      'https://images.unsplash.com/photo-1601233749202-95d04d5b3c00?w=1200&q=80',
+      'https://images.unsplash.com/photo-1595274459742-4a41d35784ee?w=1200&q=80',
+      'https://images.unsplash.com/photo-1542718610-a1d656d1884c?w=1200&q=80',
+      'https://images.unsplash.com/photo-1500076656116-558758c991c1?w=1200&q=80',
+      'https://images.unsplash.com/photo-1551524559-8af4e6624178?w=1200&q=80',
+    ],
+  },
+  // 15. Iceland treehouse
+  {
+    title: 'Glass Treehouse under the Aurora',
+    description:
+      'A modern treehouse with a transparent roof for stargazing. Steps from a black-sand beach and a geothermal hot spring.',
+    category: 'treehouse' as const,
+    pricePerNight: '540',
+    city: 'Vik',
+    state: 'Suðurland',
+    country: 'Iceland',
+    lat: '63.4194',
+    lng: '-19.0064',
+    amenities: ['wifi', 'kitchen', 'hot-tub', 'heating', 'fireplace'],
+    maxGuests: 2,
+    bedrooms: 1,
+    bathrooms: 1,
+    featured: true,
+    photos: [
+      'https://images.unsplash.com/photo-1531971589569-0d9370cbe1e5?w=1200&q=80',
+      'https://images.unsplash.com/photo-1528127269322-539801943592?w=1200&q=80',
+      'https://images.unsplash.com/photo-1480796927426-f609979314bd?w=1200&q=80',
+      'https://images.unsplash.com/photo-1502784444187-359ac186c5bb?w=1200&q=80',
+      'https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?w=1200&q=80',
+    ],
+  },
+  // 16. Irish castle
+  {
+    title: 'Stone Castle Estate in County Clare',
+    description:
+      'A 14th-century tower house with formal gardens, library, and a great hall used by visiting writers and dignitaries.',
+    category: 'castle' as const,
+    pricePerNight: '1450',
+    city: 'Ennis',
+    state: 'County Clare',
+    country: 'Ireland',
+    lat: '52.8436',
+    lng: '-8.9864',
+    amenities: ['wifi', 'kitchen', 'parking', 'fireplace', 'garden', 'heating'],
+    maxGuests: 12,
+    bedrooms: 6,
+    bathrooms: 5,
+    featured: false,
+    photos: [
+      'https://images.unsplash.com/photo-1486016006115-74a41448aea2?w=1200&q=80',
+      'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=1200&q=80',
+      'https://images.unsplash.com/photo-1519999482648-25049ddd37b1?w=1200&q=80',
+      'https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?w=1200&q=80',
+      'https://images.unsplash.com/photo-1533154683836-84ea7a0bc310?w=1200&q=80',
+    ],
+  },
+  // 17. Croatian boat
+  {
+    title: 'Catamaran Stay in Hvar',
+    description:
+      'Sleep aboard a 60ft catamaran moored in Hvar harbor. Wake up to swims in the Adriatic and dinner served on deck.',
+    category: 'boat' as const,
+    pricePerNight: '480',
+    city: 'Hvar',
+    state: 'Split-Dalmatia',
+    country: 'Croatia',
+    lat: '43.1729',
+    lng: '16.4413',
+    amenities: ['wifi', 'kitchen', 'air-conditioning', 'breakfast'],
+    maxGuests: 6,
+    bedrooms: 3,
+    bathrooms: 2,
+    featured: false,
+    photos: [
+      'https://images.unsplash.com/photo-1542902093-d55926049754?w=1200&q=80',
+      'https://images.unsplash.com/photo-1473116763249-2faaef81ccda?w=1200&q=80',
+      'https://images.unsplash.com/photo-1508246325515-99cb3a0b9a1f?w=1200&q=80',
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80',
+      'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200&q=80',
+    ],
+  },
+  // 18. Provence farmhouse
+  {
+    title: 'Lavender Farmhouse in Provence',
+    description:
+      'A restored mas surrounded by lavender fields and stone-walled gardens. Outdoor dining under plane trees, with an old bread oven still in use.',
+    category: 'farmhouse' as const,
+    pricePerNight: '590',
+    city: 'Gordes',
+    state: 'Vaucluse',
+    country: 'France',
+    lat: '43.9117',
+    lng: '5.2003',
+    amenities: ['wifi', 'pool', 'kitchen', 'parking', 'garden', 'heating'],
+    maxGuests: 10,
+    bedrooms: 5,
+    bathrooms: 3,
+    featured: true,
+    photos: [
+      'https://images.unsplash.com/photo-1466442929976-97f336a657be?w=1200&q=80',
+      'https://images.unsplash.com/photo-1499678329028-101435549a4e?w=1200&q=80',
+      'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=1200&q=80',
+      'https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=1200&q=80',
+      'https://images.unsplash.com/photo-1564540583246-934409427776?w=1200&q=80',
+    ],
+  },
+  // 19. Lisbon apartment
+  {
+    title: 'Tile-Front Apartment in Alfama',
+    description:
+      'A bright duplex on a steep cobblestone lane in old Lisbon. Private terrace overlooking the river and a kitchen stocked for pastel de nata mornings.',
+    category: 'apartment' as const,
+    pricePerNight: '180',
+    city: 'Lisbon',
+    state: 'Lisbon',
+    country: 'Portugal',
+    lat: '38.7117',
+    lng: '-9.1295',
+    amenities: ['wifi', 'kitchen', 'air-conditioning', 'tv', 'washer'],
+    maxGuests: 4,
+    bedrooms: 2,
+    bathrooms: 1,
+    featured: false,
+    photos: [
+      'https://images.unsplash.com/photo-1513735492246-483525079686?w=1200&q=80',
+      'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=1200&q=80',
+      'https://images.unsplash.com/photo-1529421308418-eab98863cee4?w=1200&q=80',
+      'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=1200&q=80',
+      'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200&q=80',
+    ],
+  },
+  // 20. Mexico villa
+  {
+    title: 'Cliffside Villa in Tulum',
+    description:
+      'Five-suite villa carved into the cliffs above the Riviera Maya. Private cenote, beach club access, and an open-air rooftop hammock lounge.',
+    category: 'villa' as const,
+    pricePerNight: '920',
+    city: 'Tulum',
+    state: 'Quintana Roo',
+    country: 'Mexico',
+    lat: '20.2114',
+    lng: '-87.4654',
+    amenities: ['wifi', 'pool', 'kitchen', 'air-conditioning', 'beach-access', 'parking'],
+    maxGuests: 10,
+    bedrooms: 5,
+    bathrooms: 5,
+    featured: false,
+    photos: [
+      'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200&q=80',
+      'https://images.unsplash.com/photo-1505881402582-c5bc11054f91?w=1200&q=80',
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80',
+      'https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=1200&q=80',
+      'https://images.unsplash.com/photo-1540541338287-41700207dee6?w=1200&q=80',
+    ],
+  },
+  // 21. London apartment
+  {
+    title: 'Mews House in Notting Hill',
+    description:
+      'A converted carriage house tucked off Portobello Road. Skylit kitchen, private patio, and walking distance to Hyde Park.',
+    category: 'apartment' as const,
+    pricePerNight: '520',
+    city: 'London',
+    state: 'England',
+    country: 'United Kingdom',
+    lat: '51.5151',
+    lng: '-0.2058',
+    amenities: ['wifi', 'kitchen', 'heating', 'tv', 'washer'],
+    maxGuests: 4,
+    bedrooms: 2,
+    bathrooms: 2,
+    featured: false,
+    photos: [
+      'https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=1200&q=80',
+      'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=1200&q=80',
+      'https://images.unsplash.com/photo-1554995207-c18c203602cb?w=1200&q=80',
+      'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1200&q=80',
+      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200&q=80',
+    ],
+  },
+  // 22. Vermont cabin
+  {
+    title: 'Maple Cabin in the Green Mountains',
+    description:
+      'A snug cabin among sugar maples with a wraparound porch. Wood stove, board games, and a creek you can hear from the bedroom.',
+    category: 'cabin' as const,
+    pricePerNight: '290',
+    city: 'Stowe',
+    state: 'Vermont',
+    country: 'United States',
+    lat: '44.4654',
+    lng: '-72.6874',
+    amenities: ['wifi', 'kitchen', 'fireplace', 'heating', 'parking', 'garden'],
+    maxGuests: 4,
+    bedrooms: 2,
+    bathrooms: 1,
+    featured: false,
+    photos: [
+      'https://images.unsplash.com/photo-1487730116645-74489c95b41b?w=1200&q=80',
+      'https://images.unsplash.com/photo-1551524559-8af4e6624178?w=1200&q=80',
+      'https://images.unsplash.com/photo-1542718610-a1d656d1884c?w=1200&q=80',
+      'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200&q=80',
+      'https://images.unsplash.com/photo-1500076656116-558758c991c1?w=1200&q=80',
+    ],
+  },
+  // 23. Costa Rica treehouse
+  {
+    title: 'Canopy Treehouse near Manuel Antonio',
+    description:
+      'Toucans for neighbors and a private outdoor shower under the rainforest canopy. Steps from a Pacific surf beach.',
+    category: 'treehouse' as const,
+    pricePerNight: '320',
+    city: 'Quepos',
+    state: 'Puntarenas',
+    country: 'Costa Rica',
+    lat: '9.4321',
+    lng: '-84.1623',
+    amenities: ['wifi', 'kitchen', 'breakfast', 'garden'],
+    maxGuests: 3,
+    bedrooms: 1,
+    bathrooms: 1,
+    featured: false,
+    photos: [
+      'https://images.unsplash.com/photo-1518684079-3c830dcef090?w=1200&q=80',
+      'https://images.unsplash.com/photo-1512100356356-de1b84283e18?w=1200&q=80',
+      'https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=1200&q=80',
+      'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1200&q=80',
+      'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&q=80',
+    ],
+  },
+  // 24. Romanian castle
+  {
+    title: 'Transylvanian Castle Suite',
+    description:
+      'A wing of a 17th-century Saxon castle, with vaulted ceilings, hand-painted frescoes, and a private library of antique books.',
+    category: 'castle' as const,
+    pricePerNight: '780',
+    city: 'Sibiu',
+    state: 'Transylvania',
+    country: 'Romania',
+    lat: '45.7983',
+    lng: '24.1256',
+    amenities: ['wifi', 'kitchen', 'fireplace', 'heating', 'parking', 'breakfast'],
+    maxGuests: 8,
+    bedrooms: 4,
+    bathrooms: 3,
+    featured: false,
+    photos: [
+      'https://images.unsplash.com/photo-1519677100203-a0e668c92439?w=1200&q=80',
+      'https://images.unsplash.com/photo-1515445393825-bef9f1afaf2d?w=1200&q=80',
+      'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=1200&q=80',
+      'https://images.unsplash.com/photo-1572889464105-49b1d3a0d5f4?w=1200&q=80',
+      'https://images.unsplash.com/photo-1519999482648-25049ddd37b1?w=1200&q=80',
+    ],
+  },
+  // 25. Dubai penthouse
+  {
+    title: 'Marina Penthouse in Dubai',
+    description:
+      'A 60th-floor penthouse over Dubai Marina. Two terraces, private cinema, and a wraparound infinity pool that spills toward the Gulf.',
+    category: 'penthouse' as const,
+    pricePerNight: '1950',
+    city: 'Dubai',
+    state: 'Dubai',
+    country: 'United Arab Emirates',
+    lat: '25.0805',
+    lng: '55.1403',
+    amenities: ['wifi', 'pool', 'gym', 'air-conditioning', 'elevator', 'parking', 'balcony'],
+    maxGuests: 8,
+    bedrooms: 4,
+    bathrooms: 4,
+    featured: true,
+    photos: [
+      'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200&q=80',
+      'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=1200&q=80',
+      'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&q=80',
+      'https://images.unsplash.com/photo-1551038247-3d9af20df552?w=1200&q=80',
+      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1200&q=80',
+    ],
+  },
+  // 26. Maldives boat
+  {
+    title: 'Overwater Yacht in the Maldives',
+    description:
+      'A private liveaboard yacht with three suites, a top deck jacuzzi, and a chef who plans the day around the best snorkeling spots.',
+    category: 'boat' as const,
+    pricePerNight: '1480',
+    city: 'Malé',
+    state: 'Kaafu Atoll',
+    country: 'Maldives',
+    lat: '4.1755',
+    lng: '73.5093',
+    amenities: ['wifi', 'kitchen', 'air-conditioning', 'breakfast', 'hot-tub'],
+    maxGuests: 6,
+    bedrooms: 3,
+    bathrooms: 3,
+    featured: true,
+    photos: [
+      'https://images.unsplash.com/photo-1540541338287-41700207dee6?w=1200&q=80',
+      'https://images.unsplash.com/photo-1505881502353-a1986add3762?w=1200&q=80',
+      'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200&q=80',
+      'https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=1200&q=80',
+      'https://images.unsplash.com/photo-1542902093-d55926049754?w=1200&q=80',
+    ],
+  },
+  // 27. Argentinian farmhouse
+  {
+    title: 'Estancia Stay in Mendoza',
+    description:
+      'Working wine estancia in the foothills of the Andes. Horseback rides through the vineyards and asado dinners under the stars.',
+    category: 'farmhouse' as const,
+    pricePerNight: '430',
+    city: 'Mendoza',
+    state: 'Mendoza',
+    country: 'Argentina',
+    lat: '-32.8895',
+    lng: '-68.8458',
+    amenities: ['wifi', 'pool', 'kitchen', 'parking', 'garden', 'wine-cellar', 'breakfast'],
+    maxGuests: 8,
+    bedrooms: 4,
+    bathrooms: 3,
+    featured: false,
+    photos: [
+      'https://images.unsplash.com/photo-1505692433770-36f19f51681d?w=1200&q=80',
+      'https://images.unsplash.com/photo-1505016731635-6e2ebbf95e89?w=1200&q=80',
+      'https://images.unsplash.com/photo-1466442929976-97f336a657be?w=1200&q=80',
+      'https://images.unsplash.com/photo-1499678329028-101435549a4e?w=1200&q=80',
+      'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=1200&q=80',
+    ],
+  },
+  // 28. Cape Town villa
+  {
+    title: 'Atlantic-Edge Villa in Camps Bay',
+    description:
+      'A glass-fronted villa stepped into the cliff above Camps Bay beach. Heated pool, private chef on request, and Table Mountain at your back.',
+    category: 'villa' as const,
+    pricePerNight: '1100',
+    city: 'Cape Town',
+    state: 'Western Cape',
+    country: 'South Africa',
+    lat: '-33.9509',
+    lng: '18.3776',
+    amenities: ['wifi', 'pool', 'kitchen', 'air-conditioning', 'parking', 'beach-access', 'gym'],
+    maxGuests: 8,
+    bedrooms: 4,
+    bathrooms: 4,
+    featured: true,
+    photos: [
+      'https://images.unsplash.com/photo-1613553474179-e1eda3ea5734?w=1200&q=80',
+      'https://images.unsplash.com/photo-1571055107559-3e67626fa8be?w=1200&q=80',
+      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80',
+      'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&q=80',
+      'https://images.unsplash.com/photo-1505881402582-c5bc11054f91?w=1200&q=80',
+    ],
+  },
+  // 29. Whistler cabin
+  {
+    title: 'Ski-In Chalet in Whistler',
+    description:
+      'A timber chalet a few skis away from the Whistler gondola. Hot tub on the deck, ski room, and a great room built for crowds.',
+    category: 'cabin' as const,
+    pricePerNight: '720',
+    city: 'Whistler',
+    state: 'British Columbia',
+    country: 'Canada',
+    lat: '50.1163',
+    lng: '-122.9574',
+    amenities: ['wifi', 'hot-tub', 'kitchen', 'fireplace', 'heating', 'ski-in-out', 'parking'],
+    maxGuests: 10,
+    bedrooms: 5,
+    bathrooms: 4,
+    featured: false,
+    photos: [
+      'https://images.unsplash.com/photo-1551524559-8af4e6624178?w=1200&q=80',
+      'https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?w=1200&q=80',
+      'https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=1200&q=80',
+      'https://images.unsplash.com/photo-1542718610-a1d656d1884c?w=1200&q=80',
+      'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200&q=80',
+    ],
+  },
+  // 30. Berlin apartment
+  {
+    title: 'Loft Apartment in Berlin Mitte',
+    description:
+      'An industrial loft with concrete floors, double-height ceilings, and a record collection. Steps from galleries and the best coffee bars.',
+    category: 'apartment' as const,
+    pricePerNight: '210',
+    city: 'Berlin',
+    state: 'Berlin',
+    country: 'Germany',
+    lat: '52.5246',
+    lng: '13.4105',
+    amenities: ['wifi', 'kitchen', 'heating', 'tv', 'washer', 'elevator'],
+    maxGuests: 3,
+    bedrooms: 1,
+    bathrooms: 1,
+    featured: false,
+    photos: [
+      'https://images.unsplash.com/photo-1554995207-c18c203602cb?w=1200&q=80',
+      'https://images.unsplash.com/photo-1502672023488-70e25813eb80?w=1200&q=80',
+      'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1200&q=80',
+      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200&q=80',
+      'https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=1200&q=80',
+    ],
+  },
 ];
 
 // ---------------------------------------------------------------------------
@@ -324,24 +824,80 @@ const SAMPLE_LISTINGS = [
 // ---------------------------------------------------------------------------
 const REVIEW_TEMPLATES = {
   excellent: [
-    { rating: 5, comment: 'Absolutely stunning property! Every detail was perfect. The host was incredibly responsive and thoughtful. Already planning our return trip.' },
-    { rating: 5, comment: 'Best vacation rental we have ever stayed in. The photos do not do it justice. Immaculate, beautifully decorated, and the views are breathtaking.' },
-    { rating: 5, comment: 'A dream come true. We celebrated our anniversary here and it exceeded every expectation. The amenities are top-notch.' },
-    { rating: 4, comment: 'Wonderful stay overall. Beautiful property with great amenities. Only minor note — check-in instructions could be clearer. Would definitely return.' },
-    { rating: 5, comment: 'This place is magical. Woke up to the most incredible views every morning. The kitchen was fully stocked and the beds were incredibly comfortable.' },
+    {
+      rating: 5,
+      comment:
+        'Absolutely stunning property! Every detail was perfect. The host was incredibly responsive and thoughtful. Already planning our return trip.',
+    },
+    {
+      rating: 5,
+      comment:
+        'Best vacation rental we have ever stayed in. The photos do not do it justice. Immaculate, beautifully decorated, and the views are breathtaking.',
+    },
+    {
+      rating: 5,
+      comment:
+        'A dream come true. We celebrated our anniversary here and it exceeded every expectation. The amenities are top-notch.',
+    },
+    {
+      rating: 4,
+      comment:
+        'Wonderful stay overall. Beautiful property with great amenities. Only minor note — check-in instructions could be clearer. Would definitely return.',
+    },
+    {
+      rating: 5,
+      comment:
+        'This place is magical. Woke up to the most incredible views every morning. The kitchen was fully stocked and the beds were incredibly comfortable.',
+    },
   ],
   good: [
-    { rating: 4, comment: 'Great location and very comfortable. A few small maintenance items but nothing that affected our enjoyment. Would recommend.' },
-    { rating: 4, comment: 'Really enjoyed our stay. Clean, well-maintained, and exactly as described. The neighborhood is fantastic for exploring.' },
-    { rating: 5, comment: 'Exceeded expectations! The space is even better in person. Host provided excellent local recommendations.' },
-    { rating: 3, comment: 'Good value for the price. Location is convenient but the space could use some updating. Comfortable enough for a short stay.' },
+    {
+      rating: 4,
+      comment:
+        'Great location and very comfortable. A few small maintenance items but nothing that affected our enjoyment. Would recommend.',
+    },
+    {
+      rating: 4,
+      comment:
+        'Really enjoyed our stay. Clean, well-maintained, and exactly as described. The neighborhood is fantastic for exploring.',
+    },
+    {
+      rating: 5,
+      comment:
+        'Exceeded expectations! The space is even better in person. Host provided excellent local recommendations.',
+    },
+    {
+      rating: 3,
+      comment:
+        'Good value for the price. Location is convenient but the space could use some updating. Comfortable enough for a short stay.',
+    },
   ],
   low: [
-    { rating: 2, comment: 'Disappointing experience. The photos were misleading — the space felt much smaller in person. Noisy neighbors at night.' },
-    { rating: 3, comment: 'Average stay. The basics were covered but nothing special. Some cleanliness issues when we arrived but host addressed them quickly.' },
-    { rating: 2, comment: 'Below expectations for the price point. WiFi was unreliable and the air conditioning struggled. Location was good though.' },
-    { rating: 4, comment: 'Decent stay overall. A bit overpriced but the location makes up for it. Would be great with a few improvements.' },
-    { rating: 3, comment: 'Mixed feelings. Great location but the property needs maintenance. The hot water was inconsistent and some appliances were dated.' },
+    {
+      rating: 2,
+      comment:
+        'Disappointing experience. The photos were misleading — the space felt much smaller in person. Noisy neighbors at night.',
+    },
+    {
+      rating: 3,
+      comment:
+        'Average stay. The basics were covered but nothing special. Some cleanliness issues when we arrived but host addressed them quickly.',
+    },
+    {
+      rating: 2,
+      comment:
+        'Below expectations for the price point. WiFi was unreliable and the air conditioning struggled. Location was good though.',
+    },
+    {
+      rating: 4,
+      comment:
+        'Decent stay overall. A bit overpriced but the location makes up for it. Would be great with a few improvements.',
+    },
+    {
+      rating: 3,
+      comment:
+        'Mixed feelings. Great location but the property needs maintenance. The hot water was inconsistent and some appliances were dated.',
+    },
   ],
 };
 
@@ -432,7 +988,13 @@ async function seed() {
   // ── Listings ────────────────────────────────────────────────────────
   console.log('Creating listings...');
 
-  const createdListings: Array<{ id: string; slug: string; title: string; category: string; pricePerNight: string }> = [];
+  const createdListings: Array<{
+    id: string;
+    slug: string;
+    title: string;
+    category: string;
+    pricePerNight: string;
+  }> = [];
 
   for (const data of SAMPLE_LISTINGS) {
     const slug = slugify(data.title);
@@ -478,16 +1040,16 @@ async function seed() {
   }
 
   // Map listings by index for convenience
-  const malibuVilla = createdListings[0]!;      // highly rated + featured
-  const aspenCabin = createdListings[1]!;        // booked
-  const bigSurTreehouse = createdListings[2]!;   // no similar listings
-  const scottishCastle = createdListings[3]!;    // NO REVIEWS
-  const miamiPenthouse = createdListings[4]!;    // fully booked
-  const marinaSailboat = createdListings[5]!;    // low rated
-  const tuscanFarmhouse = createdListings[6]!;   // partner, good reviews
-  const tokyoApartment = createdListings[7]!;    // budget, many bookings
-  const santoriniVilla = createdListings[8]!;    // similar to malibu villa
-  const tahoeCabin = createdListings[9]!;        // similar to aspen cabin
+  const malibuVilla = createdListings[0]!; // highly rated + featured
+  const aspenCabin = createdListings[1]!; // booked
+  const bigSurTreehouse = createdListings[2]!; // no similar listings
+  const scottishCastle = createdListings[3]!; // NO REVIEWS
+  const miamiPenthouse = createdListings[4]!; // fully booked
+  const marinaSailboat = createdListings[5]!; // low rated
+  const tuscanFarmhouse = createdListings[6]!; // partner, good reviews
+  const tokyoApartment = createdListings[7]!; // budget, many bookings
+  const santoriniVilla = createdListings[8]!; // similar to malibu villa
+  const tahoeCabin = createdListings[9]!; // similar to aspen cabin
 
   // ── Reviews ─────────────────────────────────────────────────────────
   console.log('Creating reviews...');
@@ -528,10 +1090,16 @@ async function seed() {
   await addReviews(marinaSailboat.id, REVIEW_TEMPLATES.low);
 
   // Tuscan farmhouse — good reviews
-  await addReviews(tuscanFarmhouse.id, [...REVIEW_TEMPLATES.excellent.slice(0, 2), ...REVIEW_TEMPLATES.good.slice(0, 2)]);
+  await addReviews(tuscanFarmhouse.id, [
+    ...REVIEW_TEMPLATES.excellent.slice(0, 2),
+    ...REVIEW_TEMPLATES.good.slice(0, 2),
+  ]);
 
   // Tokyo apartment — mixed reviews
-  await addReviews(tokyoApartment.id, [...REVIEW_TEMPLATES.good.slice(0, 2), ...REVIEW_TEMPLATES.excellent.slice(0, 1)]);
+  await addReviews(tokyoApartment.id, [
+    ...REVIEW_TEMPLATES.good.slice(0, 2),
+    ...REVIEW_TEMPLATES.excellent.slice(0, 1),
+  ]);
 
   // Santorini villa — good reviews
   await addReviews(santoriniVilla.id, REVIEW_TEMPLATES.good.slice(0, 3));

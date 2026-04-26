@@ -11,47 +11,40 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { desc, eq, sql } from 'drizzle-orm';
-import {
-  analyticsEvents,
-  getDb,
-  listingImages,
-  listings,
-  users,
-} from '@lumina/db';
+import { analyticsEvents, getDb, listingImages, listings, users } from '@lumina/db';
 import { formatPrice } from '@lumina/shared';
 
 async function getDashboardData() {
   const db = getDb();
 
-  const [listingCount, userCount, eventCount, publishedCount, recentListings] =
-    await Promise.all([
-      db.select({ count: sql<number>`count(*)` }).from(listings),
-      db.select({ count: sql<number>`count(*)` }).from(users),
-      db.select({ count: sql<number>`count(*)` }).from(analyticsEvents),
-      db
-        .select({ count: sql<number>`count(*)` })
-        .from(listings)
-        .where(eq(listings.status, 'published')),
-      db
-        .select({
-          id: listings.id,
-          title: listings.title,
-          slug: listings.slug,
-          status: listings.status,
-          pricePerNight: listings.pricePerNight,
-          currency: listings.currency,
-          category: listings.category,
-          hostId: listings.hostId,
-          imageUrl: listingImages.url,
-        })
-        .from(listings)
-        .leftJoin(
-          listingImages,
-          sql`${listingImages.listingId} = ${listings.id} AND ${listingImages.isPrimary} = true`,
-        )
-        .orderBy(desc(listings.updatedAt))
-        .limit(5),
-    ]);
+  const [listingCount, userCount, eventCount, publishedCount, recentListings] = await Promise.all([
+    db.select({ count: sql<number>`count(*)` }).from(listings),
+    db.select({ count: sql<number>`count(*)` }).from(users),
+    db.select({ count: sql<number>`count(*)` }).from(analyticsEvents),
+    db
+      .select({ count: sql<number>`count(*)` })
+      .from(listings)
+      .where(eq(listings.status, 'published')),
+    db
+      .select({
+        id: listings.id,
+        title: listings.title,
+        slug: listings.slug,
+        status: listings.status,
+        pricePerNight: listings.pricePerNight,
+        currency: listings.currency,
+        category: listings.category,
+        hostId: listings.hostId,
+        imageUrl: listingImages.url,
+      })
+      .from(listings)
+      .leftJoin(
+        listingImages,
+        sql`${listingImages.listingId} = ${listings.id} AND ${listingImages.isPrimary} = true`,
+      )
+      .orderBy(desc(listings.updatedAt))
+      .limit(5),
+  ]);
 
   // Get host names for the listings
   const hostIds = [...new Set(recentListings.map((l) => l.hostId))];
@@ -355,9 +348,7 @@ function ActivityItem({
         {icon}
       </div>
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold text-slate-900 dark:text-slate-50">
-          {title}
-        </p>
+        <p className="truncate text-sm font-semibold text-slate-900 dark:text-slate-50">{title}</p>
         <p className="text-xs text-slate-500 dark:text-slate-400">{subtitle}</p>
       </div>
     </div>

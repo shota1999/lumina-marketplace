@@ -11,10 +11,7 @@ const sendMessageSchema = z.object({
   content: z.string().min(1).max(5000),
 });
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const user = await getCurrentUser();
     if (!user) {
@@ -28,10 +25,7 @@ export async function POST(
     const conversation = await db.query.conversations.findFirst({
       where: and(
         eq(conversations.id, id),
-        or(
-          eq(conversations.hostId, user.id),
-          eq(conversations.guestId, user.id),
-        ),
+        or(eq(conversations.hostId, user.id), eq(conversations.guestId, user.id)),
       ),
     });
 
@@ -67,7 +61,8 @@ export async function POST(
       .where(eq(conversations.id, id));
 
     // Notify the other participant via email (fire-and-forget)
-    const recipientId = conversation.hostId === user.id ? conversation.guestId : conversation.hostId;
+    const recipientId =
+      conversation.hostId === user.id ? conversation.guestId : conversation.hostId;
     (async () => {
       try {
         const [recipient, listing] = await Promise.all([

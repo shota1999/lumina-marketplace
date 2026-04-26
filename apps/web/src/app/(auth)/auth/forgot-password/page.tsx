@@ -29,12 +29,23 @@ export default function ForgotPasswordPage() {
         if (data.data?.devResetUrl) {
           setDevResetUrl(data.data.devResetUrl);
         }
-        toast({ title: 'Check your email', description: 'If that email is registered, a reset link has been sent.' });
+        toast({
+          title: 'Check your email',
+          description: 'If that email is registered, a reset link has been sent.',
+        });
       } else {
-        toast({ title: 'Error', description: data.error?.message ?? 'Something went wrong', variant: 'destructive' });
+        toast({
+          title: 'Error',
+          description: data.error?.message ?? 'Something went wrong',
+          variant: 'destructive',
+        });
       }
     } catch {
-      toast({ title: 'Something went wrong', description: 'Please try again', variant: 'destructive' });
+      toast({
+        title: 'Something went wrong',
+        description: 'Please try again',
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }
@@ -44,7 +55,10 @@ export default function ForgotPasswordPage() {
     <div className="w-full max-w-md">
       {/* Branding */}
       <div className="mb-12 text-center">
-        <Link href="/" className="mb-2 inline-block text-3xl font-bold tracking-tighter text-slate-900 dark:text-slate-50">
+        <Link
+          href="/"
+          className="mb-2 inline-block text-3xl font-bold tracking-tighter text-slate-900 dark:text-slate-50"
+        >
           Lumina
         </Link>
         <p className="font-medium tracking-tight text-slate-500 dark:text-slate-400">
@@ -64,7 +78,9 @@ export default function ForgotPasswordPage() {
                 Check your email
               </h2>
               <p className="mb-8 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-                If <strong className="text-slate-700 dark:text-slate-300">{email}</strong> is registered, you&apos;ll receive a reset link shortly. Check your spam folder if you don&apos;t see it.
+                If <strong className="text-slate-700 dark:text-slate-300">{email}</strong> is
+                registered, you&apos;ll receive a reset link shortly. Check your spam folder if you
+                don&apos;t see it.
               </p>
               {devResetUrl && (
                 <div className="mb-8 rounded-xl border border-dashed border-amber-300 bg-amber-50 p-4 text-left text-xs leading-relaxed dark:border-amber-700/50 dark:bg-amber-950/20">
@@ -73,7 +89,8 @@ export default function ForgotPasswordPage() {
                     Demo mode — email delivery disabled
                   </p>
                   <p className="mb-2 text-amber-900/80 dark:text-amber-200/80">
-                    This is a portfolio demo, so we&apos;re skipping the email. Click the link below to continue the reset flow:
+                    This is a portfolio demo, so we&apos;re skipping the email. Click the link below
+                    to continue the reset flow:
                   </p>
                   <Link
                     href={devResetUrl.replace(/^https?:\/\/[^/]+/, '')}

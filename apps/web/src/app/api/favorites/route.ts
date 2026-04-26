@@ -67,12 +67,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true, data: { action: 'removed' } });
     }
 
-    const [fav] = await db
-      .insert(favorites)
-      .values({ userId: user.id, listingId })
-      .returning();
+    const [fav] = await db.insert(favorites).values({ userId: user.id, listingId }).returning();
 
-    return NextResponse.json({ success: true, data: { action: 'added', favorite: fav } }, { status: 201 });
+    return NextResponse.json(
+      { success: true, data: { action: 'added', favorite: fav } },
+      { status: 201 },
+    );
   } catch (error) {
     logger.error('Failed to toggle favorite', { error: String(error) });
     return NextResponse.json(

@@ -61,10 +61,7 @@ export default async function AdminAnalyticsPage() {
         count: sql<number>`count(*)`,
       })
       .from(analyticsEvents)
-      .innerJoin(
-        listings,
-        eq(listings.id, sql`(${analyticsEvents.data}->>'listingId')::uuid`),
-      )
+      .innerJoin(listings, eq(listings.id, sql`(${analyticsEvents.data}->>'listingId')::uuid`))
       .where(gte(analyticsEvents.createdAt, sevenDaysAgo))
       .groupBy(listings.country, listings.city)
       .orderBy(desc(sql`count(*)`))
@@ -196,9 +193,7 @@ export default async function AdminAnalyticsPage() {
               );
             })}
             {eventsByType.length === 0 && (
-              <p className="py-12 text-center text-sm text-slate-400">
-                No events recorded yet.
-              </p>
+              <p className="py-12 text-center text-sm text-slate-400">No events recorded yet.</p>
             )}
           </div>
         </div>
@@ -206,9 +201,7 @@ export default async function AdminAnalyticsPage() {
         {/* Live Activity */}
         <div className="rounded-xl bg-white p-8 shadow-sm lg:col-span-4 dark:bg-slate-900">
           <div className="mb-8 flex items-center justify-between">
-            <h4 className="text-lg font-bold text-slate-900 dark:text-slate-50">
-              Live Activity
-            </h4>
+            <h4 className="text-lg font-bold text-slate-900 dark:text-slate-50">Live Activity</h4>
             <span className="relative flex h-3 w-3">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
               <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500" />
@@ -217,11 +210,7 @@ export default async function AdminAnalyticsPage() {
           <div className="space-y-6">
             {recentEvents.length > 0 ? (
               recentEvents.map((event) => (
-                <ActivityItem
-                  key={event.id}
-                  type={event.type}
-                  createdAt={event.createdAt}
-                />
+                <ActivityItem key={event.id} type={event.type} createdAt={event.createdAt} />
               ))
             ) : (
               <p className="py-8 text-center text-sm text-slate-400">No recent activity.</p>
@@ -306,9 +295,21 @@ export default async function AdminAnalyticsPage() {
       <section className="grid grid-cols-1 gap-10 lg:grid-cols-2">
         <ConversionFunnelChart
           data={[
-            { name: 'Listing Views', value: Number(eventsByType.find((e) => e.type === 'listing_view')?.count ?? 0), fill: '#0f172a' },
-            { name: 'Favorites', value: Number(eventsByType.find((e) => e.type === 'favorite_add')?.count ?? 0), fill: '#2563eb' },
-            { name: 'Inquiries', value: Number(eventsByType.find((e) => e.type === 'listing_click')?.count ?? 0), fill: '#f59e0b' },
+            {
+              name: 'Listing Views',
+              value: Number(eventsByType.find((e) => e.type === 'listing_view')?.count ?? 0),
+              fill: '#0f172a',
+            },
+            {
+              name: 'Favorites',
+              value: Number(eventsByType.find((e) => e.type === 'favorite_add')?.count ?? 0),
+              fill: '#2563eb',
+            },
+            {
+              name: 'Inquiries',
+              value: Number(eventsByType.find((e) => e.type === 'listing_click')?.count ?? 0),
+              fill: '#f59e0b',
+            },
             { name: 'Bookings', value: conversionCount, fill: '#16a34a' },
           ]}
         />

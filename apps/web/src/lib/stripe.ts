@@ -20,5 +20,4 @@ export function getStripe(): Stripe {
   return stripeInstance;
 }
 
-export const STRIPE_PUBLISHABLE_KEY =
-  process.env['NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY'] ?? '';
+export const STRIPE_PUBLISHABLE_KEY = process.env['NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY'] ?? '';

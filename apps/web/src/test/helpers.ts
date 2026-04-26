@@ -34,7 +34,16 @@ export async function parseResponse(response: Response) {
 /**
  * Mock the auth module to return a specific user or null.
  */
-export function mockCurrentUser(user: { id: string; name: string; email: string; avatarUrl: string | null; role: string; createdAt: string } | null) {
+export function mockCurrentUser(
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    avatarUrl: string | null;
+    role: string;
+    createdAt: string;
+  } | null,
+) {
   vi.doMock('@/lib/auth', () => ({
     getCurrentUser: vi.fn().mockResolvedValue(user),
   }));

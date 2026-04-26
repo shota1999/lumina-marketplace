@@ -18,8 +18,7 @@ export async function POST(request: NextRequest) {
     }
 
     const user = await getCurrentUser().catch(() => null);
-    const sessionId =
-      request.cookies.get('lumina_session_id')?.value ?? crypto.randomUUID();
+    const sessionId = request.cookies.get('lumina_session_id')?.value ?? crypto.randomUUID();
 
     const db = getDb();
     await db.insert(analyticsEvents).values({

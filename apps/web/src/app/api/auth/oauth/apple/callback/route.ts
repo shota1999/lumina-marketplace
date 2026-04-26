@@ -28,9 +28,7 @@ function decodeAppleIdToken(idToken: string): AppleIdTokenClaims {
   }
 
   // Base64url decode the payload (second part)
-  const payload = parts[1]!
-    .replace(/-/g, '+')
-    .replace(/_/g, '/');
+  const payload = parts[1]!.replace(/-/g, '+').replace(/_/g, '/');
 
   const decoded = Buffer.from(payload, 'base64').toString('utf-8');
   return JSON.parse(decoded) as AppleIdTokenClaims;
@@ -50,7 +48,9 @@ export async function POST(request: NextRequest) {
     let appleName: string | null = null;
     if (userStr) {
       try {
-        const userData = JSON.parse(userStr) as { name?: { firstName?: string; lastName?: string } };
+        const userData = JSON.parse(userStr) as {
+          name?: { firstName?: string; lastName?: string };
+        };
         const firstName = userData.name?.firstName || '';
         const lastName = userData.name?.lastName || '';
         appleName = [firstName, lastName].filter(Boolean).join(' ') || null;
@@ -97,10 +97,7 @@ export async function POST(request: NextRequest) {
       .select()
       .from(oauthAccounts)
       .where(
-        and(
-          eq(oauthAccounts.provider, 'apple'),
-          eq(oauthAccounts.providerAccountId, claims.sub),
-        ),
+        and(eq(oauthAccounts.provider, 'apple'), eq(oauthAccounts.providerAccountId, claims.sub)),
       )
       .limit(1);
 
@@ -128,11 +125,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Check if a user with this email already exists
-      const existingUser = await db
-        .select()
-        .from(users)
-        .where(eq(users.email, email))
-        .limit(1);
+      const existingUser = await db.select().from(users).where(eq(users.email, email)).limit(1);
 
       if (existingUser[0]) {
         // Link OAuth account to existing user

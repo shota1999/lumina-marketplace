@@ -14,7 +14,10 @@ export async function POST(request: NextRequest) {
     const signature = request.headers.get('stripe-signature');
 
     if (!signature) {
-      return errorResponse({ code: 'BAD_REQUEST', message: 'Missing stripe-signature header' }, 400);
+      return errorResponse(
+        { code: 'BAD_REQUEST', message: 'Missing stripe-signature header' },
+        400,
+      );
     }
 
     const webhookSecret = process.env['STRIPE_WEBHOOK_SECRET']!;
@@ -26,7 +29,9 @@ export async function POST(request: NextRequest) {
       return errorResponse({ code: 'BAD_REQUEST', message: 'Invalid webhook signature' }, 400);
     }
 
-    await handleWebhookEvent(event as unknown as { type: string; data: { object: Record<string, unknown> } });
+    await handleWebhookEvent(
+      event as unknown as { type: string; data: { object: Record<string, unknown> } },
+    );
 
     return successResponse({ received: true });
   } catch (error) {

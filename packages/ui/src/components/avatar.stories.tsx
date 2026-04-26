@@ -21,7 +21,7 @@ export const Default: Story = {
       <Skeleton className="h-10 w-10 rounded-full" />
       <div>
         <p className="text-sm font-medium">User Name</p>
-        <p className="text-xs text-muted-foreground">user@example.com</p>
+        <p className="text-muted-foreground text-xs">user@example.com</p>
       </div>
     </div>
   ),
@@ -42,10 +42,10 @@ export const Sizes: Story = {
 export const Group: Story = {
   render: () => (
     <div className="flex -space-x-3">
-      <Skeleton className="h-10 w-10 rounded-full border-2 border-background" />
-      <Skeleton className="h-10 w-10 rounded-full border-2 border-background" />
-      <Skeleton className="h-10 w-10 rounded-full border-2 border-background" />
-      <Skeleton className="h-10 w-10 rounded-full border-2 border-background" />
+      <Skeleton className="border-background h-10 w-10 rounded-full border-2" />
+      <Skeleton className="border-background h-10 w-10 rounded-full border-2" />
+      <Skeleton className="border-background h-10 w-10 rounded-full border-2" />
+      <Skeleton className="border-background h-10 w-10 rounded-full border-2" />
     </div>
   ),
 };

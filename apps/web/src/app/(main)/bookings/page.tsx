@@ -15,7 +15,17 @@ import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 
 import { formatPrice } from '@lumina/shared';
-import { Badge, Button, Card, CardContent, Skeleton, Tabs, TabsContent, TabsList, TabsTrigger } from '@lumina/ui';
+import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  Skeleton,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@lumina/ui';
 
 import { toast } from '@/hooks/use-toast';
 
@@ -52,12 +62,33 @@ function calculateNights(start: string, end: string): number {
 }
 
 const statusConfig = {
-  pending: { label: 'Pending', icon: Clock, color: 'bg-amber-100 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400', badge: 'outline' as const },
-  confirmed: { label: 'Confirmed', icon: CheckCircle2, color: 'bg-green-100 text-green-700 dark:bg-green-950/30 dark:text-green-400', badge: 'default' as const },
-  cancelled: { label: 'Cancelled', icon: XCircle, color: 'bg-red-100 text-red-700 dark:bg-red-950/30 dark:text-red-400', badge: 'destructive' as const },
+  pending: {
+    label: 'Pending',
+    icon: Clock,
+    color: 'bg-amber-100 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400',
+    badge: 'outline' as const,
+  },
+  confirmed: {
+    label: 'Confirmed',
+    icon: CheckCircle2,
+    color: 'bg-green-100 text-green-700 dark:bg-green-950/30 dark:text-green-400',
+    badge: 'default' as const,
+  },
+  cancelled: {
+    label: 'Cancelled',
+    icon: XCircle,
+    color: 'bg-red-100 text-red-700 dark:bg-red-950/30 dark:text-red-400',
+    badge: 'destructive' as const,
+  },
 };
 
-function BookingCard({ booking, onCancel }: { booking: BookingItem; onCancel?: (id: string) => void }) {
+function BookingCard({
+  booking,
+  onCancel,
+}: {
+  booking: BookingItem;
+  onCancel?: (id: string) => void;
+}) {
   const config = statusConfig[booking.status];
   const StatusIcon = config.icon;
   const nights = calculateNights(booking.startDate, booking.endDate);
@@ -69,7 +100,7 @@ function BookingCard({ booking, onCancel }: { booking: BookingItem; onCancel?: (
     <Card className="overflow-hidden transition-shadow hover:shadow-md">
       <div className="flex flex-col sm:flex-row">
         {/* Image */}
-        <div className="relative aspect-[16/9] w-full sm:aspect-square sm:w-48 shrink-0">
+        <div className="relative aspect-[16/9] w-full shrink-0 sm:aspect-square sm:w-48">
           {booking.listing.primaryImage ? (
             <Image
               src={booking.listing.primaryImage}
@@ -79,13 +110,15 @@ function BookingCard({ booking, onCancel }: { booking: BookingItem; onCancel?: (
               className="object-cover"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-muted">
-              <ImageOff className="h-8 w-8 text-muted-foreground" />
+            <div className="bg-muted flex h-full w-full items-center justify-center">
+              <ImageOff className="text-muted-foreground h-8 w-8" />
             </div>
           )}
           {isPast && booking.status === 'confirmed' && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/40">
-              <span className="rounded-full bg-background/90 px-3 py-1 text-xs font-medium">Completed</span>
+              <span className="bg-background/90 rounded-full px-3 py-1 text-xs font-medium">
+                Completed
+              </span>
             </div>
           )}
         </div>
@@ -101,7 +134,7 @@ function BookingCard({ booking, onCancel }: { booking: BookingItem; onCancel?: (
                 >
                   {booking.listing.title}
                 </Link>
-                <p className="mt-0.5 flex items-center gap-1 text-sm text-muted-foreground">
+                <p className="text-muted-foreground mt-0.5 flex items-center gap-1 text-sm">
                   <MapPin className="h-3 w-3" />
                   {booking.listing.city}, {booking.listing.country}
                 </p>
@@ -113,7 +146,7 @@ function BookingCard({ booking, onCancel }: { booking: BookingItem; onCancel?: (
             </div>
 
             <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm">
-              <span className="flex items-center gap-1.5 text-muted-foreground">
+              <span className="text-muted-foreground flex items-center gap-1.5">
                 <CalendarDays className="h-3.5 w-3.5" />
                 {formatDateRange(booking.startDate, booking.endDate)}
               </span>
@@ -126,7 +159,7 @@ function BookingCard({ booking, onCancel }: { booking: BookingItem; onCancel?: (
           <div className="mt-4 flex items-center justify-between border-t pt-3">
             <div>
               <span className="text-lg font-bold">{formatPrice(booking.totalPrice)}</span>
-              <span className="ml-1 text-sm text-muted-foreground">total</span>
+              <span className="text-muted-foreground ml-1 text-sm">total</span>
             </div>
             <div className="flex gap-2">
               {canCancel && (
@@ -137,22 +170,39 @@ function BookingCard({ booking, onCancel }: { booking: BookingItem; onCancel?: (
                   onClick={async () => {
                     setCancelling(true);
                     try {
-                      const res = await fetch(`/api/bookings/${booking.id}/cancel`, { method: 'POST' });
+                      const res = await fetch(`/api/bookings/${booking.id}/cancel`, {
+                        method: 'POST',
+                      });
                       const data = await res.json();
                       if (!res.ok || !data.success) {
-                        toast({ title: 'Cancel failed', description: data.error?.message ?? 'Something went wrong', variant: 'destructive' });
+                        toast({
+                          title: 'Cancel failed',
+                          description: data.error?.message ?? 'Something went wrong',
+                          variant: 'destructive',
+                        });
                         return;
                       }
-                      toast({ title: 'Booking cancelled', description: 'Your reservation has been cancelled' });
+                      toast({
+                        title: 'Booking cancelled',
+                        description: 'Your reservation has been cancelled',
+                      });
                       onCancel?.(booking.id);
                     } catch {
-                      toast({ title: 'Network error', description: 'Could not cancel booking', variant: 'destructive' });
+                      toast({
+                        title: 'Network error',
+                        description: 'Could not cancel booking',
+                        variant: 'destructive',
+                      });
                     } finally {
                       setCancelling(false);
                     }
                   }}
                 >
-                  {cancelling ? <Loader2 className="mr-1.5 h-3 w-3 animate-spin" /> : <XCircle className="mr-1.5 h-3 w-3" />}
+                  {cancelling ? (
+                    <Loader2 className="mr-1.5 h-3 w-3 animate-spin" />
+                  ) : (
+                    <XCircle className="mr-1.5 h-3 w-3" />
+                  )}
                   Cancel
                 </Button>
               )}
@@ -165,9 +215,14 @@ function BookingCard({ booking, onCancel }: { booking: BookingItem; onCancel?: (
             </div>
           </div>
 
-          <p className="mt-2 text-xs text-muted-foreground">
-            Booked {new Date(booking.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-            {' '}&middot; ID: {booking.id.slice(0, 8)}
+          <p className="text-muted-foreground mt-2 text-xs">
+            Booked{' '}
+            {new Date(booking.createdAt).toLocaleDateString('en-US', {
+              month: 'long',
+              day: 'numeric',
+              year: 'numeric',
+            })}{' '}
+            &middot; ID: {booking.id.slice(0, 8)}
           </p>
         </CardContent>
       </div>
@@ -205,9 +260,9 @@ export default function BookingsPage() {
   if (error === 'UNAUTHORIZED') {
     return (
       <div className="container flex min-h-[60vh] flex-col items-center justify-center py-20 text-center">
-        <CalendarDays className="mb-4 h-12 w-12 text-muted-foreground" />
+        <CalendarDays className="text-muted-foreground mb-4 h-12 w-12" />
         <h1 className="mb-2 text-2xl font-bold">Sign in to view bookings</h1>
-        <p className="mb-6 text-muted-foreground">
+        <p className="text-muted-foreground mb-6">
           You need to be signed in to see your booking history.
         </p>
         <Button asChild>
@@ -231,7 +286,9 @@ export default function BookingsPage() {
   }
 
   const upcoming = bookings.filter(
-    (b) => (b.status === 'pending' || b.status === 'confirmed') && new Date(b.endDate + 'T00:00:00') >= new Date(),
+    (b) =>
+      (b.status === 'pending' || b.status === 'confirmed') &&
+      new Date(b.endDate + 'T00:00:00') >= new Date(),
   );
   const past = bookings.filter(
     (b) => b.status === 'confirmed' && new Date(b.endDate + 'T00:00:00') < new Date(),
@@ -242,16 +299,16 @@ export default function BookingsPage() {
     <div className="container py-8">
       <div className="mb-6">
         <h1 className="text-2xl font-bold">My bookings</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="text-muted-foreground mt-1 text-sm">
           {bookings.length} booking{bookings.length !== 1 ? 's' : ''} total
         </p>
       </div>
 
       {bookings.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-20 text-center">
-          <CalendarDays className="mb-4 h-12 w-12 text-muted-foreground" />
+          <CalendarDays className="text-muted-foreground mb-4 h-12 w-12" />
           <h2 className="mb-2 text-lg font-semibold">No bookings yet</h2>
-          <p className="mb-6 max-w-sm text-sm text-muted-foreground">
+          <p className="text-muted-foreground mb-6 max-w-sm text-sm">
             When you book a listing, it will appear here. Start exploring extraordinary stays.
           </p>
           <Button asChild>
@@ -264,9 +321,7 @@ export default function BookingsPage() {
             <TabsTrigger value="upcoming">
               Upcoming{upcoming.length > 0 && ` (${upcoming.length})`}
             </TabsTrigger>
-            <TabsTrigger value="past">
-              Past{past.length > 0 && ` (${past.length})`}
-            </TabsTrigger>
+            <TabsTrigger value="past">Past{past.length > 0 && ` (${past.length})`}</TabsTrigger>
             <TabsTrigger value="cancelled">
               Cancelled{cancelled.length > 0 && ` (${cancelled.length})`}
             </TabsTrigger>
@@ -304,7 +359,7 @@ export default function BookingsPage() {
 function EmptyTab({ message }: { message: string }) {
   return (
     <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-12 text-center">
-      <p className="text-sm text-muted-foreground">{message}</p>
+      <p className="text-muted-foreground text-sm">{message}</p>
     </div>
   );
 }

@@ -1,14 +1,6 @@
 'use client';
 
-import {
-  Check,
-  Globe,
-  Heart,
-  Loader2,
-  Lock,
-  Plus,
-  X,
-} from 'lucide-react';
+import { Check, Globe, Heart, Loader2, Lock, Plus, X } from 'lucide-react';
 import { type ReactNode, useCallback, useEffect, useState } from 'react';
 
 import { toast } from '@/hooks/use-toast';
@@ -173,9 +165,9 @@ export function AddToWishlistModal({ listingId, trigger }: AddToWishlistModalPro
                   <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
                 </div>
               ) : wishlists.length === 0 && !showCreate ? (
-                <div className="flex flex-col items-center justify-center py-10 text-center px-6">
-                  <Heart className="h-8 w-8 text-slate-300 dark:text-slate-600 mb-3" />
-                  <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-4">
+                <div className="flex flex-col items-center justify-center px-6 py-10 text-center">
+                  <Heart className="mb-3 h-8 w-8 text-slate-300 dark:text-slate-600" />
+                  <p className="mb-4 text-sm font-medium text-slate-500 dark:text-slate-400">
                     No collections yet
                   </p>
                   <button
@@ -239,7 +231,7 @@ export function AddToWishlistModal({ listingId, trigger }: AddToWishlistModalPro
             {/* Create new collection section */}
             <div className="border-t border-slate-100 dark:border-slate-800">
               {showCreate ? (
-                <div className="p-4 space-y-3">
+                <div className="space-y-3 p-4">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
                     New Collection
                   </p>
@@ -257,7 +249,7 @@ export function AddToWishlistModal({ listingId, trigger }: AddToWishlistModalPro
                   <div className="flex items-center justify-between">
                     <button
                       onClick={() => setNewPublic((v) => !v)}
-                      className="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400 transition-colors hover:text-slate-700 dark:hover:text-slate-200"
+                      className="flex items-center gap-2 text-xs font-medium text-slate-500 transition-colors hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
                     >
                       {newPublic ? (
                         <Globe className="h-3.5 w-3.5" />

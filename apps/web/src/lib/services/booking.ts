@@ -12,7 +12,7 @@ interface BookingInput {
   listingId: string;
   userId: string;
   startDate: string; // YYYY-MM-DD
-  endDate: string;   // YYYY-MM-DD
+  endDate: string; // YYYY-MM-DD
   guests: number;
   requestId?: string;
   log?: RequestLogger;
@@ -160,13 +160,14 @@ export async function confirmBooking(
       bookingId,
       currentStatus: booking.status,
     });
-    return { success: false, code: 'INVALID_STATUS', message: `Booking is already ${booking.status}` };
+    return {
+      success: false,
+      code: 'INVALID_STATUS',
+      message: `Booking is already ${booking.status}`,
+    };
   }
 
-  await db
-    .update(bookings)
-    .set({ status: 'confirmed' })
-    .where(eq(bookings.id, bookingId));
+  await db.update(bookings).set({ status: 'confirmed' }).where(eq(bookings.id, bookingId));
 
   audit({
     action: 'booking.confirmed',
@@ -209,13 +210,14 @@ export async function cancelBooking(
       bookingId,
       currentStatus: booking.status,
     });
-    return { success: false, code: 'INVALID_STATUS', message: `Cannot cancel a ${booking.status} booking` };
+    return {
+      success: false,
+      code: 'INVALID_STATUS',
+      message: `Cannot cancel a ${booking.status} booking`,
+    };
   }
 
-  await db
-    .update(bookings)
-    .set({ status: 'cancelled' })
-    .where(eq(bookings.id, bookingId));
+  await db.update(bookings).set({ status: 'cancelled' }).where(eq(bookings.id, bookingId));
 
   audit({
     action: 'booking.cancelled',

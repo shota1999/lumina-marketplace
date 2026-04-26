@@ -1,16 +1,6 @@
 'use client';
 
-import {
-  BarChart3,
-  Bell,
-  Home,
-  LayoutDashboard,
-  List,
-  Menu,
-  Search,
-  Users,
-  X,
-} from 'lucide-react';
+import { BarChart3, Bell, Home, LayoutDashboard, List, Menu, Search, Users, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
@@ -28,7 +18,10 @@ function SidebarContent({ pathname }: { pathname: string }) {
     <>
       {/* Logo */}
       <div className="flex items-center px-8 py-10">
-        <Link href="/" className="text-2xl font-bold tracking-tighter text-slate-900 dark:text-slate-50">
+        <Link
+          href="/"
+          className="text-2xl font-bold tracking-tighter text-slate-900 dark:text-slate-50"
+        >
           Lumina
         </Link>
         <span className="ml-2 rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600 dark:bg-slate-800 dark:text-slate-300">
@@ -151,7 +144,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
               <input
                 type="text"
                 placeholder="Search data..."
-                className="w-48 border-none bg-transparent text-sm focus:ring-0 placeholder:text-slate-400 dark:text-slate-50"
+                className="w-48 border-none bg-transparent text-sm placeholder:text-slate-400 focus:ring-0 dark:text-slate-50"
               />
             </div>
             <div className="flex items-center gap-3">
@@ -167,9 +160,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
         </header>
 
         {/* Page content */}
-        <div className="mx-auto w-full max-w-[1400px] space-y-12 p-8">
-          {children}
-        </div>
+        <div className="mx-auto w-full max-w-[1400px] space-y-12 p-8">{children}</div>
 
         {/* Footer */}
         <footer className="mt-auto border-t border-slate-200 bg-slate-50 px-8 pb-8 pt-12 dark:border-slate-800 dark:bg-slate-900">
@@ -186,12 +177,18 @@ export function AdminShell({ children }: { children: ReactNode }) {
               </h5>
               <ul className="space-y-2">
                 <li>
-                  <Link href="/admin" className="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200">
+                  <Link
+                    href="/admin"
+                    className="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
+                  >
                     Documentation
                   </Link>
                 </li>
                 <li>
-                  <Link href="/admin" className="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200">
+                  <Link
+                    href="/admin"
+                    className="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
+                  >
                     API Keys
                   </Link>
                 </li>
@@ -203,12 +200,18 @@ export function AdminShell({ children }: { children: ReactNode }) {
               </h5>
               <ul className="space-y-2">
                 <li>
-                  <Link href="/about" className="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200">
+                  <Link
+                    href="/about"
+                    className="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
+                  >
                     Help Center
                   </Link>
                 </li>
                 <li>
-                  <Link href="/admin" className="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200">
+                  <Link
+                    href="/admin"
+                    className="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
+                  >
                     System Status
                   </Link>
                 </li>
@@ -220,12 +223,18 @@ export function AdminShell({ children }: { children: ReactNode }) {
               </h5>
               <ul className="space-y-2">
                 <li>
-                  <Link href="/privacy" className="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200">
+                  <Link
+                    href="/privacy"
+                    className="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
+                  >
                     Privacy Policy
                   </Link>
                 </li>
                 <li>
-                  <Link href="/terms" className="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200">
+                  <Link
+                    href="/terms"
+                    className="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
+                  >
                     Terms of Service
                   </Link>
                 </li>
@@ -233,7 +242,9 @@ export function AdminShell({ children }: { children: ReactNode }) {
             </div>
           </div>
           <div className="mx-auto mt-12 max-w-[1400px] border-t border-slate-200 pt-8 dark:border-slate-800">
-            <p className="text-sm text-slate-400">&copy; {new Date().getFullYear()} Lumina Premium Rentals. All rights reserved.</p>
+            <p className="text-sm text-slate-400">
+              &copy; {new Date().getFullYear()} Lumina Premium Rentals. All rights reserved.
+            </p>
           </div>
         </footer>
       </main>

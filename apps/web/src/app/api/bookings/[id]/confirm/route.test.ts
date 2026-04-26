@@ -48,7 +48,9 @@ describe('POST /api/bookings/:id/confirm', () => {
     mockGetCurrentUser.mockResolvedValueOnce(null);
     const { POST } = await import('./route');
     const req = createTestRequest(`/api/bookings/${BOOKING_ID}/confirm`, { method: 'POST' });
-    const { status, body } = await parseResponse(await POST(req, { params: Promise.resolve({ id: BOOKING_ID }) }));
+    const { status, body } = await parseResponse(
+      await POST(req, { params: Promise.resolve({ id: BOOKING_ID }) }),
+    );
     expect(status).toBe(401);
     expect(body.error.code).toBe('UNAUTHORIZED');
   });
@@ -59,7 +61,9 @@ describe('POST /api/bookings/:id/confirm', () => {
 
     const { POST } = await import('./route');
     const req = createTestRequest(`/api/bookings/${BOOKING_ID}/confirm`, { method: 'POST' });
-    const { status, body } = await parseResponse(await POST(req, { params: Promise.resolve({ id: BOOKING_ID }) }));
+    const { status, body } = await parseResponse(
+      await POST(req, { params: Promise.resolve({ id: BOOKING_ID }) }),
+    );
 
     expect(status).toBe(200);
     expect(body.success).toBe(true);
@@ -76,7 +80,9 @@ describe('POST /api/bookings/:id/confirm', () => {
 
     const { POST } = await import('./route');
     const req = createTestRequest(`/api/bookings/${BOOKING_ID}/confirm`, { method: 'POST' });
-    const { status, body } = await parseResponse(await POST(req, { params: Promise.resolve({ id: BOOKING_ID }) }));
+    const { status, body } = await parseResponse(
+      await POST(req, { params: Promise.resolve({ id: BOOKING_ID }) }),
+    );
 
     expect(status).toBe(404);
     expect(body.error.code).toBe('NOT_FOUND');
@@ -92,7 +98,9 @@ describe('POST /api/bookings/:id/confirm', () => {
 
     const { POST } = await import('./route');
     const req = createTestRequest('/api/bookings/nonexistent/confirm', { method: 'POST' });
-    const { status, body } = await parseResponse(await POST(req, { params: Promise.resolve({ id: 'nonexistent' }) }));
+    const { status, body } = await parseResponse(
+      await POST(req, { params: Promise.resolve({ id: 'nonexistent' }) }),
+    );
 
     expect(status).toBe(404);
     expect(body.error.code).toBe('NOT_FOUND');

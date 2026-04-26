@@ -30,12 +30,7 @@ export async function DELETE(
 
     await db
       .delete(availabilityBlocks)
-      .where(
-        and(
-          eq(availabilityBlocks.id, blockId),
-          eq(availabilityBlocks.listingId, id),
-        ),
-      );
+      .where(and(eq(availabilityBlocks.id, blockId), eq(availabilityBlocks.listingId, id)));
 
     return successResponse({ deleted: true });
   } catch (error) {

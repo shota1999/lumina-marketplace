@@ -22,10 +22,7 @@ export async function createNotification(params: {
   });
 }
 
-export async function getUserNotifications(
-  userId: string,
-  limit = 50,
-): Promise<Notification[]> {
+export async function getUserNotifications(userId: string, limit = 50): Promise<Notification[]> {
   const db = getDb();
 
   const rows = await db
@@ -53,20 +50,12 @@ export async function getUnreadCount(userId: string): Promise<number> {
   const result = await db
     .select({ count: sql<number>`count(*)::int` })
     .from(notifications)
-    .where(
-      and(
-        eq(notifications.userId, userId),
-        isNull(notifications.readAt),
-      ),
-    );
+    .where(and(eq(notifications.userId, userId), isNull(notifications.readAt)));
 
   return result[0]?.count ?? 0;
 }
 
-export async function markAsRead(
-  notificationId: string,
-  userId: string,
-): Promise<void> {
+export async function markAsRead(notificationId: string, userId: string): Promise<void> {
   const db = getDb();
 
   const result = await db
@@ -92,10 +81,5 @@ export async function markAllAsRead(userId: string): Promise<void> {
   await db
     .update(notifications)
     .set({ readAt: new Date() })
-    .where(
-      and(
-        eq(notifications.userId, userId),
-        isNull(notifications.readAt),
-      ),
-    );
+    .where(and(eq(notifications.userId, userId), isNull(notifications.readAt)));
 }

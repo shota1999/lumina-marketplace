@@ -38,7 +38,8 @@ export async function GET(_request: NextRequest) {
         slug: b.listing.slug,
         city: b.listing.city,
         country: b.listing.country,
-        primaryImage: b.listing.images.find((i) => i.isPrimary)?.url ?? b.listing.images[0]?.url ?? null,
+        primaryImage:
+          b.listing.images.find((i) => i.isPrimary)?.url ?? b.listing.images[0]?.url ?? null,
       },
     }));
 

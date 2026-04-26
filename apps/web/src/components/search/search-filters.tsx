@@ -1,11 +1,22 @@
 'use client';
 
-import { ChevronDown, ChevronUp, Minus, Plus, RotateCcw, SlidersHorizontal } from 'lucide-react';
+import {
+  ArrowUpDown,
+  BedDouble,
+  ChevronDown,
+  ChevronUp,
+  DollarSign,
+  Home,
+  RotateCcw,
+  Sparkles,
+  Users,
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 
 import { AMENITIES } from '@lumina/shared';
 import type { SearchFacets } from '@lumina/shared';
-import { Checkbox, Slider } from '@lumina/ui';
+import { Slider } from '@lumina/ui';
 
 const CATEGORIES = [
   { value: 'all', label: 'All' },
@@ -93,37 +104,30 @@ export function SearchFilters({
   const visibleAmenities = showAllAmenities ? AMENITIES : AMENITIES.slice(0, 8);
 
   return (
-    <aside className="space-y-1">
-      {/* Header */}
-      <div className="mb-2 flex items-center justify-between border-b border-slate-100 pb-4 dark:border-slate-800/60">
-        <div className="flex items-center gap-2.5">
-          <SlidersHorizontal className="h-4 w-4 text-slate-400" />
-          <h2 className="text-sm font-semibold tracking-tight text-slate-900 dark:text-slate-50">
-            Filters
-          </h2>
-        </div>
-        {hasActiveFilters && (
+    <aside className="space-y-3">
+      {hasActiveFilters && (
+        <div className="-mt-2 flex justify-end">
           <button
             onClick={onClear}
-            className="group inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600 transition-all hover:bg-slate-900 hover:text-white dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-50 dark:hover:text-slate-900"
+            className="group inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-[11px] font-semibold text-slate-600 transition-all hover:bg-slate-900 hover:text-white dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-50 dark:hover:text-slate-900"
           >
             <RotateCcw className="h-3 w-3 transition-transform group-hover:-rotate-180" />
-            Clear filters
+            Reset all
           </button>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Sort */}
-      <FilterSection title="Sort by" defaultOpen>
-        <div className="space-y-0.5">
+      <FilterSection title="Sort by" icon={ArrowUpDown} defaultOpen>
+        <div className="flex flex-wrap gap-1.5">
           {SORT_OPTIONS.map((opt) => (
             <button
               key={opt.value}
               onClick={() => onUpdate({ sort: opt.value })}
-              className={`flex w-full items-center rounded-lg px-3 py-2 text-[13px] transition-colors ${
+              className={`inline-flex items-center rounded-full border px-3.5 py-1.5 text-[12px] font-semibold transition-colors ${
                 filters.sort === opt.value
-                  ? 'bg-slate-900 font-semibold text-white dark:bg-slate-50 dark:text-slate-900'
-                  : 'font-medium text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50'
+                  ? 'border-slate-900 bg-slate-900 text-white dark:border-slate-100 dark:bg-slate-50 dark:text-slate-900'
+                  : 'border-slate-200 text-slate-600 hover:border-slate-900 hover:text-slate-900 dark:border-slate-700 dark:text-slate-400 dark:hover:border-slate-400 dark:hover:text-slate-50'
               }`}
             >
               {opt.label}
@@ -133,7 +137,7 @@ export function SearchFilters({
       </FilterSection>
 
       {/* Price range */}
-      <FilterSection title="Price per night" defaultOpen>
+      <FilterSection title="Price per night" icon={DollarSign} defaultOpen>
         <PriceRange
           floor={Math.floor(priceFloor)}
           ceil={Math.ceil(priceCeil) || 10000}
@@ -149,17 +153,19 @@ export function SearchFilters({
       </FilterSection>
 
       {/* Categories */}
-      <FilterSection title="Property type" defaultOpen>
-        <div className="grid grid-cols-2 gap-1.5">
+      <FilterSection title="Property type" icon={Home} defaultOpen>
+        <div className="flex flex-wrap gap-1.5">
           {CATEGORIES.map((cat) => {
             const isAll = cat.value === 'all';
-            const isActive = isAll ? filters.categories.length === 0 : filters.categories.includes(cat.value);
+            const isActive = isAll
+              ? filters.categories.length === 0
+              : filters.categories.includes(cat.value);
             const count = isAll ? null : (categoryCounts[cat.value] ?? 0);
             return (
               <button
                 key={cat.value}
                 onClick={() => toggleCategory(cat.value)}
-                className={`rounded-lg border px-3 py-2.5 text-[12px] font-semibold transition-all ${
+                className={`inline-flex items-center rounded-full border px-3.5 py-1.5 text-[12px] font-semibold transition-all ${
                   isActive
                     ? 'border-slate-900 bg-slate-900 text-white shadow-sm dark:border-slate-100 dark:bg-slate-50 dark:text-slate-900'
                     : count === 0 && !isAll
@@ -170,7 +176,9 @@ export function SearchFilters({
               >
                 {cat.label}
                 {count !== null && count > 0 && (
-                  <span className={`ml-1 text-[10px] ${isActive ? 'text-white/60 dark:text-slate-900/50' : 'text-slate-400 dark:text-slate-500'}`}>
+                  <span
+                    className={`ml-1.5 text-[10px] ${isActive ? 'text-white/60 dark:text-slate-900/50' : 'text-slate-400 dark:text-slate-500'}`}
+                  >
                     {count}
                   </span>
                 )}
@@ -180,71 +188,74 @@ export function SearchFilters({
         </div>
       </FilterSection>
 
-      {/* Guests */}
-      <FilterSection title="Guests" defaultOpen>
-        <Stepper
-          name="guests"
-          value={filters.guests}
-          label={filters.guests > 0 ? `${filters.guests}+ guests` : 'Any'}
-          onDecrement={() => onUpdate({ guests: filters.guests > 1 ? String(filters.guests - 1) : null })}
-          onIncrement={() => onUpdate({ guests: String((filters.guests || 0) + 1) })}
-          disableDecrement={filters.guests <= 0}
-        />
-      </FilterSection>
-
-      {/* Bedrooms */}
-      <FilterSection title="Bedrooms" defaultOpen>
-        <Stepper
-          name="bedrooms"
-          value={filters.bedrooms}
-          label={filters.bedrooms > 0 ? `${filters.bedrooms}+ bedrooms` : 'Any'}
-          onDecrement={() => onUpdate({ bedrooms: filters.bedrooms > 1 ? String(filters.bedrooms - 1) : null })}
-          onIncrement={() => onUpdate({ bedrooms: String((filters.bedrooms || 0) + 1) })}
-          disableDecrement={filters.bedrooms <= 0}
-        />
-      </FilterSection>
+      {/* Guests + Bedrooms (side by side) */}
+      <div className="grid grid-cols-1 gap-1 sm:grid-cols-2 sm:gap-6">
+        <FilterSection title="Guests" icon={Users} defaultOpen>
+          <PillCounter
+            value={filters.guests}
+            options={GUEST_OPTIONS}
+            onChange={(v) => onUpdate({ guests: v > 0 ? String(v) : null })}
+          />
+        </FilterSection>
+        <FilterSection title="Bedrooms" icon={BedDouble} defaultOpen>
+          <PillCounter
+            value={filters.bedrooms}
+            options={BEDROOM_OPTIONS}
+            onChange={(v) => onUpdate({ bedrooms: v > 0 ? String(v) : null })}
+          />
+        </FilterSection>
+      </div>
 
       {/* Amenities */}
-      <FilterSection title="Amenities">
-        <div className="space-y-0.5">
+      <FilterSection title="Amenities" icon={Sparkles} defaultOpen>
+        <div className="flex flex-wrap gap-1.5">
           {visibleAmenities.map((amenity) => {
             const count = amenityCounts[amenity] ?? 0;
             const isChecked = filters.amenities.includes(amenity);
+            const disabled = count === 0 && !isChecked;
             return (
-              <label
+              <button
                 key={amenity}
-                className={`flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-[13px] transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50 ${
-                  count === 0 && !isChecked ? 'opacity-30' : ''
+                type="button"
+                onClick={() => toggleAmenity(amenity)}
+                disabled={disabled}
+                className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-[12px] font-semibold capitalize transition-colors ${
+                  isChecked
+                    ? 'border-slate-900 bg-slate-900 text-white dark:border-slate-100 dark:bg-slate-50 dark:text-slate-900'
+                    : disabled
+                      ? 'border-slate-100 text-slate-300 dark:border-slate-800 dark:text-slate-700'
+                      : 'border-slate-200 text-slate-600 hover:border-slate-900 hover:text-slate-900 dark:border-slate-700 dark:text-slate-400 dark:hover:border-slate-400 dark:hover:text-slate-50'
                 }`}
               >
-                <div className="flex items-center gap-2.5">
-                  <Checkbox
-                    checked={isChecked}
-                    onCheckedChange={() => toggleAmenity(amenity)}
-                    disabled={count === 0 && !isChecked}
-                  />
-                  <span className="capitalize text-slate-700 dark:text-slate-300">
-                    {amenity.replace(/-/g, ' ')}
-                  </span>
-                </div>
+                {amenity.replace(/-/g, ' ')}
                 {count > 0 && (
-                  <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                  <span
+                    className={`text-[10px] ${
+                      isChecked
+                        ? 'text-white/60 dark:text-slate-900/50'
+                        : 'text-slate-400 dark:text-slate-500'
+                    }`}
+                  >
                     {count}
                   </span>
                 )}
-              </label>
+              </button>
             );
           })}
         </div>
         {AMENITIES.length > 8 && (
           <button
-            className="mt-3 flex items-center gap-1 text-[12px] font-semibold text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-50"
+            className="mt-3 inline-flex items-center gap-1 text-[12px] font-semibold text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-50"
             onClick={() => setShowAllAmenities(!showAllAmenities)}
           >
             {showAllAmenities ? (
-              <>Show less <ChevronUp className="h-3 w-3" /></>
+              <>
+                Show less <ChevronUp className="h-3 w-3" />
+              </>
             ) : (
-              <>Show all ({AMENITIES.length}) <ChevronDown className="h-3 w-3" /></>
+              <>
+                Show all ({AMENITIES.length}) <ChevronDown className="h-3 w-3" />
+              </>
             )}
           </button>
         )}
@@ -253,31 +264,93 @@ export function SearchFilters({
   );
 }
 
+const GUEST_OPTIONS = [
+  { value: 0, label: 'Any' },
+  { value: 1, label: '1+' },
+  { value: 2, label: '2+' },
+  { value: 4, label: '4+' },
+  { value: 6, label: '6+' },
+  { value: 8, label: '8+' },
+  { value: 10, label: '10+' },
+];
+
+const BEDROOM_OPTIONS = [
+  { value: 0, label: 'Any' },
+  { value: 1, label: '1+' },
+  { value: 2, label: '2+' },
+  { value: 3, label: '3+' },
+  { value: 4, label: '4+' },
+  { value: 5, label: '5+' },
+];
+
+function PillCounter({
+  value,
+  options,
+  onChange,
+}: {
+  value: number;
+  options: { value: number; label: string }[];
+  onChange: (next: number) => void;
+}) {
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {options.map((opt) => {
+        const isActive = value === opt.value;
+        return (
+          <button
+            key={opt.value}
+            type="button"
+            onClick={() => onChange(opt.value)}
+            className={`min-w-[3rem] rounded-full border px-3 py-1.5 text-[12px] font-semibold transition-colors ${
+              isActive
+                ? 'border-slate-900 bg-slate-900 text-white shadow-sm dark:border-slate-100 dark:bg-slate-50 dark:text-slate-900'
+                : 'border-slate-200 text-slate-600 hover:border-slate-900 hover:text-slate-900 dark:border-slate-700 dark:text-slate-400 dark:hover:border-slate-400 dark:hover:text-slate-50'
+            }`}
+          >
+            {opt.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 function FilterSection({
   title,
+  icon: Icon,
   children,
   defaultOpen = false,
 }: {
   title: string;
+  icon?: LucideIcon;
   children: React.ReactNode;
   defaultOpen?: boolean;
 }) {
   const [open, setOpen] = useState(defaultOpen);
 
   return (
-    <div className="border-b border-slate-100/80 py-5 last:border-0 dark:border-slate-800/40">
+    <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)] dark:border-slate-800 dark:bg-slate-900/40">
       <button
         onClick={() => setOpen(!open)}
-        className="group flex w-full items-center justify-between rounded-md py-1 transition-colors hover:text-slate-900 dark:hover:text-slate-50"
+        className="group flex w-full items-center justify-between rounded-md transition-colors"
       >
-        <h3 className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500 transition-colors group-hover:text-slate-900 dark:text-slate-400 dark:group-hover:text-slate-50">
-          {title}
-        </h3>
+        <div className="flex items-center gap-2">
+          {Icon && (
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-100 text-slate-500 transition-colors group-hover:bg-slate-900 group-hover:text-white dark:bg-slate-800 dark:text-slate-400 dark:group-hover:bg-slate-50 dark:group-hover:text-slate-900">
+              <Icon className="h-3.5 w-3.5" />
+            </span>
+          )}
+          <h3 className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-700 transition-colors group-hover:text-slate-900 dark:text-slate-200 dark:group-hover:text-slate-50">
+            {title}
+          </h3>
+        </div>
         <ChevronDown
           className={`h-3.5 w-3.5 text-slate-400 transition-all duration-300 group-hover:text-slate-700 dark:group-hover:text-slate-200 ${open ? 'rotate-180' : ''}`}
         />
       </button>
-      {open && <div className="mt-4 animate-in fade-in slide-in-from-top-1 duration-200">{children}</div>}
+      {open && (
+        <div className="animate-in fade-in slide-in-from-top-1 mt-4 duration-200">{children}</div>
+      )}
     </div>
   );
 }
@@ -300,10 +373,7 @@ function PriceRange({
     (n: number) => Math.min(safeCeil, Math.max(floor, n)),
     [floor, safeCeil],
   );
-  const [range, setRange] = useState<[number, number]>([
-    clamp(activeMin),
-    clamp(activeMax),
-  ]);
+  const [range, setRange] = useState<[number, number]>([clamp(activeMin), clamp(activeMax)]);
 
   useEffect(() => {
     setRange([clamp(activeMin), clamp(activeMax)]);
@@ -344,47 +414,3 @@ function PriceRange({
   );
 }
 
-function Stepper({
-  name,
-  value,
-  label,
-  onDecrement,
-  onIncrement,
-  disableDecrement,
-}: {
-  name: string;
-  value: number;
-  label: string;
-  onDecrement: () => void;
-  onIncrement: () => void;
-  disableDecrement: boolean;
-}) {
-  return (
-    <div className="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3 dark:bg-slate-800/50">
-      <span className="text-sm font-medium text-slate-600 dark:text-slate-400">{label}</span>
-      <div className="flex items-center gap-3">
-        <button
-          aria-label={`Decrease ${name}`}
-          onClick={onDecrement}
-          disabled={disableDecrement}
-          className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition-all hover:border-slate-400 hover:bg-white active:scale-95 disabled:opacity-30 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
-        >
-          <Minus className="h-3.5 w-3.5" />
-        </button>
-        <span
-          aria-label={`${name} value`}
-          className="w-5 text-center text-sm font-bold text-slate-900 dark:text-slate-50"
-        >
-          {value || 0}
-        </span>
-        <button
-          aria-label={`Increase ${name}`}
-          onClick={onIncrement}
-          className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition-all hover:border-slate-400 hover:bg-white active:scale-95 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
-        >
-          <Plus className="h-3.5 w-3.5" />
-        </button>
-      </div>
-    </div>
-  );
-}

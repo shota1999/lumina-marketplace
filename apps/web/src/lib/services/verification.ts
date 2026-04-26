@@ -48,9 +48,7 @@ export async function submitVerification(
   };
 }
 
-export async function getVerificationStatus(
-  userId: string,
-): Promise<IdentityVerification | null> {
+export async function getVerificationStatus(userId: string): Promise<IdentityVerification | null> {
   const db = getDb();
 
   const verification = await db.query.identityVerifications.findFirst({
@@ -112,9 +110,7 @@ export async function reviewVerification(
   }
 }
 
-export async function getPendingVerifications(): Promise<
-  IdentityVerification[]
-> {
+export async function getPendingVerifications(): Promise<IdentityVerification[]> {
   const db = getDb();
 
   const rows = await db

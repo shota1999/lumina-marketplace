@@ -8,21 +8,29 @@ import { errorResponse, safeParseBody, successResponse } from '@/lib/api-respons
 import { getCurrentUser, hashPassword, verifyPassword } from '@/lib/auth';
 import { checkRateLimit, RATE_LIMITS } from '@/lib/rate-limit';
 
-const updateSchema = z.object({
-  name: z.string().min(1).max(100).optional(),
-  email: z.string().email().optional(),
-  currentPassword: z.string().optional(),
-  newPassword: z.string().min(8).optional(),
-}).refine((data) => {
-  if (data.newPassword && !data.currentPassword) return false;
-  return true;
-}, { message: 'Current password is required to set a new password' });
+const updateSchema = z
+  .object({
+    name: z.string().min(1).max(100).optional(),
+    email: z.string().email().optional(),
+    currentPassword: z.string().optional(),
+    newPassword: z.string().min(8).optional(),
+  })
+  .refine(
+    (data) => {
+      if (data.newPassword && !data.currentPassword) return false;
+      return true;
+    },
+    { message: 'Current password is required to set a new password' },
+  );
 
 export async function POST(request: NextRequest) {
   try {
     const rl = await checkRateLimit(request, 'auth:update', RATE_LIMITS.profileUpdate);
     if (!rl.allowed) {
-      return errorResponse({ code: 'RATE_LIMITED', message: 'Too many requests. Try again later.' }, 429);
+      return errorResponse(
+        { code: 'RATE_LIMITED', message: 'Too many requests. Try again later.' },
+        429,
+      );
     }
 
     const user = await getCurrentUser();
@@ -35,10 +43,13 @@ export async function POST(request: NextRequest) {
 
     const parsed = updateSchema.safeParse(bodyResult.data);
     if (!parsed.success) {
-      return errorResponse({
-        code: 'VALIDATION_ERROR',
-        message: parsed.error.issues[0]?.message ?? 'Invalid input',
-      }, 400);
+      return errorResponse(
+        {
+          code: 'VALIDATION_ERROR',
+          message: parsed.error.issues[0]?.message ?? 'Invalid input',
+        },
+        400,
+      );
     }
 
     const { name, email, currentPassword, newPassword } = parsed.data;
@@ -61,8 +72,15 @@ export async function POST(request: NextRequest) {
       const dbUser = await db.query.users.findFirst({
         where: eq(users.id, user.id),
       });
-      if (!dbUser || !dbUser.passwordHash || !(await verifyPassword(currentPassword, dbUser.passwordHash))) {
-        return errorResponse({ code: 'INVALID_PASSWORD', message: 'Current password is incorrect' }, 401);
+      if (
+        !dbUser ||
+        !dbUser.passwordHash ||
+        !(await verifyPassword(currentPassword, dbUser.passwordHash))
+      ) {
+        return errorResponse(
+          { code: 'INVALID_PASSWORD', message: 'Current password is incorrect' },
+          401,
+        );
       }
       updates.passwordHash = await hashPassword(newPassword);
     }

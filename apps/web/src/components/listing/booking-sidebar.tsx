@@ -19,11 +19,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { formatPrice } from '@lumina/shared';
 import { Button } from '@lumina/ui';
 
-import {
-  DateRangePicker,
-  toIsoDate,
-  type DateRangeValue,
-} from '@/components/date-range-picker';
+import { DateRangePicker, toIsoDate, type DateRangeValue } from '@/components/date-range-picker';
 import { useAnalytics } from '@/hooks/use-analytics';
 import { useFavorites } from '@/hooks/use-favorites';
 import { toast } from '@/hooks/use-toast';
@@ -125,24 +121,34 @@ export function BookingSidebar({
       cache: 'no-store',
     })
       .then((r) => (r.ok ? r.json() : null))
-      .then((res: { success?: boolean; data?: { blocks?: Array<{ startDate: string; endDate: string }>; bookedDates?: Array<{ startDate: string; endDate: string }> } } | null) => {
-        if (!res?.success || !res.data) return;
-        const set = new Set<string>();
-        const addRange = (startIso: string, endIso: string, inclusive: boolean) => {
-          const s = new Date(startIso);
-          const e = new Date(endIso);
-          const cursor = new Date(s);
-          while (inclusive ? cursor <= e : cursor < e) {
-            set.add(toIsoDate(cursor));
-            cursor.setDate(cursor.getDate() + 1);
-          }
-        };
-        // Host-blocked dates are inclusive on both ends
-        for (const b of res.data.blocks ?? []) addRange(b.startDate, b.endDate, true);
-        // Bookings: check-out day is free for turnover (exclusive)
-        for (const b of res.data.bookedDates ?? []) addRange(b.startDate, b.endDate, false);
-        setUnavailable(set);
-      })
+      .then(
+        (
+          res: {
+            success?: boolean;
+            data?: {
+              blocks?: Array<{ startDate: string; endDate: string }>;
+              bookedDates?: Array<{ startDate: string; endDate: string }>;
+            };
+          } | null,
+        ) => {
+          if (!res?.success || !res.data) return;
+          const set = new Set<string>();
+          const addRange = (startIso: string, endIso: string, inclusive: boolean) => {
+            const s = new Date(startIso);
+            const e = new Date(endIso);
+            const cursor = new Date(s);
+            while (inclusive ? cursor <= e : cursor < e) {
+              set.add(toIsoDate(cursor));
+              cursor.setDate(cursor.getDate() + 1);
+            }
+          };
+          // Host-blocked dates are inclusive on both ends
+          for (const b of res.data.blocks ?? []) addRange(b.startDate, b.endDate, true);
+          // Bookings: check-out day is free for turnover (exclusive)
+          for (const b of res.data.bookedDates ?? []) addRange(b.startDate, b.endDate, false);
+          setUnavailable(set);
+        },
+      )
       .catch(() => {});
   }, [listingId]);
 
@@ -185,9 +191,10 @@ export function BookingSidebar({
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        const msg = data.error?.code === 'UNAUTHORIZED'
-          ? 'LOGIN_REQUIRED'
-          : data.error?.message ?? 'Something went wrong';
+        const msg =
+          data.error?.code === 'UNAUTHORIZED'
+            ? 'LOGIN_REQUIRED'
+            : (data.error?.message ?? 'Something went wrong');
         setBookingState({ status: 'error', message: msg });
         if (msg !== 'LOGIN_REQUIRED') {
           toast({ title: 'Reservation failed', description: msg, variant: 'destructive' });
@@ -203,7 +210,11 @@ export function BookingSidebar({
       window.location.href = `/bookings/${data.data.id}/checkout`;
     } catch {
       setBookingState({ status: 'error', message: 'Network error. Please try again.' });
-      toast({ title: 'Network error', description: 'Could not reach the server. Please try again.', variant: 'destructive' });
+      toast({
+        title: 'Network error',
+        description: 'Could not reach the server. Please try again.',
+        variant: 'destructive',
+      });
     }
   }, [listingId, checkin, checkout, guests, dateError, nights]);
 
@@ -225,10 +236,17 @@ export function BookingSidebar({
       }
 
       setBookingState({ status: 'confirmed', bookingId, nights: n, totalPrice: tp });
-      toast({ title: 'Booking confirmed!', description: 'Your reservation is all set. Have a great stay!' });
+      toast({
+        title: 'Booking confirmed!',
+        description: 'Your reservation is all set. Have a great stay!',
+      });
     } catch {
       setBookingState({ status: 'error', message: 'Network error. Please try again.' });
-      toast({ title: 'Network error', description: 'Could not reach the server. Please try again.', variant: 'destructive' });
+      toast({
+        title: 'Network error',
+        description: 'Could not reach the server. Please try again.',
+        variant: 'destructive',
+      });
     }
   }, [bookingState]);
 
@@ -240,7 +258,9 @@ export function BookingSidebar({
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
             <LogIn className="h-7 w-7 text-slate-500" />
           </div>
-          <h3 className="mb-1 text-lg font-semibold text-slate-900 dark:text-slate-50">Sign in to book</h3>
+          <h3 className="mb-1 text-lg font-semibold text-slate-900 dark:text-slate-50">
+            Sign in to book
+          </h3>
           <p className="mb-4 text-sm text-slate-500">
             Create an account or sign in to reserve this listing.
           </p>
@@ -271,14 +291,13 @@ export function BookingSidebar({
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber-50 dark:bg-amber-950/30">
             <Shield className="h-7 w-7 text-amber-600 dark:text-amber-400" />
           </div>
-          <h3 className="mb-1 text-lg font-semibold text-slate-900 dark:text-slate-50">Confirm your booking</h3>
+          <h3 className="mb-1 text-lg font-semibold text-slate-900 dark:text-slate-50">
+            Confirm your booking
+          </h3>
           <p className="mb-1 text-sm text-slate-500">
-            {bNights} night{bNights !== 1 ? 's' : ''} &middot;{' '}
-            {formatPrice(bTotal, currency)}
+            {bNights} night{bNights !== 1 ? 's' : ''} &middot; {formatPrice(bTotal, currency)}
           </p>
-          <p className="mb-4 text-xs text-slate-400">
-            Booking ID: {bId.slice(0, 8)}
-          </p>
+          <p className="mb-4 text-xs text-slate-400">Booking ID: {bId.slice(0, 8)}</p>
           <button
             className="w-full rounded-xl bg-slate-900 py-4 text-lg font-bold text-white shadow-lg transition-all hover:brightness-110 disabled:opacity-50 dark:bg-slate-50 dark:text-slate-900"
             disabled={bookingState.status === 'confirming'}
@@ -315,7 +334,9 @@ export function BookingSidebar({
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-green-50 dark:bg-green-950/30">
             <Check className="h-7 w-7 text-green-600 dark:text-green-400" />
           </div>
-          <h3 className="mb-1 text-lg font-semibold text-slate-900 dark:text-slate-50">Booking confirmed!</h3>
+          <h3 className="mb-1 text-lg font-semibold text-slate-900 dark:text-slate-50">
+            Booking confirmed!
+          </h3>
           <p className="mb-4 text-sm text-slate-500">
             {bookingState.nights} night{bookingState.nights !== 1 ? 's' : ''} &middot;{' '}
             {formatPrice(bookingState.totalPrice, currency)}
@@ -429,12 +450,8 @@ export function BookingSidebar({
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">
-                    Guests
-                  </p>
-                  <p className="mt-0.5 text-xs text-slate-500">
-                    Maximum {maxGuests}
-                  </p>
+                  <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">Guests</p>
+                  <p className="mt-0.5 text-xs text-slate-500">Maximum {maxGuests}</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <button
@@ -446,14 +463,12 @@ export function BookingSidebar({
                   >
                     <Minus className="h-3.5 w-3.5" />
                   </button>
-                  <span className="w-6 text-center text-sm font-semibold text-slate-900 tabular-nums dark:text-slate-50">
+                  <span className="w-6 text-center text-sm font-semibold tabular-nums text-slate-900 dark:text-slate-50">
                     {guests}
                   </span>
                   <button
                     type="button"
-                    onClick={() =>
-                      setGuests((n) => Math.min(maxGuests, n + 1))
-                    }
+                    onClick={() => setGuests((n) => Math.min(maxGuests, n + 1))}
                     disabled={guests >= maxGuests}
                     aria-label="Increase guests"
                     className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition-colors hover:border-slate-400 disabled:cursor-not-allowed disabled:opacity-30 dark:border-slate-700 dark:text-slate-300 dark:hover:border-slate-500"
@@ -476,9 +491,7 @@ export function BookingSidebar({
         </div>
       </div>
 
-      {dateError && (
-        <p className="mb-3 text-xs text-red-500">{dateError}</p>
-      )}
+      {dateError && <p className="mb-3 text-xs text-red-500">{dateError}</p>}
 
       {/* Reserve button */}
       <button
@@ -540,7 +553,9 @@ export function BookingSidebar({
       <div className="mt-8 flex items-center gap-4 rounded-xl bg-slate-50 p-4 dark:bg-slate-800/50">
         <Shield className="h-5 w-5 shrink-0 fill-slate-600 text-slate-600 dark:fill-slate-400 dark:text-slate-400" />
         <p className="text-xs leading-relaxed text-slate-500 dark:text-slate-400">
-          <span className="font-bold text-slate-900 dark:text-slate-50">Grand Reserve Guarantee.</span>{' '}
+          <span className="font-bold text-slate-900 dark:text-slate-50">
+            Grand Reserve Guarantee.
+          </span>{' '}
           We cover every booking so you can travel with confidence.
         </p>
       </div>

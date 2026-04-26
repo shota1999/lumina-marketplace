@@ -104,14 +104,16 @@ describe('POST /api/reviews', () => {
     mockGetCurrentUser.mockResolvedValueOnce(TEST_USER);
     mockFindFirstListing.mockResolvedValueOnce({ id: LISTING_ID, slug: 'test-listing' });
     mockFindFirstReview.mockResolvedValueOnce(null); // no existing review
-    mockInsertReturning.mockResolvedValueOnce([{
-      id: REVIEW_ID,
-      listingId: LISTING_ID,
-      userId: TEST_USER.id,
-      rating: 5,
-      comment: VALID_REVIEW.comment,
-      createdAt: new Date('2024-06-01'),
-    }]);
+    mockInsertReturning.mockResolvedValueOnce([
+      {
+        id: REVIEW_ID,
+        listingId: LISTING_ID,
+        userId: TEST_USER.id,
+        rating: 5,
+        comment: VALID_REVIEW.comment,
+        createdAt: new Date('2024-06-01'),
+      },
+    ]);
     mockUpdateReturning.mockResolvedValueOnce([{ slug: 'test-listing' }]);
 
     const { POST } = await import('./route');

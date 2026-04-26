@@ -36,10 +36,7 @@ export async function DELETE(
 
     // Fetch the image to get storageKey before deleting
     const image = await db.query.listingImages.findFirst({
-      where: and(
-        eq(listingImages.id, imageId),
-        eq(listingImages.listingId, id),
-      ),
+      where: and(eq(listingImages.id, imageId), eq(listingImages.listingId, id)),
     });
 
     if (!image) {
@@ -53,12 +50,7 @@ export async function DELETE(
 
     await db
       .delete(listingImages)
-      .where(
-        and(
-          eq(listingImages.id, imageId),
-          eq(listingImages.listingId, id),
-        ),
-      );
+      .where(and(eq(listingImages.id, imageId), eq(listingImages.listingId, id)));
 
     return successResponse({ deleted: true });
   } catch (error) {

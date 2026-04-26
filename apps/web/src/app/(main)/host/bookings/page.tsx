@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  Calendar,
-  CheckCircle2,
-  Clock,
-  Loader2,
-  UserCircle,
-  XCircle,
-} from 'lucide-react';
+import { Calendar, CheckCircle2, Clock, Loader2, UserCircle, XCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { formatPrice } from '@lumina/shared';
@@ -81,7 +74,11 @@ export default function HostBookingsPage() {
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        toast({ title: `${action} failed`, description: data.error?.message ?? 'Something went wrong', variant: 'destructive' });
+        toast({
+          title: `${action} failed`,
+          description: data.error?.message ?? 'Something went wrong',
+          variant: 'destructive',
+        });
         return;
       }
 
@@ -94,7 +91,11 @@ export default function HostBookingsPage() {
       );
       toast({ title: `Booking ${action === 'approve' ? 'approved' : 'declined'}` });
     } catch {
-      toast({ title: 'Network error', description: `Could not ${action} booking`, variant: 'destructive' });
+      toast({
+        title: 'Network error',
+        description: `Could not ${action} booking`,
+        variant: 'destructive',
+      });
     } finally {
       setProcessingId(null);
     }
@@ -120,7 +121,11 @@ export default function HostBookingsPage() {
     {
       key: 'upcoming',
       label: 'Upcoming',
-      count: bookings.filter((b) => (b.status === 'confirmed' || b.status === 'pending') && new Date(b.endDate + 'T00:00:00') >= now).length,
+      count: bookings.filter(
+        (b) =>
+          (b.status === 'confirmed' || b.status === 'pending') &&
+          new Date(b.endDate + 'T00:00:00') >= now,
+      ).length,
     },
     {
       key: 'past',
@@ -179,7 +184,9 @@ export default function HostBookingsPage() {
           >
             {tab.label}
             {tab.count > 0 && (
-              <span className={`ml-1.5 text-xs ${activeTab === tab.key ? 'opacity-70' : 'opacity-50'}`}>
+              <span
+                className={`ml-1.5 text-xs ${activeTab === tab.key ? 'opacity-70' : 'opacity-50'}`}
+              >
                 {tab.count}
               </span>
             )}
@@ -229,7 +236,8 @@ export default function HostBookingsPage() {
                       <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm text-slate-500">
                         <span className="flex items-center gap-1.5">
                           <Calendar className="h-3.5 w-3.5" />
-                          {formatDateShort(booking.startDate)} &ndash; {formatDateShort(booking.endDate)}
+                          {formatDateShort(booking.startDate)} &ndash;{' '}
+                          {formatDateShort(booking.endDate)}
                         </span>
                       </div>
                     </div>
@@ -278,8 +286,13 @@ export default function HostBookingsPage() {
                 </div>
 
                 <p className="mt-3 border-t border-slate-50 pt-3 text-xs text-slate-400 dark:border-slate-800">
-                  Booked {new Date(booking.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                  {' '}&middot; ID: {booking.id.slice(0, 8)}
+                  Booked{' '}
+                  {new Date(booking.createdAt).toLocaleDateString('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })}{' '}
+                  &middot; ID: {booking.id.slice(0, 8)}
                 </p>
               </div>
             );

@@ -44,7 +44,11 @@ function memoryRateLimit(key: string, config: RateLimitConfig): RateLimitResult 
     return { allowed: false, remaining: 0, resetAt: Math.ceil(entry.expiresAt / 1000) };
   }
 
-  return { allowed: true, remaining: config.max - entry.count, resetAt: Math.ceil(entry.expiresAt / 1000) };
+  return {
+    allowed: true,
+    remaining: config.max - entry.count,
+    resetAt: Math.ceil(entry.expiresAt / 1000),
+  };
 }
 
 async function redisRateLimit(key: string, config: RateLimitConfig): Promise<RateLimitResult> {
@@ -105,11 +109,11 @@ export async function checkRateLimit(
 
 /** Pre-configured rate limits per route */
 export const RATE_LIMITS = {
-  login: { max: 5, windowSec: 60 },              // 5 attempts/min
-  register: { max: 3, windowSec: 60 },           // 3 registrations/min
-  profileUpdate: { max: 10, windowSec: 60 },     // 10 updates/min
-  bookingCreate: { max: 10, windowSec: 60 },     // 10 bookings/min
-  bookingConfirm: { max: 10, windowSec: 60 },    // 10 confirms/min
-  reviewCreate: { max: 5, windowSec: 60 },        // 5 reviews/min
-  search: { max: 60, windowSec: 60 },             // 60 searches/min
+  login: { max: 5, windowSec: 60 }, // 5 attempts/min
+  register: { max: 3, windowSec: 60 }, // 3 registrations/min
+  profileUpdate: { max: 10, windowSec: 60 }, // 10 updates/min
+  bookingCreate: { max: 10, windowSec: 60 }, // 10 bookings/min
+  bookingConfirm: { max: 10, windowSec: 60 }, // 10 confirms/min
+  reviewCreate: { max: 5, windowSec: 60 }, // 5 reviews/min
+  search: { max: 60, windowSec: 60 }, // 60 searches/min
 } as const;

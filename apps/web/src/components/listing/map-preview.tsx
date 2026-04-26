@@ -45,7 +45,13 @@ export function MapPreview({ lat, lng, address, city, state, country }: MapPrevi
             </div>
           </div>
         </div>
-        <LocationFooter address={address} city={city} state={state} country={country} mapsUrl={mapsUrl} />
+        <LocationFooter
+          address={address}
+          city={city}
+          state={state}
+          country={country}
+          mapsUrl={mapsUrl}
+        />
       </div>
     );
   }
@@ -71,21 +77,27 @@ export function MapPreview({ lat, lng, address, city, state, country }: MapPrevi
           <Marker longitude={lng} latitude={lat} anchor="bottom">
             <div className="relative flex flex-col items-center">
               {/* Pulse ring */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                <div className="h-16 w-16 animate-ping rounded-full bg-primary/10" />
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                <div className="bg-primary/10 h-16 w-16 animate-ping rounded-full" />
               </div>
               {/* Pin */}
-              <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg ring-4 ring-primary/20">
+              <div className="bg-primary text-primary-foreground ring-primary/20 relative flex h-10 w-10 items-center justify-center rounded-full shadow-lg ring-4">
                 <MapPin className="h-5 w-5" />
               </div>
               {/* Arrow tip */}
-              <div className="h-2 w-2 -mt-1 rotate-45 bg-primary" />
+              <div className="bg-primary -mt-1 h-2 w-2 rotate-45" />
             </div>
           </Marker>
         </MapGL>
       </div>
 
-      <LocationFooter address={address} city={city} state={state} country={country} mapsUrl={mapsUrl} />
+      <LocationFooter
+        address={address}
+        city={city}
+        state={state}
+        country={country}
+        mapsUrl={mapsUrl}
+      />
     </div>
   );
 }
@@ -106,7 +118,9 @@ function LocationFooter({
   return (
     <div className="flex items-start justify-between">
       <div>
-        <p className="text-lg font-bold text-slate-900 dark:text-slate-50">{city}, {state}</p>
+        <p className="text-lg font-bold text-slate-900 dark:text-slate-50">
+          {city}, {state}
+        </p>
         <p className="text-slate-500 dark:text-slate-400">
           {address ? `${address}. ` : ''}Exact location provided after booking.
         </p>

@@ -23,7 +23,10 @@ export async function POST(request: NextRequest) {
     if (!rl.allowed) {
       log.warn('Rate limited');
       log.done(429);
-      return errorResponse({ code: 'RATE_LIMITED', message: 'Too many requests. Try again later.' }, 429);
+      return errorResponse(
+        { code: 'RATE_LIMITED', message: 'Too many requests. Try again later.' },
+        429,
+      );
     }
 
     const bodyResult = await safeParseBody(request);
@@ -45,7 +48,9 @@ export async function POST(request: NextRequest) {
     if (!user) {
       log.info('Forgot password for non-existent email', { email });
       log.done(200);
-      return successResponse({ message: 'If that email is registered, a reset link has been sent.' });
+      return successResponse({
+        message: 'If that email is registered, a reset link has been sent.',
+      });
     }
 
     // Generate a secure token

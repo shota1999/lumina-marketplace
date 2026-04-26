@@ -51,39 +51,57 @@ export default function AdminVerificationsPage() {
         if (data?.success) setVerifications(data.data ?? []);
       })
       .catch(() => {
-        toast({ title: 'Error', description: 'Failed to load verifications', variant: 'destructive' });
+        toast({
+          title: 'Error',
+          description: 'Failed to load verifications',
+          variant: 'destructive',
+        });
       })
       .finally(() => setLoading(false));
   }, []);
 
-  const handleReview = useCallback(async (id: string, status: 'approved' | 'rejected', notes: string) => {
-    setSubmitting(true);
-    try {
-      const res = await fetch(`/api/admin/verifications/${id}/review`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status, adminNotes: notes || undefined }),
-      });
-      const data = await res.json();
+  const handleReview = useCallback(
+    async (id: string, status: 'approved' | 'rejected', notes: string) => {
+      setSubmitting(true);
+      try {
+        const res = await fetch(`/api/admin/verifications/${id}/review`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status, adminNotes: notes || undefined }),
+        });
+        const data = await res.json();
 
-      if (!res.ok || !data.success) {
-        toast({ title: 'Review failed', description: data.error?.message ?? 'Something went wrong', variant: 'destructive' });
-        return;
+        if (!res.ok || !data.success) {
+          toast({
+            title: 'Review failed',
+            description: data.error?.message ?? 'Something went wrong',
+            variant: 'destructive',
+          });
+          return;
+        }
+
+        setVerifications((prev) =>
+          prev.map((v) => (v.id === id ? { ...v, status, adminNotes: notes || null } : v)),
+        );
+        setActionId(null);
+        setActionType(null);
+        setAdminNotes('');
+        toast({
+          title: `Verification ${status}`,
+          description: `The verification has been ${status}`,
+        });
+      } catch {
+        toast({
+          title: 'Network error',
+          description: 'Could not submit review',
+          variant: 'destructive',
+        });
+      } finally {
+        setSubmitting(false);
       }
-
-      setVerifications((prev) =>
-        prev.map((v) => (v.id === id ? { ...v, status, adminNotes: notes || null } : v)),
-      );
-      setActionId(null);
-      setActionType(null);
-      setAdminNotes('');
-      toast({ title: `Verification ${status}`, description: `The verification has been ${status}` });
-    } catch {
-      toast({ title: 'Network error', description: 'Could not submit review', variant: 'destructive' });
-    } finally {
-      setSubmitting(false);
-    }
-  }, []);
+    },
+    [],
+  );
 
   if (loading) {
     return (
@@ -248,7 +266,9 @@ export default function AdminVerificationsPage() {
                               <span className="text-xs font-bold uppercase tracking-widest text-slate-400">
                                 Admin Notes
                               </span>
-                              <p className="mt-1 text-slate-600 dark:text-slate-300">{v.adminNotes}</p>
+                              <p className="mt-1 text-slate-600 dark:text-slate-300">
+                                {v.adminNotes}
+                              </p>
                             </div>
                           )}
                         </div>

@@ -14,9 +14,9 @@ export function SimilarListings({ listings }: SimilarListingsProps) {
   if (listings.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-12 text-center">
-        <Compass className="mb-3 h-10 w-10 text-muted-foreground" />
+        <Compass className="text-muted-foreground mb-3 h-10 w-10" />
         <p className="font-medium">No similar listings found</p>
-        <p className="mt-1 mb-4 text-sm text-muted-foreground">
+        <p className="text-muted-foreground mb-4 mt-1 text-sm">
           Explore all available properties instead.
         </p>
         <Button variant="outline" asChild>

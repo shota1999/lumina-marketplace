@@ -25,7 +25,8 @@ export default function AuthError({ error, reset }: ErrorProps) {
           Something went wrong with authentication
         </h1>
         <p className="mb-2 max-w-md text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-          An unexpected error occurred during authentication. Please try again or return to the login page.
+          An unexpected error occurred during authentication. Please try again or return to the
+          login page.
         </p>
         {error.digest && (
           <p className="mb-6 text-xs text-slate-400 dark:text-slate-500">

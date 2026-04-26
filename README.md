@@ -53,13 +53,13 @@ Redis-backed queues are operationally simple — no ZooKeeper, no partition mana
 
 ### Tradeoffs
 
-| Decision | Tradeoff |
-|----------|----------|
-| Drizzle over Prisma | Better perf, SQL-like DX, but smaller ecosystem |
+| Decision                   | Tradeoff                                                         |
+| -------------------------- | ---------------------------------------------------------------- |
+| Drizzle over Prisma        | Better perf, SQL-like DX, but smaller ecosystem                  |
 | Meilisearch over Typesense | Simpler ops, better typo tolerance, but less clustering maturity |
-| Session tokens over JWT | Revocable sessions, but requires DB lookup per request |
-| BullMQ over Kafka | Simple ops, but limited to single-Redis throughput |
-| Tailwind over CSS-in-JS | Zero runtime cost, but utility class strings can get verbose |
+| Session tokens over JWT    | Revocable sessions, but requires DB lookup per request           |
+| BullMQ over Kafka          | Simple ops, but limited to single-Redis throughput               |
+| Tailwind over CSS-in-JS    | Zero runtime cost, but utility class strings can get verbose     |
 
 ## Tech Stack
 
@@ -113,17 +113,17 @@ k8s/                     # Kubernetes manifests
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `yarn dev` | Start all services in dev mode |
-| `yarn build` | Build all packages |
-| `yarn lint` | Lint all packages |
-| `yarn typecheck` | Type-check all packages |
-| `yarn db:push` | Push schema to database |
-| `yarn db:studio` | Open Drizzle Studio |
-| `yarn db:seed` | Seed demo data (clears + reinserts) |
-| `yarn db:index` | Index listings into Meilisearch |
-| `yarn db:reset` | Push schema + seed + index (all-in-one) |
+| Command          | Description                             |
+| ---------------- | --------------------------------------- |
+| `yarn dev`       | Start all services in dev mode          |
+| `yarn build`     | Build all packages                      |
+| `yarn lint`      | Lint all packages                       |
+| `yarn typecheck` | Type-check all packages                 |
+| `yarn db:push`   | Push schema to database                 |
+| `yarn db:studio` | Open Drizzle Studio                     |
+| `yarn db:seed`   | Seed demo data (clears + reinserts)     |
+| `yarn db:index`  | Index listings into Meilisearch         |
+| `yarn db:reset`  | Push schema + seed + index (all-in-one) |
 
 ## Deployment
 
@@ -141,16 +141,16 @@ The web Dockerfile uses Next.js standalone output — the final image contains o
 
 ### Required Environment Variables
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `DATABASE_URL` | Yes | PostgreSQL connection string |
-| `REDIS_URL` | Yes | Redis connection string |
-| `MEILISEARCH_HOST` | Yes | Meilisearch instance URL |
-| `MEILISEARCH_API_KEY` | Yes | Meilisearch API key |
-| `SESSION_SECRET` | Yes | 32+ char secret for session signing |
-| `NEXT_PUBLIC_APP_URL` | No | Public app URL (default: http://localhost:3000) |
-| `NEXT_PUBLIC_MAPBOX_TOKEN` | No | Mapbox token for map features |
-| `SENTRY_DSN` | No | Sentry error tracking DSN |
+| Variable                   | Required | Description                                     |
+| -------------------------- | -------- | ----------------------------------------------- |
+| `DATABASE_URL`             | Yes      | PostgreSQL connection string                    |
+| `REDIS_URL`                | Yes      | Redis connection string                         |
+| `MEILISEARCH_HOST`         | Yes      | Meilisearch instance URL                        |
+| `MEILISEARCH_API_KEY`      | Yes      | Meilisearch API key                             |
+| `SESSION_SECRET`           | Yes      | 32+ char secret for session signing             |
+| `NEXT_PUBLIC_APP_URL`      | No       | Public app URL (default: http://localhost:3000) |
+| `NEXT_PUBLIC_MAPBOX_TOKEN` | No       | Mapbox token for map features                   |
+| `SENTRY_DSN`               | No       | Sentry error tracking DSN                       |
 
 The app validates env vars at startup in production via `instrumentation.ts`. Missing required vars will fail the deploy immediately.
 
@@ -181,24 +181,24 @@ kubectl apply -f k8s/ingress.yaml
 
 ## Features
 
-| Feature | Implementation |
-|---------|---------------|
-| **Map-based search** | Mapbox GL + Supercluster clustering, price markers, style toggle, "Search this area" |
-| **Full-text search** | Meilisearch with facets, geo-bounds, typo tolerance; PostgreSQL fallback |
-| **Stripe payments** | Checkout sessions, webhooks, refunds, Stripe Connect payouts |
-| **Admin dashboard** | Analytics with Recharts (area/bar/pie charts), listings management, verifications |
-| **i18n** | 8 languages via next-intl (en, es, fr, de, ja, zh, ko, pt) |
-| **Auth** | Session-based, OAuth (Google/Apple), password reset, rate-limited |
-| **Edge middleware** | Auth guards, geo-locale, bot detection, security headers |
-| **PWA** | Service worker, offline fallback, installable manifest |
-| **API documentation** | OpenAPI 3.1 spec + interactive Swagger UI at `/docs` |
-| **Notifications** | In-app + email (Nodemailer) for bookings, messages, reviews |
-| **Analytics** | Event tracking, Web Vitals reporting, conversion funnel |
-| **Testing** | Vitest (58 unit/integration) + Playwright E2E (4 suites) |
-| **Error handling** | Error boundaries, global-error, structured logging, Sentry |
-| **Observability** | OpenTelemetry distributed tracing, Jaeger UI, request logging, metrics, audit trail, health checks |
-| **Dark mode** | next-themes with system/light/dark toggle |
-| **ISR + caching** | `unstable_cache` with tag revalidation, ISR on listing pages |
+| Feature               | Implementation                                                                                     |
+| --------------------- | -------------------------------------------------------------------------------------------------- |
+| **Map-based search**  | Mapbox GL + Supercluster clustering, price markers, style toggle, "Search this area"               |
+| **Full-text search**  | Meilisearch with facets, geo-bounds, typo tolerance; PostgreSQL fallback                           |
+| **Stripe payments**   | Checkout sessions, webhooks, refunds, Stripe Connect payouts                                       |
+| **Admin dashboard**   | Analytics with Recharts (area/bar/pie charts), listings management, verifications                  |
+| **i18n**              | 8 languages via next-intl (en, es, fr, de, ja, zh, ko, pt)                                         |
+| **Auth**              | Session-based, OAuth (Google/Apple), password reset, rate-limited                                  |
+| **Edge middleware**   | Auth guards, geo-locale, bot detection, security headers                                           |
+| **PWA**               | Service worker, offline fallback, installable manifest                                             |
+| **API documentation** | OpenAPI 3.1 spec + interactive Swagger UI at `/docs`                                               |
+| **Notifications**     | In-app + email (Nodemailer) for bookings, messages, reviews                                        |
+| **Analytics**         | Event tracking, Web Vitals reporting, conversion funnel                                            |
+| **Testing**           | Vitest (58 unit/integration) + Playwright E2E (4 suites)                                           |
+| **Error handling**    | Error boundaries, global-error, structured logging, Sentry                                         |
+| **Observability**     | OpenTelemetry distributed tracing, Jaeger UI, request logging, metrics, audit trail, health checks |
+| **Dark mode**         | next-themes with system/light/dark toggle                                                          |
+| **ISR + caching**     | `unstable_cache` with tag revalidation, ISR on listing pages                                       |
 
 ## CI/CD Pipeline
 
@@ -245,45 +245,45 @@ Rating and reviewCount are **denormalized** on the listings table for read perfo
 
 ## Key Technical Decisions
 
-| Decision | Why |
-|----------|-----|
-| **Validation separation** (`booking-validation.ts`) | Pure functions with zero DB deps — fully unit-testable without mocks. Service layer composes validation + DB logic. |
-| **`unstable_cache` with tag-based revalidation** | Listing pages are read-heavy. 60s TTL + tag invalidation on review/booking gives near-real-time data without per-request DB hits. |
-| **Denormalized rating/reviewCount** | Avoids expensive `JOIN + GROUP BY` on every listing page load. Acceptable because reviews are write-infrequent. |
-| **`pending → confirmed` booking status** | Clean integration point for future payment. Overlap detection includes pending bookings to prevent race conditions. |
-| **Structured request logging** | Every mutating API route logs `requestId`, `userId`, `route`, `traceId`, and business outcome. Logs are correlated with OpenTelemetry traces via `traceId`/`spanId` fields. |
-| **`instrumentation.ts` env validation** | Fails fast on deploy if env vars are missing. Only in production — dev can run with partial config. |
-| **OpenTelemetry distributed tracing** | Auto-instruments HTTP, postgres, Redis. Manual spans on business operations (bookings, search, auth, email). Trace context propagates through BullMQ jobs via W3C `traceparent` in job data. Jaeger UI at `localhost:16686`. |
-| **AI semantic search (pgvector)** | Natural language queries ("cozy cabin near the ocean with a fireplace") are embedded via OpenAI `text-embedding-3-small` and matched against listing embeddings using cosine similarity in PostgreSQL (pgvector HNSW index). Falls back to Meilisearch for keyword queries. |
-| **AI description generator** | Hosts can generate listing descriptions via Claude API with streaming response. Context-aware prompt uses property details (category, location, amenities) to produce tailored, professional descriptions. |
+| Decision                                            | Why                                                                                                                                                                                                                                                                         |
+| --------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Validation separation** (`booking-validation.ts`) | Pure functions with zero DB deps — fully unit-testable without mocks. Service layer composes validation + DB logic.                                                                                                                                                         |
+| **`unstable_cache` with tag-based revalidation**    | Listing pages are read-heavy. 60s TTL + tag invalidation on review/booking gives near-real-time data without per-request DB hits.                                                                                                                                           |
+| **Denormalized rating/reviewCount**                 | Avoids expensive `JOIN + GROUP BY` on every listing page load. Acceptable because reviews are write-infrequent.                                                                                                                                                             |
+| **`pending → confirmed` booking status**            | Clean integration point for future payment. Overlap detection includes pending bookings to prevent race conditions.                                                                                                                                                         |
+| **Structured request logging**                      | Every mutating API route logs `requestId`, `userId`, `route`, `traceId`, and business outcome. Logs are correlated with OpenTelemetry traces via `traceId`/`spanId` fields.                                                                                                 |
+| **`instrumentation.ts` env validation**             | Fails fast on deploy if env vars are missing. Only in production — dev can run with partial config.                                                                                                                                                                         |
+| **OpenTelemetry distributed tracing**               | Auto-instruments HTTP, postgres, Redis. Manual spans on business operations (bookings, search, auth, email). Trace context propagates through BullMQ jobs via W3C `traceparent` in job data. Jaeger UI at `localhost:16686`.                                                |
+| **AI semantic search (pgvector)**                   | Natural language queries ("cozy cabin near the ocean with a fireplace") are embedded via OpenAI `text-embedding-3-small` and matched against listing embeddings using cosine similarity in PostgreSQL (pgvector HNSW index). Falls back to Meilisearch for keyword queries. |
+| **AI description generator**                        | Hosts can generate listing descriptions via Claude API with streaming response. Context-aware prompt uses property details (category, location, amenities) to produce tailored, professional descriptions.                                                                  |
 
 ## API Endpoints
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/health` | GET | Health check (DB + Redis latency) |
-| `/api/search` | GET | Search listings (semantic + Meilisearch + DB fallback) |
-| `/api/ai/generate-description` | POST | Stream AI-generated listing description (Claude) |
-| `/api/ai/embed-listing` | POST | Generate/store embedding for a listing (admin) |
-| `/api/listings` | GET/POST | List/create listings |
-| `/api/listings/:slug` | GET | Listing detail + reviews + similar |
-| `/api/reviews` | POST | Create review (auth required) |
-| `/api/bookings` | POST | Create booking (auth required) |
-| `/api/bookings/:id/confirm` | POST | Confirm pending booking |
-| `/api/favorites` | GET/POST | List/toggle favorites |
-| `/api/saved-searches` | GET/POST/DELETE | Manage saved searches |
-| `/api/analytics` | POST | Track events |
-| `/api/admin/listings` | GET/PATCH | Admin listing management |
-| `/api/admin/reindex` | POST | Trigger full reindex |
+| Endpoint                       | Method          | Description                                            |
+| ------------------------------ | --------------- | ------------------------------------------------------ |
+| `/api/health`                  | GET             | Health check (DB + Redis latency)                      |
+| `/api/search`                  | GET             | Search listings (semantic + Meilisearch + DB fallback) |
+| `/api/ai/generate-description` | POST            | Stream AI-generated listing description (Claude)       |
+| `/api/ai/embed-listing`        | POST            | Generate/store embedding for a listing (admin)         |
+| `/api/listings`                | GET/POST        | List/create listings                                   |
+| `/api/listings/:slug`          | GET             | Listing detail + reviews + similar                     |
+| `/api/reviews`                 | POST            | Create review (auth required)                          |
+| `/api/bookings`                | POST            | Create booking (auth required)                         |
+| `/api/bookings/:id/confirm`    | POST            | Confirm pending booking                                |
+| `/api/favorites`               | GET/POST        | List/toggle favorites                                  |
+| `/api/saved-searches`          | GET/POST/DELETE | Manage saved searches                                  |
+| `/api/analytics`               | POST            | Track events                                           |
+| `/api/admin/listings`          | GET/PATCH       | Admin listing management                               |
+| `/api/admin/reindex`           | POST            | Trigger full reindex                                   |
 
 ## Demo Accounts
 
-| Email | Password | Role | Description |
-|-------|----------|------|-------------|
-| `admin@lumina.dev` | `admin123` | admin | Full admin access |
-| `host@lumina.dev` | `admin123` | host | Owns all demo listings (Sarah Chen) |
-| `guest@lumina.dev` | `admin123` | user | Has bookings, favorites, saved searches (Alex Rivera) |
-| `traveler@lumina.dev` | `admin123` | user | Has bookings and favorites (Jamie Park) |
+| Email                 | Password   | Role  | Description                                           |
+| --------------------- | ---------- | ----- | ----------------------------------------------------- |
+| `admin@lumina.dev`    | `admin123` | admin | Full admin access                                     |
+| `host@lumina.dev`     | `admin123` | host  | Owns all demo listings (Sarah Chen)                   |
+| `guest@lumina.dev`    | `admin123` | user  | Has bookings, favorites, saved searches (Alex Rivera) |
+| `traveler@lumina.dev` | `admin123` | user  | Has bookings and favorites (Jamie Park)               |
 
 ## Demo Data & Scenarios
 
@@ -306,18 +306,18 @@ yarn db:reset
 
 ### Scenario Listings
 
-| Listing | Scenario | What to test |
-|---------|----------|-------------|
-| Oceanfront Villa in Malibu | Highly rated (4.8+), featured | Star rating display, featured badge, review list |
-| Mountain Cabin Retreat in Aspen | Booked next week | Date picker shows unavailable dates |
-| Treehouse Escape in Big Sur | No similar listings nearby | "Similar listings" section is empty |
-| Historic Castle in Scottish Highlands | Zero reviews | Empty review state, no rating badge |
-| Luxury Penthouse in Miami Beach | Fully booked next 30 days | **Overlapping booking rejection** — try booking any dates in the next month |
-| Sailboat Stay in Marina del Rey | Low rated (3.2) | Low rating display, mixed review sentiment |
-| Tuscan Farmhouse with Vineyard | Partner listing, good reviews | Partner badge, review variety |
-| Modern Apartment in Tokyo Shibuya | Budget, mixed booking history | Cancelled + pending bookings in history |
-| Clifftop Villa in Santorini | Second villa | Appears in "similar listings" for Malibu villa |
-| Lakeside Cabin in Lake Tahoe | Second cabin | Appears in "similar listings" for Aspen cabin |
+| Listing                               | Scenario                      | What to test                                                                |
+| ------------------------------------- | ----------------------------- | --------------------------------------------------------------------------- |
+| Oceanfront Villa in Malibu            | Highly rated (4.8+), featured | Star rating display, featured badge, review list                            |
+| Mountain Cabin Retreat in Aspen       | Booked next week              | Date picker shows unavailable dates                                         |
+| Treehouse Escape in Big Sur           | No similar listings nearby    | "Similar listings" section is empty                                         |
+| Historic Castle in Scottish Highlands | Zero reviews                  | Empty review state, no rating badge                                         |
+| Luxury Penthouse in Miami Beach       | Fully booked next 30 days     | **Overlapping booking rejection** — try booking any dates in the next month |
+| Sailboat Stay in Marina del Rey       | Low rated (3.2)               | Low rating display, mixed review sentiment                                  |
+| Tuscan Farmhouse with Vineyard        | Partner listing, good reviews | Partner badge, review variety                                               |
+| Modern Apartment in Tokyo Shibuya     | Budget, mixed booking history | Cancelled + pending bookings in history                                     |
+| Clifftop Villa in Santorini           | Second villa                  | Appears in "similar listings" for Malibu villa                              |
+| Lakeside Cabin in Lake Tahoe          | Second cabin                  | Appears in "similar listings" for Aspen cabin                               |
 
 ### Scenario: Booking Flows
 
@@ -335,13 +335,13 @@ yarn db:reset
 
 ### Booking States in the Seed
 
-| Listing | Guest | Status | Dates |
-|---------|-------|--------|-------|
-| Aspen Cabin | guest@lumina.dev | confirmed | Next 3–10 days |
-| Miami Penthouse | guest@lumina.dev | confirmed | Next 1–15 days |
-| Miami Penthouse | traveler@lumina.dev | confirmed | Next 15–30 days |
-| Tokyo Apartment | guest@lumina.dev | pending | 2 weeks out |
-| Malibu Villa | guest@lumina.dev | confirmed | Past (completed) |
-| Tuscan Farmhouse | traveler@lumina.dev | cancelled | 3 weeks out |
-| Tokyo Apartment | traveler@lumina.dev | cancelled | Past |
-| Santorini Villa | traveler@lumina.dev | pending | 6 weeks out |
+| Listing          | Guest               | Status    | Dates            |
+| ---------------- | ------------------- | --------- | ---------------- |
+| Aspen Cabin      | guest@lumina.dev    | confirmed | Next 3–10 days   |
+| Miami Penthouse  | guest@lumina.dev    | confirmed | Next 1–15 days   |
+| Miami Penthouse  | traveler@lumina.dev | confirmed | Next 15–30 days  |
+| Tokyo Apartment  | guest@lumina.dev    | pending   | 2 weeks out      |
+| Malibu Villa     | guest@lumina.dev    | confirmed | Past (completed) |
+| Tuscan Farmhouse | traveler@lumina.dev | cancelled | 3 weeks out      |
+| Tokyo Apartment  | traveler@lumina.dev | cancelled | Past             |
+| Santorini Villa  | traveler@lumina.dev | pending   | 6 weeks out      |

@@ -11,10 +11,7 @@ export async function getOrCreateConversation(
 
   // Check if conversation already exists for this listing+guest pair
   const existing = await db.query.conversations.findFirst({
-    where: and(
-      eq(conversations.listingId, listingId),
-      eq(conversations.guestId, guestId),
-    ),
+    where: and(eq(conversations.listingId, listingId), eq(conversations.guestId, guestId)),
   });
 
   if (existing) {
@@ -93,16 +90,11 @@ export async function sendMessage(
   };
 }
 
-export async function getConversations(
-  userId: string,
-): Promise<Conversation[]> {
+export async function getConversations(userId: string): Promise<Conversation[]> {
   const db = getDb();
 
   const rows = await db.query.conversations.findMany({
-    where: or(
-      eq(conversations.hostId, userId),
-      eq(conversations.guestId, userId),
-    ),
+    where: or(eq(conversations.hostId, userId), eq(conversations.guestId, userId)),
     orderBy: [desc(conversations.lastMessageAt)],
     with: {
       listing: {
@@ -129,17 +121,10 @@ export async function getConversations(
       count: sql<number>`count(*)::int`,
     })
     .from(messages)
-    .where(
-      and(
-        ne(messages.senderId, userId),
-        ne(messages.status, 'read'),
-      ),
-    )
+    .where(and(ne(messages.senderId, userId), ne(messages.status, 'read')))
     .groupBy(messages.conversationId);
 
-  const unreadMap = new Map(
-    unreadCounts.map((r) => [r.conversationId, r.count]),
-  );
+  const unreadMap = new Map(unreadCounts.map((r) => [r.conversationId, r.count]));
 
   return rows.map((row) => {
     const otherUser = row.hostId === userId ? row.guest : row.host;
@@ -163,10 +148,7 @@ export async function getConversations(
   });
 }
 
-export async function getMessages(
-  conversationId: string,
-  userId: string,
-): Promise<Message[]> {
+export async function getMessages(conversationId: string, userId: string): Promise<Message[]> {
   const db = getDb();
 
   // Verify the user is a participant
@@ -198,10 +180,7 @@ export async function getMessages(
   }));
 }
 
-export async function markAsRead(
-  conversationId: string,
-  userId: string,
-): Promise<void> {
+export async function markAsRead(conversationId: string, userId: string): Promise<void> {
   const db = getDb();
 
   // Mark all unread messages not sent by the user as 'read'

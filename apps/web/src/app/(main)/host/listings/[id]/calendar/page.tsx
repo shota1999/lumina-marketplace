@@ -1,14 +1,6 @@
 'use client';
 
-import {
-  Calendar,
-  ChevronLeft,
-  ChevronRight,
-  Loader2,
-  Lock,
-  Trash2,
-  X,
-} from 'lucide-react';
+import { Calendar, ChevronLeft, ChevronRight, Loader2, Lock, Trash2, X } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -308,11 +300,9 @@ export default function CalendarPage() {
       base +=
         'bg-slate-300 text-slate-600 dark:bg-slate-700 dark:text-slate-300 hover:bg-slate-400 dark:hover:bg-slate-600 ';
     } else if (inRange || isStart) {
-      base +=
-        'bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 ';
+      base += 'bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 ';
     } else {
-      base +=
-        'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 ';
+      base += 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 ';
     }
 
     if (isToday && !isBlocked && !inRange && !isStart) {
@@ -344,8 +334,7 @@ export default function CalendarPage() {
           Availability Calendar
         </h1>
         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Click dates to select a range and block them. Click a blocked date to
-          remove its block.
+          Click dates to select a range and block them. Click a blocked date to remove its block.
         </p>
       </div>
 

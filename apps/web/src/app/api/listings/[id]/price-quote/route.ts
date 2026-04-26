@@ -27,20 +27,14 @@ async function handle(input: Record<string, unknown>, id: string) {
   }
 }
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const bodyResult = await safeParseBody(request);
   if ('error' in bodyResult) return bodyResult.error;
   return handle(bodyResult.data as Record<string, unknown>, id);
 }
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const url = new URL(request.url);
   const guestsParam = url.searchParams.get('guests');

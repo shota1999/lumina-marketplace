@@ -88,7 +88,7 @@ export default function MessagesPage() {
   if (error === 'UNAUTHORIZED') {
     return (
       <div className="container flex min-h-[60vh] flex-col items-center justify-center py-20 text-center">
-        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 mb-6">
+        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
           <MessageSquare className="h-9 w-9 text-slate-400 dark:text-slate-500" />
         </div>
         <h1 className="mb-2 text-2xl font-bold text-slate-900 dark:text-slate-50">
@@ -99,7 +99,7 @@ export default function MessagesPage() {
         </p>
         <Link
           href="/auth/login"
-          className="inline-flex items-center justify-center rounded-lg bg-slate-900 dark:bg-slate-50 px-10 py-4 text-sm font-bold text-white dark:text-slate-900 shadow-lg shadow-slate-900/10 transition-opacity hover:opacity-90"
+          className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-10 py-4 text-sm font-bold text-white shadow-lg shadow-slate-900/10 transition-opacity hover:opacity-90 dark:bg-slate-50 dark:text-slate-900"
         >
           Sign in
         </Link>
@@ -125,36 +125,36 @@ export default function MessagesPage() {
     <div className="container py-16">
       {/* Header */}
       <header className="mb-12">
-        <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-slate-50 mb-2">
+        <h1 className="mb-2 text-4xl font-extrabold tracking-tight text-slate-900 dark:text-slate-50">
           Messages
         </h1>
-        <p className="text-slate-500 dark:text-slate-400 font-medium">
+        <p className="font-medium text-slate-500 dark:text-slate-400">
           Your conversations with hosts and guests.
         </p>
       </header>
 
       {conversations.length === 0 ? (
         /* Empty state */
-        <div className="flex flex-col items-center justify-center py-32 text-center max-w-md mx-auto">
-          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 mb-6">
+        <div className="mx-auto flex max-w-md flex-col items-center justify-center py-32 text-center">
+          <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
             <MessageSquare className="h-9 w-9 text-slate-400 dark:text-slate-500" />
           </div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-3">
+          <h2 className="mb-3 text-2xl font-bold text-slate-900 dark:text-slate-50">
             No messages yet
           </h2>
-          <p className="text-slate-500 dark:text-slate-400 leading-relaxed mb-8">
+          <p className="mb-8 leading-relaxed text-slate-500 dark:text-slate-400">
             Start a conversation by contacting a host on any listing page.
           </p>
           <Link
             href="/search"
-            className="inline-flex items-center justify-center rounded-lg bg-slate-900 dark:bg-slate-50 px-10 py-4 text-sm font-bold text-white dark:text-slate-900 shadow-lg shadow-slate-900/10 transition-opacity hover:opacity-90"
+            className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-10 py-4 text-sm font-bold text-white shadow-lg shadow-slate-900/10 transition-opacity hover:opacity-90 dark:bg-slate-50 dark:text-slate-900"
           >
             Browse listings
           </Link>
         </div>
       ) : (
         <div className="space-y-3">
-          <p className="text-[10px] uppercase tracking-widest text-slate-400 dark:text-slate-500 font-semibold mb-4">
+          <p className="mb-4 text-[10px] font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500">
             All conversations
           </p>
           {conversations.map((conversation) => (
@@ -169,7 +169,7 @@ export default function MessagesPage() {
               </div>
 
               {/* Content */}
-              <div className="flex-1 min-w-0">
+              <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-2">
                   <div className="min-w-0">
                     <span className="font-bold text-slate-900 dark:text-slate-50">

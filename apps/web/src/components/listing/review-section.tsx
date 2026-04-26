@@ -57,7 +57,9 @@ export function ReviewSection({ reviews, averageRating, totalCount }: ReviewSect
               </div>
               <div>
                 <p className="font-bold text-slate-900 dark:text-slate-50">{review.author.name}</p>
-                <p className="text-sm text-slate-500 dark:text-slate-400">Stayed {formatReviewDate(review.createdAt)}</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  Stayed {formatReviewDate(review.createdAt)}
+                </p>
               </div>
             </div>
             <p className="leading-relaxed text-slate-500 dark:text-slate-400">{review.comment}</p>

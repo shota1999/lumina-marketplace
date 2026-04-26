@@ -14,7 +14,7 @@ import { useCompare } from '@/hooks/use-compare';
 const AMENITY_LABELS: Record<string, string> = {
   wifi: 'High-Speed Wifi',
   pool: 'Private Pool',
-  kitchen: 'Chef\'s Kitchen',
+  kitchen: "Chef's Kitchen",
   parking: 'Free Parking',
   'air-conditioning': 'Air Conditioning',
   heating: 'Heating',
@@ -35,7 +35,9 @@ const AMENITY_LABELS: Record<string, string> = {
 };
 
 function getAmenityLabel(amenity: string): string {
-  return AMENITY_LABELS[amenity] ?? amenity.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+  return (
+    AMENITY_LABELS[amenity] ?? amenity.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+  );
 }
 
 export default function ComparePage() {
@@ -81,7 +83,9 @@ export default function ComparePage() {
         <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
           <GitCompareArrows className="h-9 w-9 text-slate-400 dark:text-slate-500" />
         </div>
-        <h1 className="mb-2 text-2xl font-bold text-slate-900 dark:text-slate-50">Compare listings</h1>
+        <h1 className="mb-2 text-2xl font-bold text-slate-900 dark:text-slate-50">
+          Compare listings
+        </h1>
         <p className="mb-8 max-w-md text-slate-500 dark:text-slate-400">
           Add up to 4 listings from the search results to compare them side by side.
         </p>
@@ -165,20 +169,19 @@ export default function ComparePage() {
       </header>
 
       {/* Comparison Grid */}
-      <div className="grid grid-cols-1 gap-0 overflow-hidden rounded-xl bg-slate-50 shadow-sm dark:bg-slate-800/50 md:grid-cols-4">
+      <div className="grid grid-cols-1 gap-0 overflow-hidden rounded-xl bg-slate-50 shadow-sm md:grid-cols-4 dark:bg-slate-800/50">
         {listings.map((listing, index) => {
           const primaryImage = listing.images.find((img) => img.isPrimary) ?? listing.images[0];
           const isBestPrice = listing.pricePerNight === lowestPrice && listings.length > 1;
-          const isBestRating = listing.rating === highestRating && listing.rating > 0 && listings.length > 1;
+          const isBestRating =
+            listing.rating === highestRating && listing.rating > 0 && listings.length > 1;
           const isEvenCol = index % 2 === 1;
 
           return (
             <div
               key={listing.id}
               className={`group relative flex flex-col p-6 ${
-                isEvenCol
-                  ? 'bg-slate-50 dark:bg-slate-800/50'
-                  : 'bg-white dark:bg-slate-900'
+                isEvenCol ? 'bg-slate-50 dark:bg-slate-800/50' : 'bg-white dark:bg-slate-900'
               }`}
             >
               {/* Remove button */}
@@ -231,11 +234,15 @@ export default function ComparePage() {
                   )}
                   <span
                     className={`text-2xl font-black ${
-                      isBestPrice ? 'text-green-600 dark:text-green-400' : 'text-slate-900 dark:text-slate-50'
+                      isBestPrice
+                        ? 'text-green-600 dark:text-green-400'
+                        : 'text-slate-900 dark:text-slate-50'
                     }`}
                   >
                     {formatPrice(listing.pricePerNight, listing.currency)}{' '}
-                    <span className={`text-sm font-normal ${isBestPrice ? '' : 'text-slate-500 dark:text-slate-400'}`}>
+                    <span
+                      className={`text-sm font-normal ${isBestPrice ? '' : 'text-slate-500 dark:text-slate-400'}`}
+                    >
                       / night
                     </span>
                   </span>
@@ -256,7 +263,9 @@ export default function ComparePage() {
                     <Star className="h-5 w-5 fill-amber-400 text-amber-400" />
                     <span
                       className={`font-bold ${
-                        isBestRating ? 'text-green-600 dark:text-green-400' : 'text-slate-900 dark:text-slate-50'
+                        isBestRating
+                          ? 'text-green-600 dark:text-green-400'
+                          : 'text-slate-900 dark:text-slate-50'
                       }`}
                     >
                       {listing.rating > 0 ? Number(listing.rating).toFixed(2) : 'N/A'}
@@ -275,25 +284,33 @@ export default function ComparePage() {
                     <span className="mb-1 text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
                       Beds
                     </span>
-                    <span className="font-medium text-slate-900 dark:text-slate-50">{listing.bedrooms}</span>
+                    <span className="font-medium text-slate-900 dark:text-slate-50">
+                      {listing.bedrooms}
+                    </span>
                   </div>
                   <div className="flex flex-col">
                     <span className="mb-1 text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
                       Baths
                     </span>
-                    <span className="font-medium text-slate-900 dark:text-slate-50">{listing.bathrooms}</span>
+                    <span className="font-medium text-slate-900 dark:text-slate-50">
+                      {listing.bathrooms}
+                    </span>
                   </div>
                   <div className="flex flex-col">
                     <span className="mb-1 text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
                       Guests
                     </span>
-                    <span className="font-medium text-slate-900 dark:text-slate-50">{listing.maxGuests}</span>
+                    <span className="font-medium text-slate-900 dark:text-slate-50">
+                      {listing.maxGuests}
+                    </span>
                   </div>
                   <div className="flex flex-col">
                     <span className="mb-1 text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
                       Type
                     </span>
-                    <span className="font-medium capitalize text-slate-900 dark:text-slate-50">{listing.category}</span>
+                    <span className="font-medium capitalize text-slate-900 dark:text-slate-50">
+                      {listing.category}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -311,7 +328,9 @@ export default function ComparePage() {
               <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition-transform group-hover:scale-110 dark:bg-slate-800 dark:text-slate-400">
                 <GitCompareArrows className="h-7 w-7" />
               </div>
-              <h3 className="mb-2 text-lg font-bold text-slate-900 dark:text-slate-50">Add a listing</h3>
+              <h3 className="mb-2 text-lg font-bold text-slate-900 dark:text-slate-50">
+                Add a listing
+              </h3>
               <p className="mb-8 px-4 text-center text-sm text-slate-500 dark:text-slate-400">
                 Compare more options to find your perfect stay.
               </p>
@@ -331,7 +350,7 @@ export default function ComparePage() {
           <h2 className="mb-10 text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-50">
             Amenities Checklist
           </h2>
-          <div className="grid grid-cols-1 border-t border-slate-200/50 dark:border-slate-700/30 md:grid-cols-4">
+          <div className="grid grid-cols-1 border-t border-slate-200/50 md:grid-cols-4 dark:border-slate-700/30">
             {allAmenities.map((amenity) => (
               <AmenityRow
                 key={amenity}
@@ -346,7 +365,7 @@ export default function ComparePage() {
 
       {/* CTA Strip */}
       {listings.length > 0 && (
-        <div className="mt-20 flex flex-col items-center justify-between gap-6 rounded-2xl bg-slate-100/60 p-8 dark:bg-slate-800/40 md:flex-row">
+        <div className="mt-20 flex flex-col items-center justify-between gap-6 rounded-2xl bg-slate-100/60 p-8 md:flex-row dark:bg-slate-800/40">
           <div>
             <h4 className="text-xl font-bold text-slate-900 dark:text-slate-50">
               Found your dream getaway?
@@ -386,7 +405,7 @@ function AmenityRow({
 }) {
   return (
     <>
-      <div className="flex items-center border-t border-slate-200/50 py-6 text-xs font-bold uppercase tracking-wider text-slate-500 dark:border-slate-700/30 dark:text-slate-400 md:col-span-1">
+      <div className="flex items-center border-t border-slate-200/50 py-6 text-xs font-bold uppercase tracking-wider text-slate-500 md:col-span-1 dark:border-slate-700/30 dark:text-slate-400">
         {label}
       </div>
       {listings.map((listing, index) => {

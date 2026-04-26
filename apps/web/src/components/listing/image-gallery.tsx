@@ -149,11 +149,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
     <>
       <div className={`relative ${gridLayout.container}`}>
         {primary && (
-          <button
-            type="button"
-            className={gridLayout.primary}
-            onClick={() => openLightbox(0)}
-          >
+          <button type="button" className={gridLayout.primary} onClick={() => openLightbox(0)}>
             <GalleryImage
               src={primary.url}
               alt={primary.alt || title}
@@ -197,7 +193,11 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
 
       {/* Lightbox */}
       {lightboxOpen && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-black/95" role="dialog" aria-label="Image gallery">
+        <div
+          className="fixed inset-0 z-50 flex flex-col bg-black/95"
+          role="dialog"
+          aria-label="Image gallery"
+        >
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 text-white">
             <span className="text-sm font-medium">
@@ -251,7 +251,9 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
                 key={img.id}
                 type="button"
                 className={`relative h-16 w-24 flex-shrink-0 overflow-hidden rounded-md transition-opacity ${
-                  i === activeIndex ? 'ring-2 ring-white opacity-100' : 'opacity-50 hover:opacity-80'
+                  i === activeIndex
+                    ? 'opacity-100 ring-2 ring-white'
+                    : 'opacity-50 hover:opacity-80'
                 }`}
                 onClick={() => setActiveIndex(i)}
               >

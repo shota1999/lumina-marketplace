@@ -39,7 +39,10 @@ export async function POST(request: NextRequest) {
     });
     if (!rl.allowed) {
       log.done(429);
-      return errorResponse({ code: 'RATE_LIMITED', message: 'Too many AI requests. Try again later.' }, 429);
+      return errorResponse(
+        { code: 'RATE_LIMITED', message: 'Too many AI requests. Try again later.' },
+        429,
+      );
     }
 
     const bodyResult = await safeParseBody(request);
@@ -48,15 +51,22 @@ export async function POST(request: NextRequest) {
     const parsed = generateSchema.safeParse(bodyResult.data);
     if (!parsed.success) {
       log.done(400);
-      return errorResponse({ code: 'VALIDATION_ERROR', message: parsed.error.issues[0]?.message ?? 'Invalid input' }, 400);
+      return errorResponse(
+        { code: 'VALIDATION_ERROR', message: parsed.error.issues[0]?.message ?? 'Invalid input' },
+        400,
+      );
     }
 
     log.info('Generating AI description', { userId: user.id, title: parsed.data.title });
 
-    const stream = await withSpan('ai.generate_description', {
-      'ai.model': 'claude-sonnet-4-20250514',
-      'listing.category': parsed.data.category,
-    }, () => generateListingDescription(parsed.data as ListingContext));
+    const stream = await withSpan(
+      'ai.generate_description',
+      {
+        'ai.model': 'claude-sonnet-4-20250514',
+        'listing.category': parsed.data.category,
+      },
+      () => generateListingDescription(parsed.data as ListingContext),
+    );
 
     log.done(200);
 

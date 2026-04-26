@@ -21,7 +21,8 @@ import { formatPrice } from '@lumina/shared';
 
 export const metadata: Metadata = {
   title: 'Categories – Lumina',
-  description: 'Browse premium rental listings by category — villas, cabins, treehouses, castles, and more.',
+  description:
+    'Browse premium rental listings by category — villas, cabins, treehouses, castles, and more.',
 };
 
 const CATEGORY_META: Record<
@@ -52,7 +53,8 @@ const CATEGORY_META: Record<
     label: 'Cabins',
     tagline: 'Timber sanctuaries in ancient forests',
     icon: TreePine,
-    gradient: 'from-emerald-500/10 to-emerald-600/5 dark:from-emerald-500/20 dark:to-emerald-600/10',
+    gradient:
+      'from-emerald-500/10 to-emerald-600/5 dark:from-emerald-500/20 dark:to-emerald-600/10',
     iconColor: 'text-emerald-600 dark:text-emerald-400',
   },
   treehouse: {
@@ -146,7 +148,10 @@ async function getFeaturedListings() {
 }
 
 export default async function CategoriesPage() {
-  const [counts, featuredListings] = await Promise.all([getCategoryCounts(), getFeaturedListings()]);
+  const [counts, featuredListings] = await Promise.all([
+    getCategoryCounts(),
+    getFeaturedListings(),
+  ]);
 
   const categories = Object.entries(CATEGORY_META).map(([slug, meta]) => ({
     slug,
@@ -161,7 +166,13 @@ export default async function CategoriesPage() {
       {/* Hero */}
       <section className="relative overflow-hidden bg-slate-900 px-8 py-24 dark:bg-slate-950">
         {/* Decorative grid */}
-        <div className="pointer-events-none absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }} />
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
+          }}
+        />
         <div className="relative mx-auto max-w-[1400px]">
           <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">
             Curated Collections
@@ -183,7 +194,7 @@ export default async function CategoriesPage() {
 
       <div className="mx-auto max-w-[1400px] px-8">
         {/* Category Grid */}
-        <section className="-mt-12 relative z-10">
+        <section className="relative z-10 -mt-12">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {categories.map((cat) => {
               const Icon = cat.icon;
@@ -198,7 +209,9 @@ export default async function CategoriesPage() {
 
                   <div className="relative">
                     <div className="mb-5 flex items-center justify-between">
-                      <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-white shadow-sm transition-transform duration-300 group-hover:scale-110 dark:bg-slate-800 ${cat.iconColor}`}>
+                      <div
+                        className={`flex h-12 w-12 items-center justify-center rounded-xl bg-white shadow-sm transition-transform duration-300 group-hover:scale-110 dark:bg-slate-800 ${cat.iconColor}`}
+                      >
                         <Icon className="h-6 w-6" />
                       </div>
                       <ArrowRight className="h-5 w-5 -translate-x-2 text-slate-300 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 dark:text-slate-600" />
@@ -283,7 +296,10 @@ export default async function CategoriesPage() {
                       {featuredListings[0]!.city}, {featuredListings[0]!.country}
                     </p>
                     <span className="text-lg font-bold text-white">
-                      {formatPrice(Number(featuredListings[0]!.pricePerNight), featuredListings[0]!.currency)}
+                      {formatPrice(
+                        Number(featuredListings[0]!.pricePerNight),
+                        featuredListings[0]!.currency,
+                      )}
                       <span className="text-sm font-normal text-slate-300">/night</span>
                     </span>
                   </div>

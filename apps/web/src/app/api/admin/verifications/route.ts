@@ -15,6 +15,9 @@ export async function GET(request: NextRequest) {
 
     return successResponse(verifications);
   } catch (error) {
-    return errorResponse({ code: 'INTERNAL_ERROR', message: 'Failed to fetch pending verifications' }, 500);
+    return errorResponse(
+      { code: 'INTERNAL_ERROR', message: 'Failed to fetch pending verifications' },
+      500,
+    );
   }
 }

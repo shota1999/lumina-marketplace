@@ -47,11 +47,7 @@ export function HeroDestinationPicker() {
     const q = value.trim().toLowerCase();
     if (!q) return destinations.slice(0, 8);
     return destinations
-      .filter(
-        (d) =>
-          d.city.toLowerCase().includes(q) ||
-          d.country.toLowerCase().includes(q),
-      )
+      .filter((d) => d.city.toLowerCase().includes(q) || d.country.toLowerCase().includes(q))
       .slice(0, 8);
   }, [destinations, value]);
 
@@ -59,10 +55,7 @@ export function HeroDestinationPicker() {
     const q = value.trim().toLowerCase();
     if (!q) return null;
     return (
-      destinations.find(
-        (d) =>
-          d.city.toLowerCase() === q || d.country.toLowerCase() === q,
-      ) ?? null
+      destinations.find((d) => d.city.toLowerCase() === q || d.country.toLowerCase() === q) ?? null
     );
   }, [destinations, value]);
 
@@ -83,9 +76,7 @@ export function HeroDestinationPicker() {
       ref={containerRef}
       className="relative flex w-56 flex-shrink-0 flex-col items-start px-6 py-2"
     >
-      <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-        Where
-      </span>
+      <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Where</span>
       <input
         ref={inputRef}
         name={inputName}
@@ -129,7 +120,7 @@ export function HeroDestinationPicker() {
           id={listboxId}
           role="listbox"
           aria-label="Suggested destinations"
-          className="absolute left-0 top-full z-[60] mt-3 w-80 max-h-[360px] overflow-y-auto rounded-2xl border border-slate-100 bg-white p-2 shadow-2xl"
+          className="absolute left-0 top-full z-[60] mt-3 max-h-[360px] w-80 overflow-y-auto rounded-2xl border border-slate-100 bg-white p-2 shadow-2xl"
         >
           {!value.trim() && (
             <li className="px-3 pb-1 pt-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
@@ -155,12 +146,8 @@ export function HeroDestinationPicker() {
                 <MapPin className="h-4 w-4 text-slate-500" />
               </span>
               <span className="min-w-0 flex-1">
-                <span className="block truncate font-semibold text-slate-900">
-                  {d.city}
-                </span>
-                <span className="block truncate text-xs text-slate-500">
-                  {d.country}
-                </span>
+                <span className="block truncate font-semibold text-slate-900">{d.city}</span>
+                <span className="block truncate text-xs text-slate-500">{d.country}</span>
               </span>
               <span className="shrink-0 text-[11px] font-medium text-slate-400">
                 {d.count} {d.count === 1 ? 'stay' : 'stays'}

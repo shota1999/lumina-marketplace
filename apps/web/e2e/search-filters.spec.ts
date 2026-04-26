@@ -38,7 +38,9 @@ test.describe('Search Filters', () => {
     await expect(page).toHaveURL(/[?&]category=villa/);
   });
 
-  test('toggling a property type adds, then removes the param on second click', async ({ page }) => {
+  test('toggling a property type adds, then removes the param on second click', async ({
+    page,
+  }) => {
     await clickCategory(page, 'Villa');
     await expect(page).toHaveURL(/[?&]category=villa/);
     await clickCategory(page, 'Villa');
@@ -145,7 +147,9 @@ test.describe('Search Filters', () => {
     await expect(page).toHaveURL(/[?&]priceMax=\d+/);
   });
 
-  test('selecting a property type fires a /api/search request with that filter', async ({ page }) => {
+  test('selecting a property type fires a /api/search request with that filter', async ({
+    page,
+  }) => {
     const responsePromise = page.waitForResponse(
       (res) => res.url().includes('/api/search') && res.url().includes('category=villa'),
       { timeout: 20_000 },

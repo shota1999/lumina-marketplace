@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  ArrowLeft,
-  CalendarDays,
-  CreditCard,
-  Loader2,
-  Shield,
-  Users,
-} from 'lucide-react';
+import { ArrowLeft, CalendarDays, CreditCard, Loader2, Shield, Users } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
@@ -70,8 +63,7 @@ export default function CheckoutPage() {
     if (canceled) {
       toast({
         title: 'Payment canceled',
-        description:
-          'You can review the details below and try paying again when ready.',
+        description: 'You can review the details below and try paying again when ready.',
       });
     }
   }, [canceled]);
@@ -133,9 +125,7 @@ export default function CheckoutPage() {
           // Fallback: compute from booking data
           const start = new Date(bookingData.startDate + 'T00:00:00');
           const end = new Date(bookingData.endDate + 'T00:00:00');
-          const nights = Math.round(
-            (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24),
-          );
+          const nights = Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
           const pricePerNight = Number(bookingData.listing.pricePerNight);
           const subtotal = pricePerNight * nights;
           const serviceFee = Math.round(subtotal * 0.12);
@@ -357,11 +347,8 @@ export default function CheckoutPage() {
             <div className="mt-8 flex items-center gap-4 rounded-xl bg-slate-50 p-4 dark:bg-slate-800/50">
               <Shield className="h-5 w-5 shrink-0 fill-slate-600 text-slate-600 dark:fill-slate-400 dark:text-slate-400" />
               <p className="text-xs leading-relaxed text-slate-500 dark:text-slate-400">
-                <span className="font-bold text-slate-900 dark:text-slate-50">
-                  Secure Payment.
-                </span>{' '}
-                Your payment is processed securely through Stripe. We never
-                store your card details.
+                <span className="font-bold text-slate-900 dark:text-slate-50">Secure Payment.</span>{' '}
+                Your payment is processed securely through Stripe. We never store your card details.
               </p>
             </div>
           </div>
@@ -379,8 +366,7 @@ export default function CheckoutPage() {
                 {/* Nightly breakdown */}
                 <div className="flex items-center justify-between text-sm text-slate-700 dark:text-slate-300">
                   <span className="underline decoration-slate-300/30">
-                    {formatPrice(priceQuote.pricePerNight, currency)} x{' '}
-                    {priceQuote.nights} night
+                    {formatPrice(priceQuote.pricePerNight, currency)} x {priceQuote.nights} night
                     {priceQuote.nights !== 1 ? 's' : ''}
                   </span>
                   <span>{formatPrice(priceQuote.subtotal, currency)}</span>
@@ -388,9 +374,7 @@ export default function CheckoutPage() {
 
                 {/* Service fee */}
                 <div className="flex items-center justify-between text-sm text-slate-700 dark:text-slate-300">
-                  <span className="underline decoration-slate-300/30">
-                    Lumina Service fee
-                  </span>
+                  <span className="underline decoration-slate-300/30">Lumina Service fee</span>
                   <span>{formatPrice(priceQuote.serviceFee, currency)}</span>
                 </div>
 
@@ -421,7 +405,9 @@ export default function CheckoutPage() {
                 Use Stripe&apos;s test card on the next screen:
               </p>
               <ul className="mt-1.5 space-y-0.5 font-mono text-[11px] text-amber-900 dark:text-amber-100">
-                <li>Card: <span className="font-bold">4242 4242 4242 4242</span></li>
+                <li>
+                  Card: <span className="font-bold">4242 4242 4242 4242</span>
+                </li>
                 <li>Expiry: any future date (e.g. 12&nbsp;/&nbsp;34)</li>
                 <li>CVC: any 3 digits · ZIP: any 5 digits</li>
               </ul>

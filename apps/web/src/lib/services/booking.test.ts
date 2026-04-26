@@ -22,7 +22,14 @@ vi.mock('@lumina/db', () => ({
       }),
     }),
   }),
-  bookings: { id: 'id', listingId: 'listingId', status: 'status', startDate: 'startDate', endDate: 'endDate', userId: 'userId' },
+  bookings: {
+    id: 'id',
+    listingId: 'listingId',
+    status: 'status',
+    startDate: 'startDate',
+    endDate: 'endDate',
+    userId: 'userId',
+  },
   listings: { id: 'id', status: 'status' },
 }));
 
@@ -37,7 +44,11 @@ vi.mock('@/lib/error-capture', () => ({
 vi.mock('@/lib/logger', () => ({
   logger: { info: vi.fn(), warn: vi.fn(), error: vi.fn(), debug: vi.fn() },
   createRequestLogger: () => ({
-    info: vi.fn(), warn: vi.fn(), error: vi.fn(), debug: vi.fn(), done: vi.fn(),
+    info: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
+    debug: vi.fn(),
+    done: vi.fn(),
   }),
 }));
 

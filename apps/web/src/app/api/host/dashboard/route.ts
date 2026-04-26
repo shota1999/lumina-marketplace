@@ -21,12 +21,7 @@ export async function GET(request: NextRequest) {
       })
       .from(bookings)
       .innerJoin(listings, eq(bookings.listingId, listings.id))
-      .where(
-        and(
-          eq(listings.hostId, user.id),
-          eq(bookings.status, 'confirmed'),
-        ),
-      );
+      .where(and(eq(listings.hostId, user.id), eq(bookings.status, 'confirmed')));
 
     const [upcomingResult] = await db
       .select({
@@ -63,6 +58,9 @@ export async function GET(request: NextRequest) {
       averageRating: Number(Number(ratingResult?.averageRating ?? 0).toFixed(2)),
     });
   } catch (error) {
-    return errorResponse({ code: 'INTERNAL_ERROR', message: 'Failed to fetch dashboard stats' }, 500);
+    return errorResponse(
+      { code: 'INTERNAL_ERROR', message: 'Failed to fetch dashboard stats' },
+      500,
+    );
   }
 }

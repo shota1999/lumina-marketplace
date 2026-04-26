@@ -15,6 +15,9 @@ export async function GET(request: NextRequest) {
 
     return successResponse(verification);
   } catch (error) {
-    return errorResponse({ code: 'INTERNAL_ERROR', message: 'Failed to fetch verification status' }, 500);
+    return errorResponse(
+      { code: 'INTERNAL_ERROR', message: 'Failed to fetch verification status' },
+      500,
+    );
   }
 }

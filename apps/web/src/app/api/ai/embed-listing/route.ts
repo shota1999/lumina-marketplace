@@ -50,19 +50,23 @@ export async function POST(request: NextRequest) {
       return errorResponse({ code: 'NOT_FOUND', message: 'Listing not found' }, 404);
     }
 
-    const result = await withSpan('ai.embed_listing', {
-      [SpanAttr.LISTING_ID]: listingId,
-    }, async () => {
-      const text = buildListingEmbeddingText(listing);
-      const embedding = await generateEmbedding(text);
+    const result = await withSpan(
+      'ai.embed_listing',
+      {
+        [SpanAttr.LISTING_ID]: listingId,
+      },
+      async () => {
+        const text = buildListingEmbeddingText(listing);
+        const embedding = await generateEmbedding(text);
 
-      await db
-        .update(listings)
-        .set({ embedding, updatedAt: new Date() })
-        .where(eq(listings.id, listingId));
+        await db
+          .update(listings)
+          .set({ embedding, updatedAt: new Date() })
+          .where(eq(listings.id, listingId));
 
-      return { dimensions: embedding.length };
-    });
+        return { dimensions: embedding.length };
+      },
+    );
 
     log.info('Listing embedded', { listingId, dimensions: result.dimensions });
     log.done(200);

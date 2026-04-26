@@ -46,21 +46,25 @@ function setItems(ids: string[]) {
 export function useCompare() {
   const items = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  const toggle = useCallback(
-    (id: string) => {
-      const current = getSnapshot();
-      if (current.includes(id)) {
-        setItems(current.filter((i) => i !== id));
-        toast({ title: 'Removed from compare' });
-      } else if (current.length < MAX_COMPARE) {
-        setItems([...current, id]);
-        toast({ title: 'Added to compare', description: `${current.length + 1} of ${MAX_COMPARE} slots used` });
-      } else {
-        toast({ title: 'Compare list full', description: `Maximum ${MAX_COMPARE} listings can be compared`, variant: 'destructive' });
-      }
-    },
-    [],
-  );
+  const toggle = useCallback((id: string) => {
+    const current = getSnapshot();
+    if (current.includes(id)) {
+      setItems(current.filter((i) => i !== id));
+      toast({ title: 'Removed from compare' });
+    } else if (current.length < MAX_COMPARE) {
+      setItems([...current, id]);
+      toast({
+        title: 'Added to compare',
+        description: `${current.length + 1} of ${MAX_COMPARE} slots used`,
+      });
+    } else {
+      toast({
+        title: 'Compare list full',
+        description: `Maximum ${MAX_COMPARE} listings can be compared`,
+        variant: 'destructive',
+      });
+    }
+  }, []);
 
   const clear = useCallback(() => {
     setItems([]);

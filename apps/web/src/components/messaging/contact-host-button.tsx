@@ -28,16 +28,28 @@ export function ContactHostButton({ listingId, hostName }: ContactHostButtonProp
       });
       const json = await res.json();
       if (res.status === 401) {
-        toast({ title: 'Sign in required', description: 'Please sign in to contact the host', variant: 'destructive' });
+        toast({
+          title: 'Sign in required',
+          description: 'Please sign in to contact the host',
+          variant: 'destructive',
+        });
         return;
       }
       if (!res.ok || !json.success) {
-        toast({ title: 'Failed to send', description: json.error?.message ?? 'Something went wrong', variant: 'destructive' });
+        toast({
+          title: 'Failed to send',
+          description: json.error?.message ?? 'Something went wrong',
+          variant: 'destructive',
+        });
         return;
       }
       router.push(`/messages/${json.data.conversationId}`);
     } catch {
-      toast({ title: 'Network error', description: 'Could not send message', variant: 'destructive' });
+      toast({
+        title: 'Network error',
+        description: 'Could not send message',
+        variant: 'destructive',
+      });
     } finally {
       setSending(false);
     }
@@ -77,7 +89,11 @@ export function ContactHostButton({ listingId, hostName }: ContactHostButtonProp
         disabled={sending || !message.trim()}
         className="flex w-full items-center justify-center gap-2 rounded-lg bg-slate-900 py-3 text-sm font-semibold text-white transition-all hover:bg-slate-800 active:scale-[0.98] disabled:opacity-50 dark:bg-slate-50 dark:text-slate-900"
       >
-        {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <MessageSquare className="h-4 w-4" />}
+        {sending ? (
+          <Loader2 className="h-4 w-4 animate-spin" />
+        ) : (
+          <MessageSquare className="h-4 w-4" />
+        )}
         {sending ? 'Sending...' : 'Send Message'}
       </button>
     </div>

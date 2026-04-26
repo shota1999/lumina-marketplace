@@ -62,10 +62,7 @@ export function HeroGuestPicker() {
       ref={containerRef}
       className="relative flex w-56 flex-shrink-0 flex-col items-start px-6 py-2"
     >
-      <span
-        id={labelId}
-        className="text-[10px] font-bold uppercase tracking-widest text-slate-400"
-      >
+      <span id={labelId} className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
         Who
       </span>
       <button
@@ -91,9 +88,7 @@ export function HeroGuestPicker() {
               <Users className="h-4 w-4" />
               <div className="flex flex-col">
                 <span className="text-sm font-semibold">Guests</span>
-                <span className="text-[11px] font-normal text-slate-500">
-                  Up to {max} per stay
-                </span>
+                <span className="text-[11px] font-normal text-slate-500">Up to {max} per stay</span>
               </div>
             </div>
             <div className="flex items-center gap-3">

@@ -6,10 +6,7 @@ import { eq, and } from 'drizzle-orm';
 import { errorResponse, successResponse } from '@/lib/api-response';
 import { getCurrentUser } from '@/lib/auth';
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const user = await getCurrentUser();
     if (!user) {
@@ -22,15 +19,13 @@ export async function PATCH(
     await db
       .update(notifications)
       .set({ readAt: new Date() })
-      .where(
-        and(
-          eq(notifications.id, id),
-          eq(notifications.userId, user.id),
-        ),
-      );
+      .where(and(eq(notifications.id, id), eq(notifications.userId, user.id)));
 
     return successResponse({ success: true });
   } catch (error) {
-    return errorResponse({ code: 'INTERNAL_ERROR', message: 'Failed to mark notification as read' }, 500);
+    return errorResponse(
+      { code: 'INTERNAL_ERROR', message: 'Failed to mark notification as read' },
+      500,
+    );
   }
 }

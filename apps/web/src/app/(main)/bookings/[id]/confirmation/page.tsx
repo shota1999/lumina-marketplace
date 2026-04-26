@@ -84,7 +84,10 @@ export default function BookingConfirmationPage() {
             {/* Success icon */}
             <div className="mb-6 flex justify-center">
               <div className="flex h-20 w-20 items-center justify-center rounded-full bg-slate-50 dark:bg-slate-800">
-                <CheckCircle2 className="h-12 w-12 text-slate-900 dark:text-slate-100" strokeWidth={1.5} />
+                <CheckCircle2
+                  className="h-12 w-12 text-slate-900 dark:text-slate-100"
+                  strokeWidth={1.5}
+                />
               </div>
             </div>
 

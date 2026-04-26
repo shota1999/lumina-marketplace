@@ -29,10 +29,7 @@ const vector = customType<{ data: number[]; driverData: string }>({
   },
   fromDriver(value: string): number[] {
     // pgvector returns "[0.1,0.2,...]" format
-    return value
-      .slice(1, -1)
-      .split(',')
-      .map(Number);
+    return value.slice(1, -1).split(',').map(Number);
   },
 });
 
@@ -70,13 +67,22 @@ export const paymentStatusEnum = pgEnum('payment_status', [
   'refunded',
   'partially_refunded',
 ]);
-export const payoutStatusEnum = pgEnum('payout_status', ['pending', 'processing', 'completed', 'failed']);
+export const payoutStatusEnum = pgEnum('payout_status', [
+  'pending',
+  'processing',
+  'completed',
+  'failed',
+]);
 export const cancellationPolicyTypeEnum = pgEnum('cancellation_policy_type', [
   'flexible',
   'moderate',
   'strict',
 ]);
-export const verificationStatusEnum = pgEnum('verification_status', ['pending', 'approved', 'rejected']);
+export const verificationStatusEnum = pgEnum('verification_status', [
+  'pending',
+  'approved',
+  'rejected',
+]);
 export const notificationTypeEnum = pgEnum('notification_type', [
   'booking_confirmed',
   'booking_cancelled',
@@ -107,7 +113,10 @@ export const users = pgTable('users', {
   stripeCustomerId: varchar('stripe_customer_id', { length: 255 }),
   stripeConnectAccountId: varchar('stripe_connect_account_id', { length: 255 }),
   isVerified: boolean('is_verified').notNull().default(false),
-  notificationPreferences: jsonb('notification_preferences').$type<Record<string, unknown>>().notNull().default({}),
+  notificationPreferences: jsonb('notification_preferences')
+    .$type<Record<string, unknown>>()
+    .notNull()
+    .default({}),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 });
@@ -153,7 +162,9 @@ export const listings = pgTable(
       .references(() => users.id),
     partnerId: uuid('partner_id').references(() => partners.id),
     featured: boolean('featured').notNull().default(false),
-    cancellationPolicyType: cancellationPolicyTypeEnum('cancellation_policy_type').notNull().default('flexible'),
+    cancellationPolicyType: cancellationPolicyTypeEnum('cancellation_policy_type')
+      .notNull()
+      .default('flexible'),
     cleaningFee: decimal('cleaning_fee', { precision: 10, scale: 2 }).notNull().default('0'),
     /** pgvector embedding for semantic search (text-embedding-3-small, 1536 dims) */
     embedding: vector('embedding'),
@@ -531,9 +542,7 @@ export const passwordResetTokens = pgTable(
     usedAt: timestamp('used_at', { withTimezone: true }),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   },
-  (table) => [
-    index('password_reset_tokens_user_id_idx').on(table.userId),
-  ],
+  (table) => [index('password_reset_tokens_user_id_idx').on(table.userId)],
 );
 
 // OAuth accounts (social login)
@@ -625,13 +634,24 @@ export const bookingsRelations = relations(bookings, ({ one, many }) => ({
 
 export const conversationsRelations = relations(conversations, ({ one, many }) => ({
   listing: one(listings, { fields: [conversations.listingId], references: [listings.id] }),
-  host: one(users, { fields: [conversations.hostId], references: [users.id], relationName: 'hostConversations' }),
-  guest: one(users, { fields: [conversations.guestId], references: [users.id], relationName: 'guestConversations' }),
+  host: one(users, {
+    fields: [conversations.hostId],
+    references: [users.id],
+    relationName: 'hostConversations',
+  }),
+  guest: one(users, {
+    fields: [conversations.guestId],
+    references: [users.id],
+    relationName: 'guestConversations',
+  }),
   messages: many(messages),
 }));
 
 export const messagesRelations = relations(messages, ({ one }) => ({
-  conversation: one(conversations, { fields: [messages.conversationId], references: [conversations.id] }),
+  conversation: one(conversations, {
+    fields: [messages.conversationId],
+    references: [conversations.id],
+  }),
   sender: one(users, { fields: [messages.senderId], references: [users.id] }),
 }));
 
@@ -661,7 +681,11 @@ export const cancellationPoliciesRelations = relations(cancellationPolicies, ({ 
 }));
 
 export const identityVerificationsRelations = relations(identityVerifications, ({ one }) => ({
-  user: one(users, { fields: [identityVerifications.userId], references: [users.id], relationName: 'userVerifications' }),
+  user: one(users, {
+    fields: [identityVerifications.userId],
+    references: [users.id],
+    relationName: 'userVerifications',
+  }),
   reviewer: one(users, { fields: [identityVerifications.reviewedBy], references: [users.id] }),
 }));
 

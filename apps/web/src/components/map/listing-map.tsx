@@ -98,9 +98,7 @@ export function ListingMap({
     zoom: 4,
   });
   const [mapZoom, setMapZoom] = useState(4);
-  const [mapBounds, setMapBounds] = useState<
-    [number, number, number, number] | null
-  >(null);
+  const [mapBounds, setMapBounds] = useState<[number, number, number, number] | null>(null);
   const [showSearchButton, setShowSearchButton] = useState(false);
   const [mapStyle, setMapStyle] = useState<MapStyleKey>('streets');
   const [showStylePicker, setShowStylePicker] = useState(false);
@@ -127,7 +125,10 @@ export function ListingMap({
 
   // ---- Fit bounds when listings change ----
   useEffect(() => {
-    const key = listings.map((l) => l.id).sort().join(',');
+    const key = listings
+      .map((l) => l.id)
+      .sort()
+      .join(',');
     if (key === listingsKeyRef.current) return;
     listingsKeyRef.current = key;
     hasFittedRef.current = false;
@@ -158,12 +159,9 @@ export function ListingMap({
   }, [listings, clusters]); // clusters dep forces re-eval after map loads
 
   // ---- Map event handlers ----
-  const handleMove = useCallback(
-    (evt: ViewStateChangeEvent) => {
-      setViewState(evt.viewState);
-    },
-    [],
-  );
+  const handleMove = useCallback((evt: ViewStateChangeEvent) => {
+    setViewState(evt.viewState);
+  }, []);
 
   const handleMoveEnd = useCallback(
     (evt: ViewStateChangeEvent) => {
@@ -237,8 +235,8 @@ export function ListingMap({
   // ---- No token fallback ----
   if (!mapboxToken) {
     return (
-      <div className="flex h-full min-h-[400px] items-center justify-center rounded-lg border bg-muted">
-        <p className="text-sm text-muted-foreground">
+      <div className="bg-muted flex h-full min-h-[400px] items-center justify-center rounded-lg border">
+        <p className="text-muted-foreground text-sm">
           Set NEXT_PUBLIC_MAPBOX_TOKEN to enable the map
         </p>
       </div>
@@ -323,7 +321,7 @@ export function ListingMap({
       {showSearchButton && searchThisArea && (
         <button
           onClick={handleSearchArea}
-          className="absolute left-1/2 top-3 z-10 -translate-x-1/2 rounded-full border border-border bg-background px-4 py-2 text-sm font-semibold shadow-lg transition-all hover:bg-accent hover:shadow-xl active:scale-95"
+          className="border-border bg-background hover:bg-accent absolute left-1/2 top-3 z-10 -translate-x-1/2 rounded-full border px-4 py-2 text-sm font-semibold shadow-lg transition-all hover:shadow-xl active:scale-95"
         >
           Search this area
         </button>
@@ -332,7 +330,7 @@ export function ListingMap({
       {/* Map style toggle */}
       <div className="absolute bottom-6 left-3 z-10">
         {showStylePicker ? (
-          <div className="flex gap-1 rounded-xl border border-border bg-background p-1 shadow-lg">
+          <div className="border-border bg-background flex gap-1 rounded-xl border p-1 shadow-lg">
             {(Object.keys(MAP_STYLES) as MapStyleKey[]).map((key) => (
               <button
                 key={key}
@@ -353,7 +351,7 @@ export function ListingMap({
         ) : (
           <button
             onClick={() => setShowStylePicker(true)}
-            className="flex items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-2 text-xs font-semibold text-muted-foreground shadow-md transition-all hover:bg-accent hover:text-foreground"
+            className="border-border bg-background text-muted-foreground hover:bg-accent hover:text-foreground flex items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-semibold shadow-md transition-all"
           >
             <Layers className="h-3.5 w-3.5" />
             {MAP_STYLES[mapStyle].label}
@@ -363,17 +361,17 @@ export function ListingMap({
 
       {/* Listing count badge */}
       {listings.length > 0 && (
-        <div className="absolute bottom-6 right-3 z-10 rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold text-muted-foreground shadow-md">
+        <div className="border-border bg-background text-muted-foreground absolute bottom-6 right-3 z-10 rounded-lg border px-3 py-1.5 text-xs font-semibold shadow-md">
           {listings.length} listing{listings.length !== 1 ? 's' : ''}
         </div>
       )}
 
       {/* Empty state overlay */}
       {listings.length === 0 && (
-        <div className="absolute inset-0 flex items-center justify-center bg-background/60 backdrop-blur-[2px]">
-          <div className="rounded-lg bg-background p-6 text-center shadow-lg">
+        <div className="bg-background/60 absolute inset-0 flex items-center justify-center backdrop-blur-[2px]">
+          <div className="bg-background rounded-lg p-6 text-center shadow-lg">
             <p className="mb-1 font-medium">No listings in this area</p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Try zooming out or adjusting your filters
             </p>
           </div>
@@ -417,22 +415,20 @@ function PriceMarker({
         }}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        className={`
-          map-marker-enter group/marker relative flex items-center rounded-full px-2.5 py-1 text-xs font-bold
-          shadow-md transition-all duration-200 cursor-pointer select-none border
-          ${
-            active
-              ? 'bg-primary text-primary-foreground scale-110 shadow-lg z-10 ring-2 ring-primary/30 border-primary'
-              : 'bg-background text-foreground hover:bg-primary hover:text-primary-foreground hover:scale-110 hover:shadow-lg border-border/50'
-          }
-        `}
+        className={`map-marker-enter group/marker relative flex cursor-pointer select-none items-center rounded-full border px-2.5 py-1 text-xs font-bold shadow-md transition-all duration-200 ${
+          active
+            ? 'bg-primary text-primary-foreground ring-primary/30 border-primary z-10 scale-110 shadow-lg ring-2'
+            : 'bg-background text-foreground hover:bg-primary hover:text-primary-foreground border-border/50 hover:scale-110 hover:shadow-lg'
+        } `}
         style={{ whiteSpace: 'nowrap' }}
       >
         {formatPrice(listing.pricePerNight, listing.currency)}
         {/* Arrow */}
         <span
           className={`absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 border-b border-r ${
-            active ? 'bg-primary border-primary' : 'bg-background border-border/50 group-hover/marker:bg-primary group-hover/marker:border-primary'
+            active
+              ? 'bg-primary border-primary'
+              : 'bg-background border-border/50 group-hover/marker:bg-primary group-hover/marker:border-primary'
           }`}
         />
       </button>
@@ -461,7 +457,7 @@ function ClusterMarker({
           e.stopPropagation();
           onClick();
         }}
-        className="map-marker-enter cluster-marker-pulse flex items-center justify-center rounded-full bg-primary text-primary-foreground font-bold shadow-lg transition-transform hover:scale-110 cursor-pointer border-2 border-primary-foreground/20"
+        className="map-marker-enter cluster-marker-pulse bg-primary text-primary-foreground border-primary-foreground/20 flex cursor-pointer items-center justify-center rounded-full border-2 font-bold shadow-lg transition-transform hover:scale-110"
         style={{ width: size, height: size, fontSize: size > 40 ? 14 : 12 }}
       >
         {count}
@@ -471,8 +467,7 @@ function ClusterMarker({
 }
 
 function ListingPopup({ listing }: { listing: Listing }) {
-  const primaryImage =
-    listing.images.find((img) => img.isPrimary) ?? listing.images[0];
+  const primaryImage = listing.images.find((img) => img.isPrimary) ?? listing.images[0];
 
   return (
     <Link
@@ -491,26 +486,24 @@ function ListingPopup({ listing }: { listing: Listing }) {
         </div>
       )}
       <div className="p-3">
-        <h4 className="mb-0.5 line-clamp-1 text-sm font-semibold text-foreground">
+        <h4 className="text-foreground mb-0.5 line-clamp-1 text-sm font-semibold">
           {listing.title}
         </h4>
-        <p className="mb-1.5 text-xs text-muted-foreground">
+        <p className="text-muted-foreground mb-1.5 text-xs">
           {listing.location.city}
           {listing.location.state ? `, ${listing.location.state}` : ''}
           {listing.location.country ? `, ${listing.location.country}` : ''}
         </p>
         <div className="flex items-center justify-between">
-          <span className="text-sm font-semibold text-foreground">
+          <span className="text-foreground text-sm font-semibold">
             {formatPrice(listing.pricePerNight, listing.currency)}
-            <span className="font-normal text-muted-foreground"> / night</span>
+            <span className="text-muted-foreground font-normal"> / night</span>
           </span>
           {listing.rating > 0 && (
-            <span className="flex items-center gap-0.5 text-xs text-muted-foreground">
+            <span className="text-muted-foreground flex items-center gap-0.5 text-xs">
               <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
               {Number(listing.rating).toFixed(1)}
-              {listing.reviewCount > 0 && (
-                <span className="ml-0.5">({listing.reviewCount})</span>
-              )}
+              {listing.reviewCount > 0 && <span className="ml-0.5">({listing.reviewCount})</span>}
             </span>
           )}
         </div>

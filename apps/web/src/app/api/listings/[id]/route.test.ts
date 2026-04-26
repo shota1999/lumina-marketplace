@@ -40,7 +40,14 @@ vi.mock('@lumina/db', () => ({
   }),
   listings: { slug: 'slug', status: 'status', category: 'category', id: 'id', rating: 'rating' },
   listingImages: {},
-  reviews: { listingId: 'listingId', userId: 'userId', id: 'id', rating: 'rating', comment: 'comment', createdAt: 'createdAt' },
+  reviews: {
+    listingId: 'listingId',
+    userId: 'userId',
+    id: 'id',
+    rating: 'rating',
+    comment: 'comment',
+    createdAt: 'createdAt',
+  },
   users: { id: 'id', name: 'name', avatarUrl: 'avatarUrl' },
 }));
 
@@ -71,7 +78,15 @@ const MOCK_LISTING = {
   createdAt: new Date('2024-01-01'),
   updatedAt: new Date('2024-01-01'),
   images: [
-    { id: 'img-1', url: 'https://example.com/1.jpg', alt: 'Villa', width: 1200, height: 800, isPrimary: true, sortOrder: 0 },
+    {
+      id: 'img-1',
+      url: 'https://example.com/1.jpg',
+      alt: 'Villa',
+      width: 1200,
+      height: 800,
+      isPrimary: true,
+      sortOrder: 0,
+    },
   ],
 };
 

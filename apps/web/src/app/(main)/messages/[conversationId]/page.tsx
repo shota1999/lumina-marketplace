@@ -44,21 +44,12 @@ function formatMessageTime(dateStr: string): string {
 
   if (isToday) return time;
   if (isYesterday) return `Yesterday ${time}`;
-  return (
-    date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) +
-    ' ' +
-    time
-  );
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' ' + time;
 }
 
-function shouldShowTimestamp(
-  current: Message,
-  previous: Message | undefined,
-): boolean {
+function shouldShowTimestamp(current: Message, previous: Message | undefined): boolean {
   if (!previous) return true;
-  const diff =
-    new Date(current.createdAt).getTime() -
-    new Date(previous.createdAt).getTime();
+  const diff = new Date(current.createdAt).getTime() - new Date(previous.createdAt).getTime();
   return diff > 5 * 60 * 1000 || current.senderId !== previous.senderId;
 }
 
@@ -100,9 +91,7 @@ export default function ConversationPage() {
   const params = useParams();
   const conversationId = params.conversationId as string;
 
-  const [conversation, setConversation] = useState<ConversationDetail | null>(
-    null,
-  );
+  const [conversation, setConversation] = useState<ConversationDetail | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
@@ -195,25 +184,18 @@ export default function ConversationPage() {
     setMessages((prev) => [...prev, optimisticMessage]);
 
     try {
-      const res = await fetch(
-        `/api/conversations/${conversationId}/messages`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ content }),
-        },
-      );
+      const res = await fetch(`/api/conversations/${conversationId}/messages`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content }),
+      });
       const data = await res.json();
       if (data?.success && data.data) {
-        setMessages((prev) =>
-          prev.map((m) => (m.id === optimisticMessage.id ? data.data : m)),
-        );
+        setMessages((prev) => prev.map((m) => (m.id === optimisticMessage.id ? data.data : m)));
       }
     } catch {
       // Remove optimistic message on failure
-      setMessages((prev) =>
-        prev.filter((m) => m.id !== optimisticMessage.id),
-      );
+      setMessages((prev) => prev.filter((m) => m.id !== optimisticMessage.id));
     } finally {
       setSending(false);
     }
@@ -238,7 +220,7 @@ export default function ConversationPage() {
         </p>
         <Link
           href="/messages"
-          className="inline-flex items-center justify-center rounded-lg bg-slate-900 dark:bg-slate-50 px-10 py-4 text-sm font-bold text-white dark:text-slate-900 shadow-lg shadow-slate-900/10 transition-opacity hover:opacity-90"
+          className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-10 py-4 text-sm font-bold text-white shadow-lg shadow-slate-900/10 transition-opacity hover:opacity-90 dark:bg-slate-50 dark:text-slate-900"
         >
           Back to messages
         </Link>
@@ -277,10 +259,7 @@ export default function ConversationPage() {
         </div>
 
         {/* Messages area */}
-        <div
-          ref={messagesContainerRef}
-          className="flex-1 overflow-y-auto px-5 py-6"
-        >
+        <div ref={messagesContainerRef} className="flex-1 overflow-y-auto px-5 py-6">
           {messages.length === 0 ? (
             <div className="flex h-full flex-col items-center justify-center text-center">
               <p className="text-sm text-slate-400 dark:text-slate-500">
@@ -291,16 +270,14 @@ export default function ConversationPage() {
             <div className="space-y-1">
               {messages.map((message, index) => {
                 const isOwn = message.senderId === currentUserId;
-                const prevMessage =
-                  index > 0 ? messages[index - 1] : undefined;
+                const prevMessage = index > 0 ? messages[index - 1] : undefined;
                 const showTime = shouldShowTimestamp(message, prevMessage);
-                const isNewSender =
-                  !prevMessage || prevMessage.senderId !== message.senderId;
+                const isNewSender = !prevMessage || prevMessage.senderId !== message.senderId;
 
                 return (
                   <div key={message.id}>
                     {showTime && (
-                      <p className="py-3 text-center text-[10px] uppercase tracking-widest text-slate-400 dark:text-slate-500 font-semibold">
+                      <p className="py-3 text-center text-[10px] font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500">
                         {formatMessageTime(message.createdAt)}
                       </p>
                     )}
@@ -344,7 +321,7 @@ export default function ConversationPage() {
             <button
               type="submit"
               disabled={!newMessage.trim() || sending}
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-slate-900 text-white shadow-sm transition-all hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed dark:bg-slate-50 dark:text-slate-900"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-slate-900 text-white shadow-sm transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-slate-50 dark:text-slate-900"
               aria-label="Send message"
             >
               {sending ? (

@@ -55,9 +55,7 @@ export function middleware(request: NextRequest) {
   // ---- 5. Geo-based locale hint ----
   // Geo data is available on Vercel/Cloudflare; header-based fallback for other providers
   const country =
-    request.headers.get('x-vercel-ip-country') ??
-    request.headers.get('cf-ipcountry') ??
-    null;
+    request.headers.get('x-vercel-ip-country') ?? request.headers.get('cf-ipcountry') ?? null;
 
   if (country) {
     response.headers.set('X-Geo-Country', country);

@@ -76,7 +76,10 @@ function ResetPasswordForm() {
 
       if (data.success) {
         setSuccess(true);
-        toast({ title: 'Password reset!', description: 'You can now sign in with your new password.' });
+        toast({
+          title: 'Password reset!',
+          description: 'You can now sign in with your new password.',
+        });
       } else {
         const msg = data.error?.message ?? 'Something went wrong';
         setError(msg);
@@ -84,7 +87,11 @@ function ResetPasswordForm() {
       }
     } catch {
       setError('Something went wrong. Please try again.');
-      toast({ title: 'Something went wrong', description: 'Please try again', variant: 'destructive' });
+      toast({
+        title: 'Something went wrong',
+        description: 'Please try again',
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }
@@ -233,7 +240,10 @@ export default function ResetPasswordPage() {
     <div className="w-full max-w-md">
       {/* Branding */}
       <div className="mb-12 text-center">
-        <Link href="/" className="mb-2 inline-block text-3xl font-bold tracking-tighter text-slate-900 dark:text-slate-50">
+        <Link
+          href="/"
+          className="mb-2 inline-block text-3xl font-bold tracking-tighter text-slate-900 dark:text-slate-50"
+        >
           Lumina
         </Link>
         <p className="font-medium tracking-tight text-slate-500 dark:text-slate-400">
@@ -244,7 +254,9 @@ export default function ResetPasswordPage() {
       {/* Card */}
       <div className="overflow-hidden rounded-xl bg-white shadow-[0px_20px_40px_-10px_rgba(3,7,18,0.06)] dark:bg-slate-900">
         <div className="p-8 md:p-10">
-          <Suspense fallback={<div className="py-12 text-center text-sm text-slate-400">Loading...</div>}>
+          <Suspense
+            fallback={<div className="py-12 text-center text-sm text-slate-400">Loading...</div>}
+          >
             <ResetPasswordForm />
           </Suspense>
         </div>

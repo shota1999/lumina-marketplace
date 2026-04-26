@@ -157,10 +157,7 @@ export async function processRefund(
   const stripe = getStripe();
 
   const payment = await db.query.payments.findFirst({
-    where: and(
-      eq(payments.bookingId, bookingId),
-      eq(payments.status, 'succeeded'),
-    ),
+    where: and(eq(payments.bookingId, bookingId), eq(payments.status, 'succeeded')),
   });
 
   if (!payment) {
@@ -171,9 +168,7 @@ export async function processRefund(
     throw new Error('Payment has no Stripe payment intent ID');
   }
 
-  const refundAmount = amount
-    ? Math.round(amount * 100)
-    : undefined; // undefined = full refund
+  const refundAmount = amount ? Math.round(amount * 100) : undefined; // undefined = full refund
 
   await stripe.refunds.create({
     payment_intent: payment.stripePaymentIntentId,
@@ -181,9 +176,7 @@ export async function processRefund(
     ...(reason ? { reason: 'requested_by_customer' } : {}),
   });
 
-  const refundedDecimal = amount
-    ? String(amount.toFixed(2))
-    : payment.amount;
+  const refundedDecimal = amount ? String(amount.toFixed(2)) : payment.amount;
 
   const isPartial = amount !== undefined && amount < Number(payment.amount);
 
@@ -250,9 +243,7 @@ export async function verifyCheckoutSession(
   return { paid: true };
 }
 
-export async function getPaymentForBooking(
-  bookingId: string,
-): Promise<Payment | null> {
+export async function getPaymentForBooking(bookingId: string): Promise<Payment | null> {
   const db = getDb();
 
   const payment = await db.query.payments.findFirst({

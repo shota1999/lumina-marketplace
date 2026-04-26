@@ -26,7 +26,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await processRefund(parsed.data.bookingId, parsed.data.amount, parsed.data.reason);
+    const result = await processRefund(
+      parsed.data.bookingId,
+      parsed.data.amount,
+      parsed.data.reason,
+    );
 
     return successResponse(result);
   } catch (error) {

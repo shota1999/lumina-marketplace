@@ -26,10 +26,7 @@ export async function GET() {
       count: Number(r.count),
     }));
 
-    return NextResponse.json(
-      { destinations },
-      { headers: { 'Cache-Control': 'no-store' } },
-    );
+    return NextResponse.json({ destinations }, { headers: { 'Cache-Control': 'no-store' } });
   } catch {
     return NextResponse.json(
       { destinations: [] },

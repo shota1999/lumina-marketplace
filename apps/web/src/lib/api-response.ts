@@ -35,7 +35,9 @@ export async function safeParseBody(
   try {
     const contentLength = request.headers.get('content-length');
     if (contentLength && parseInt(contentLength, 10) > MAX_BODY_SIZE) {
-      return { error: errorResponse({ code: 'PAYLOAD_TOO_LARGE', message: 'Request body too large' }, 413) };
+      return {
+        error: errorResponse({ code: 'PAYLOAD_TOO_LARGE', message: 'Request body too large' }, 413),
+      };
     }
     const data = await request.json();
     return { data };

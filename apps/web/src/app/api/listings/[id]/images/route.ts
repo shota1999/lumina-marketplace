@@ -15,10 +15,7 @@ async function verifyHostOwnership(listingId: string, userId: string) {
   return listing;
 }
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const user = await getCurrentUser();
     if (!user || (user.role !== 'host' && user.role !== 'admin')) {

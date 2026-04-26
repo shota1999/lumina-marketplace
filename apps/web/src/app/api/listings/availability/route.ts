@@ -25,10 +25,7 @@ export async function GET() {
 
     const totalListings = Number(totalRow[0]?.total ?? 0);
     if (totalListings === 0) {
-      return NextResponse.json(
-        { unavailable: [] },
-        { headers: { 'Cache-Control': 'no-store' } },
-      );
+      return NextResponse.json({ unavailable: [] }, { headers: { 'Cache-Control': 'no-store' } });
     }
 
     const today = new Date();
@@ -43,7 +40,9 @@ export async function GET() {
         endDate: bookings.endDate,
       })
       .from(bookings)
-      .where(sql`${bookings.status} IN ('pending', 'confirmed') AND ${bookings.endDate} >= ${toIsoDate(today)}`);
+      .where(
+        sql`${bookings.status} IN ('pending', 'confirmed') AND ${bookings.endDate} >= ${toIsoDate(today)}`,
+      );
 
     const bookedListingsByDay = new Map<string, Set<string>>();
     for (const b of activeBookings) {
@@ -73,7 +72,7 @@ export async function GET() {
     const seed = Math.floor(today.getTime() / 86_400_000);
     const rng = (n: number) => {
       let x = seed * 9301 + n * 49297;
-      x = (x % 233280 + 233280) % 233280;
+      x = ((x % 233280) + 233280) % 233280;
       return x / 233280;
     };
     for (let i = 0; i < HORIZON_DAYS; i++) {

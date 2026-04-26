@@ -25,7 +25,10 @@ export async function POST(request: NextRequest) {
     if (!rl.allowed) {
       log.warn('Rate limited');
       log.done(429);
-      return errorResponse({ code: 'RATE_LIMITED', message: 'Too many registration attempts. Try again later.' }, 429);
+      return errorResponse(
+        { code: 'RATE_LIMITED', message: 'Too many registration attempts. Try again later.' },
+        429,
+      );
     }
 
     const bodyResult = await safeParseBody(request);
@@ -41,30 +44,40 @@ export async function POST(request: NextRequest) {
 
     const { name, email, password } = parsed.data;
 
-    return withSpan('auth.register', {
-      [SpanAttr.AUTH_METHOD]: 'email',
-    }, async () => {
-      const db = getDb();
+    return withSpan(
+      'auth.register',
+      {
+        [SpanAttr.AUTH_METHOD]: 'email',
+      },
+      async () => {
+        const db = getDb();
 
-      const existing = await db.query.users.findFirst({
-        where: eq(users.email, email.toLowerCase()),
-      });
-      if (existing) {
-        return errorResponse({ code: 'DUPLICATE', message: 'An account with this email already exists' }, 409);
-      }
+        const existing = await db.query.users.findFirst({
+          where: eq(users.email, email.toLowerCase()),
+        });
+        if (existing) {
+          return errorResponse(
+            { code: 'DUPLICATE', message: 'An account with this email already exists' },
+            409,
+          );
+        }
 
-      const passwordHash = await hashPassword(password);
-      const [user] = await db
-        .insert(users)
-        .values({ name, email: email.toLowerCase(), passwordHash })
-        .returning({ id: users.id, email: users.email, name: users.name, role: users.role });
+        const passwordHash = await hashPassword(password);
+        const [user] = await db
+          .insert(users)
+          .values({ name, email: email.toLowerCase(), passwordHash })
+          .returning({ id: users.id, email: users.email, name: users.name, role: users.role });
 
-      await createSession(user!.id);
-      log.info('Registration success', { userId: user!.id });
-      log.done(201);
+        await createSession(user!.id);
+        log.info('Registration success', { userId: user!.id });
+        log.done(201);
 
-      return successResponse({ id: user!.id, email: user!.email, name: user!.name, role: user!.role }, 201);
-    });
+        return successResponse(
+          { id: user!.id, email: user!.email, name: user!.name, role: user!.role },
+          201,
+        );
+      },
+    );
   } catch (error) {
     log.error('Registration error', { error: String(error) });
     log.done(500);

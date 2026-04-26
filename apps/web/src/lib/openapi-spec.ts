@@ -15,9 +15,7 @@ export const openapiSpec = {
     contact: { name: 'Lumina Engineering', url: 'https://github.com/lumina-marketplace' },
     license: { name: 'MIT' },
   },
-  servers: [
-    { url: '{baseUrl}', variables: { baseUrl: { default: 'http://localhost:3000' } } },
-  ],
+  servers: [{ url: '{baseUrl}', variables: { baseUrl: { default: 'http://localhost:3000' } } }],
 
   tags: [
     { name: 'Auth', description: 'Authentication & session management' },
@@ -40,7 +38,11 @@ export const openapiSpec = {
         tags: ['Auth'],
         summary: 'Register a new user',
         requestBody: ref('RegisterInput'),
-        responses: { 201: jsonResp('User', 'Account created'), 400: errorResp(), 429: rateLimited() },
+        responses: {
+          201: jsonResp('User', 'Account created'),
+          400: errorResp(),
+          429: rateLimited(),
+        },
       },
     },
     '/api/auth/login': {
@@ -48,7 +50,11 @@ export const openapiSpec = {
         tags: ['Auth'],
         summary: 'Sign in with email & password',
         requestBody: ref('LoginInput'),
-        responses: { 200: jsonResp('User', 'Authenticated'), 401: errorResp('Invalid credentials'), 429: rateLimited() },
+        responses: {
+          200: jsonResp('User', 'Authenticated'),
+          401: errorResp('Invalid credentials'),
+          429: rateLimited(),
+        },
       },
     },
     '/api/auth/logout': {
@@ -145,7 +151,11 @@ export const openapiSpec = {
           queryParam('guests', 'Minimum guest capacity', 'number'),
           queryParam('bedrooms', 'Minimum bedrooms', 'number'),
           queryParam('amenity', 'Required amenity (repeatable)', 'string'),
-          queryParam('sort', 'Sort order (relevance|price_asc|price_desc|rating_desc|newest)', 'string'),
+          queryParam(
+            'sort',
+            'Sort order (relevance|price_asc|price_desc|rating_desc|newest)',
+            'string',
+          ),
           queryParam('boundsN', 'Map bounds north latitude', 'number'),
           queryParam('boundsS', 'Map bounds south latitude', 'number'),
           queryParam('boundsE', 'Map bounds east longitude', 'number'),
@@ -163,7 +173,12 @@ export const openapiSpec = {
         summary: 'Create a booking (reserve dates)',
         security: [{ session: [] }],
         requestBody: ref('CreateBookingInput'),
-        responses: { 201: jsonResp('Booking'), 400: errorResp(), 409: errorResp('Dates unavailable'), 429: rateLimited() },
+        responses: {
+          201: jsonResp('Booking'),
+          400: errorResp(),
+          409: errorResp('Dates unavailable'),
+          429: rateLimited(),
+        },
       },
     },
     '/api/bookings/{id}': {
@@ -201,7 +216,12 @@ export const openapiSpec = {
         summary: 'Leave a review on a listing',
         security: [{ session: [] }],
         requestBody: ref('CreateReviewInput'),
-        responses: { 201: jsonResp('Review'), 400: errorResp(), 409: errorResp('Already reviewed'), 429: rateLimited() },
+        responses: {
+          201: jsonResp('Review'),
+          400: errorResp(),
+          409: errorResp('Already reviewed'),
+          429: rateLimited(),
+        },
       },
     },
 
@@ -246,7 +266,8 @@ export const openapiSpec = {
       post: {
         tags: ['Payments'],
         summary: 'Stripe webhook handler',
-        description: 'Receives Stripe events (checkout.session.completed, payment_intent.succeeded, etc.)',
+        description:
+          'Receives Stripe events (checkout.session.completed, payment_intent.succeeded, etc.)',
         responses: { 200: { description: 'Webhook processed' } },
       },
     },
@@ -379,7 +400,10 @@ export const openapiSpec = {
           listingId: { type: 'string', format: 'uuid' },
           rating: { type: 'integer', minimum: 1, maximum: 5 },
           comment: { type: 'string' },
-          author: { type: 'object', properties: { name: { type: 'string' }, avatarUrl: { type: 'string' } } },
+          author: {
+            type: 'object',
+            properties: { name: { type: 'string' }, avatarUrl: { type: 'string' } },
+          },
           createdAt: { type: 'string', format: 'date-time' },
         },
       },
@@ -464,7 +488,10 @@ function jsonResp(schemaName: string | null, desc = 'Success') {
           properties: {
             success: { type: 'boolean' as const, example: true },
             data: schemaName.endsWith('[]')
-              ? { type: 'array' as const, items: { $ref: `#/components/schemas/${schemaName.slice(0, -2)}` } }
+              ? {
+                  type: 'array' as const,
+                  items: { $ref: `#/components/schemas/${schemaName.slice(0, -2)}` },
+                }
               : { $ref: `#/components/schemas/${schemaName}` },
           },
         },
@@ -483,15 +510,30 @@ function errorResp(desc = 'Error') {
 }
 
 function rateLimited() {
-  return { description: 'Rate limited', content: { 'application/json': { schema: { $ref: '#/components/schemas/Error' } } } };
+  return {
+    description: 'Rate limited',
+    content: { 'application/json': { schema: { $ref: '#/components/schemas/Error' } } },
+  };
 }
 
 function pathParam(name: string, desc: string) {
-  return { name, in: 'path' as const, required: true, schema: { type: 'string' as const }, description: desc };
+  return {
+    name,
+    in: 'path' as const,
+    required: true,
+    schema: { type: 'string' as const },
+    description: desc,
+  };
 }
 
 function queryParam(name: string, desc: string, type: string) {
-  return { name, in: 'query' as const, required: false, schema: { type: type as 'string' }, description: desc };
+  return {
+    name,
+    in: 'query' as const,
+    required: false,
+    schema: { type: type as 'string' },
+    description: desc,
+  };
 }
 
 function paginationParams() {

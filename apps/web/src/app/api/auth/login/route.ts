@@ -24,7 +24,10 @@ export async function POST(request: NextRequest) {
     if (!rl.allowed) {
       log.warn('Rate limited');
       log.done(429);
-      return errorResponse({ code: 'RATE_LIMITED', message: 'Too many login attempts. Try again later.' }, 429);
+      return errorResponse(
+        { code: 'RATE_LIMITED', message: 'Too many login attempts. Try again later.' },
+        429,
+      );
     }
 
     const bodyResult = await safeParseBody(request);
@@ -37,31 +40,38 @@ export async function POST(request: NextRequest) {
 
     const { email, password } = parsed.data;
 
-    return withSpan('auth.login', {
-      [SpanAttr.AUTH_METHOD]: 'email',
-    }, async () => {
-      const db = getDb();
+    return withSpan(
+      'auth.login',
+      {
+        [SpanAttr.AUTH_METHOD]: 'email',
+      },
+      async () => {
+        const db = getDb();
 
-      const user = await db.query.users.findFirst({
-        where: eq(users.email, email.toLowerCase()),
-      });
+        const user = await db.query.users.findFirst({
+          where: eq(users.email, email.toLowerCase()),
+        });
 
-      if (!user || !user.passwordHash || !(await verifyPassword(password, user.passwordHash))) {
-        log.warn('Login failed', { email });
-        return errorResponse({ code: 'INVALID_CREDENTIALS', message: 'Invalid email or password' }, 401);
-      }
+        if (!user || !user.passwordHash || !(await verifyPassword(password, user.passwordHash))) {
+          log.warn('Login failed', { email });
+          return errorResponse(
+            { code: 'INVALID_CREDENTIALS', message: 'Invalid email or password' },
+            401,
+          );
+        }
 
-      await createSession(user.id);
-      log.info('Login success', { userId: user.id });
-      log.done(200);
+        await createSession(user.id);
+        log.info('Login success', { userId: user.id });
+        log.done(200);
 
-      return successResponse({
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-      });
-    });
+        return successResponse({
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+        });
+      },
+    );
   } catch (error) {
     log.error('Login error', { error: String(error) });
     log.done(500);

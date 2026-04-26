@@ -6,10 +6,7 @@ import { eq, and, or, ne } from 'drizzle-orm';
 import { errorResponse, successResponse } from '@/lib/api-response';
 import { getCurrentUser } from '@/lib/auth';
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const user = await getCurrentUser();
     if (!user) {
@@ -23,10 +20,7 @@ export async function PATCH(
     const conversation = await db.query.conversations.findFirst({
       where: and(
         eq(conversations.id, id),
-        or(
-          eq(conversations.hostId, user.id),
-          eq(conversations.guestId, user.id),
-        ),
+        or(eq(conversations.hostId, user.id), eq(conversations.guestId, user.id)),
       ),
     });
 
@@ -38,12 +32,7 @@ export async function PATCH(
     await db
       .update(messages)
       .set({ status: 'read' })
-      .where(
-        and(
-          eq(messages.conversationId, id),
-          ne(messages.senderId, user.id),
-        ),
-      );
+      .where(and(eq(messages.conversationId, id), ne(messages.senderId, user.id)));
 
     return successResponse({ success: true });
   } catch (error) {

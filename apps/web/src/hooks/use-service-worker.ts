@@ -11,13 +11,19 @@ export function useServiceWorker() {
     if (typeof window === 'undefined') return;
     if (!('serviceWorker' in navigator)) return;
 
-    // Register after page load to avoid blocking initial render
+    if (process.env.NODE_ENV !== 'production') {
+      // Unregister any leftover SW from a previous prod build / earlier dev session
+      // so cached _next/static chunks don't shadow fresh dev rebuilds.
+      navigator.serviceWorker.getRegistrations().then((regs) => {
+        regs.forEach((r) => r.unregister());
+      });
+      return;
+    }
+
     window.addEventListener('load', () => {
-      navigator.serviceWorker
-        .register('/sw.js')
-        .catch(() => {
-          // SW registration failed — non-critical, ignore silently
-        });
+      navigator.serviceWorker.register('/sw.js').catch(() => {
+        // SW registration failed — non-critical, ignore silently
+      });
     });
   }, []);
 }

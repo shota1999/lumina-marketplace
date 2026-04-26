@@ -6,7 +6,12 @@ import { getDb, reviews, listings, users } from '@lumina/db';
 import { createReviewSchema } from '@lumina/shared';
 
 import { audit } from '@/lib/audit';
-import { businessErrorResponse, errorResponse, safeParseBody, successResponse } from '@/lib/api-response';
+import {
+  businessErrorResponse,
+  errorResponse,
+  safeParseBody,
+  successResponse,
+} from '@/lib/api-response';
 import { getCurrentUser } from '@/lib/auth';
 import { captureError } from '@/lib/error-capture';
 import { createRequestLogger } from '@/lib/logger';
@@ -28,7 +33,10 @@ export async function POST(request: NextRequest) {
     if (!rl.allowed) {
       log.warn('Rate limited', { userId: user.id });
       log.done(429);
-      return errorResponse({ code: 'RATE_LIMITED', message: 'Too many requests. Try again later.' }, 429);
+      return errorResponse(
+        { code: 'RATE_LIMITED', message: 'Too many requests. Try again later.' },
+        429,
+      );
     }
 
     const bodyResult = await safeParseBody(request);

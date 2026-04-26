@@ -42,7 +42,14 @@ export async function generateMetadata({ params }: ListingPageProps): Promise<Me
       description: listing.description.slice(0, 160),
       type: 'website',
       images: primaryImage
-        ? [{ url: primaryImage.url, width: primaryImage.width, height: primaryImage.height, alt: primaryImage.alt }]
+        ? [
+            {
+              url: primaryImage.url,
+              width: primaryImage.width,
+              height: primaryImage.height,
+              alt: primaryImage.alt,
+            },
+          ]
         : [],
     },
     twitter: {
@@ -71,12 +78,21 @@ export default async function ListingPage({ params }: ListingPageProps) {
       <TrackListingView listingId={listing.id} />
       <main className="mx-auto max-w-7xl px-6 pt-8">
         {/* Breadcrumb */}
-        <nav className="mb-6 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">
-          <Link href="/" className="transition-colors hover:text-slate-900 dark:hover:text-slate-200">
+        <nav
+          className="mb-6 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400"
+          aria-label="Breadcrumb"
+        >
+          <Link
+            href="/"
+            className="transition-colors hover:text-slate-900 dark:hover:text-slate-200"
+          >
             Home
           </Link>
           <ChevronRight className="h-3.5 w-3.5" />
-          <Link href="/search" className="transition-colors hover:text-slate-900 dark:hover:text-slate-200">
+          <Link
+            href="/search"
+            className="transition-colors hover:text-slate-900 dark:hover:text-slate-200"
+          >
             Search
           </Link>
           <ChevronRight className="h-3.5 w-3.5" />
@@ -137,7 +153,9 @@ export default async function ListingPage({ params }: ListingPageProps) {
                   <Users className="h-5 w-5 text-slate-600 dark:text-slate-400" />
                 </div>
                 <div>
-                  <p className="font-bold text-slate-900 dark:text-slate-50">{listing.maxGuests} Guests</p>
+                  <p className="font-bold text-slate-900 dark:text-slate-50">
+                    {listing.maxGuests} Guests
+                  </p>
                   <p className="text-sm text-slate-500 dark:text-slate-400">Capacity</p>
                 </div>
               </div>
@@ -146,7 +164,9 @@ export default async function ListingPage({ params }: ListingPageProps) {
                   <Bed className="h-5 w-5 text-slate-600 dark:text-slate-400" />
                 </div>
                 <div>
-                  <p className="font-bold text-slate-900 dark:text-slate-50">{listing.bedrooms} Bedroom{listing.bedrooms !== 1 ? 's' : ''}</p>
+                  <p className="font-bold text-slate-900 dark:text-slate-50">
+                    {listing.bedrooms} Bedroom{listing.bedrooms !== 1 ? 's' : ''}
+                  </p>
                   <p className="text-sm text-slate-500 dark:text-slate-400">Suites</p>
                 </div>
               </div>
@@ -155,7 +175,9 @@ export default async function ListingPage({ params }: ListingPageProps) {
                   <Bath className="h-5 w-5 text-slate-600 dark:text-slate-400" />
                 </div>
                 <div>
-                  <p className="font-bold text-slate-900 dark:text-slate-50">{listing.bathrooms} Bath{listing.bathrooms !== 1 ? 's' : ''}</p>
+                  <p className="font-bold text-slate-900 dark:text-slate-50">
+                    {listing.bathrooms} Bath{listing.bathrooms !== 1 ? 's' : ''}
+                  </p>
                   <p className="text-sm text-slate-500 dark:text-slate-400">Luxury</p>
                 </div>
               </div>
@@ -163,7 +185,9 @@ export default async function ListingPage({ params }: ListingPageProps) {
 
             {/* About */}
             <section>
-              <h2 className="mb-4 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">About this place</h2>
+              <h2 className="mb-4 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
+                About this place
+              </h2>
               <div className="space-y-4 text-lg leading-relaxed text-slate-500 dark:text-slate-400">
                 {listing.description.split('\n\n').map((paragraph, i) => (
                   <p key={i}>{paragraph}</p>
@@ -173,13 +197,17 @@ export default async function ListingPage({ params }: ListingPageProps) {
 
             {/* Amenities */}
             <section>
-              <h2 className="mb-6 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">What this place offers</h2>
+              <h2 className="mb-6 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
+                What this place offers
+              </h2>
               <AmenitiesGrid amenities={listing.amenities} />
             </section>
 
             {/* Map */}
             <section>
-              <h2 className="mb-6 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">Where you&apos;ll be</h2>
+              <h2 className="mb-6 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
+                Where you&apos;ll be
+              </h2>
               <MapPreview
                 lat={listing.location.lat}
                 lng={listing.location.lng}
@@ -193,7 +221,9 @@ export default async function ListingPage({ params }: ListingPageProps) {
             {/* Reviews */}
             <section>
               <div className="mb-8 flex items-center gap-4">
-                <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">Guest reviews</h2>
+                <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
+                  Guest reviews
+                </h2>
                 {listing.rating > 0 && (
                   <div className="flex items-center gap-1 text-lg font-bold text-slate-900 dark:text-slate-50">
                     <Star className="h-5 w-5 fill-amber-400 text-amber-400" />
@@ -232,7 +262,9 @@ export default async function ListingPage({ params }: ListingPageProps) {
         <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 p-4 backdrop-blur-lg lg:hidden dark:border-slate-800 dark:bg-slate-950/95">
           <div className="mx-auto flex max-w-7xl items-center justify-between">
             <div>
-              <span className="text-lg font-bold text-slate-900 dark:text-slate-50">{formatPrice(listing.pricePerNight, listing.currency)}</span>
+              <span className="text-lg font-bold text-slate-900 dark:text-slate-50">
+                {formatPrice(listing.pricePerNight, listing.currency)}
+              </span>
               <span className="text-slate-500 dark:text-slate-400"> / night</span>
             </div>
             <a
@@ -246,7 +278,9 @@ export default async function ListingPage({ params }: ListingPageProps) {
 
         {/* Similar listings */}
         <section className="mt-16 border-t border-slate-200/50 pb-20 pt-10 lg:pb-10 dark:border-slate-800/50">
-          <h2 className="mb-6 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">Similar places you might like</h2>
+          <h2 className="mb-6 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
+            Similar places you might like
+          </h2>
           <SimilarListings listings={similarListings} />
         </section>
       </main>

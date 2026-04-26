@@ -46,21 +46,24 @@ export default function AdminListingsPage() {
   const [total, setTotal] = useState(0);
   const [pageSize, setPageSize] = useState(25);
 
-  const fetchListings = useCallback(async (p: number) => {
-    setLoading(true);
-    try {
-      const res = await fetch(`/api/admin/listings?page=${p}&limit=${pageSize}`);
-      const json = await res.json();
-      const data = json.data as PaginatedResponse | undefined;
-      setListings(data?.data ?? []);
-      setTotal(data?.total ?? 0);
-      setPage(data?.page ?? p);
-    } catch {
-      setListings([]);
-    } finally {
-      setLoading(false);
-    }
-  }, [pageSize]);
+  const fetchListings = useCallback(
+    async (p: number) => {
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/admin/listings?page=${p}&limit=${pageSize}`);
+        const json = await res.json();
+        const data = json.data as PaginatedResponse | undefined;
+        setListings(data?.data ?? []);
+        setTotal(data?.total ?? 0);
+        setPage(data?.page ?? p);
+      } catch {
+        setListings([]);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [pageSize],
+  );
 
   useEffect(() => {
     fetchListings(1);
@@ -79,9 +82,7 @@ export default function AdminListingsPage() {
   };
 
   const toggleFeatured = async (id: string, featured: boolean) => {
-    setListings((prev) =>
-      prev.map((l) => (l.id === id ? { ...l, featured: !featured } : l)),
-    );
+    setListings((prev) => prev.map((l) => (l.id === id ? { ...l, featured: !featured } : l)));
     try {
       await fetch('/api/admin/listings', {
         method: 'PATCH',
@@ -89,9 +90,7 @@ export default function AdminListingsPage() {
         body: JSON.stringify({ id, featured: !featured }),
       });
     } catch {
-      setListings((prev) =>
-        prev.map((l) => (l.id === id ? { ...l, featured } : l)),
-      );
+      setListings((prev) => prev.map((l) => (l.id === id ? { ...l, featured } : l)));
     }
   };
 
@@ -293,8 +292,8 @@ export default function AdminListingsPage() {
         {!loading && total > pageSize && (
           <div className="flex items-center justify-between border-t border-slate-50 bg-slate-50/30 px-6 py-6 dark:border-slate-800 dark:bg-slate-800/30">
             <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400">
-              Showing {(page - 1) * pageSize + 1} to{' '}
-              {Math.min(page * pageSize, total)} of {total.toLocaleString()} listings
+              Showing {(page - 1) * pageSize + 1} to {Math.min(page * pageSize, total)} of{' '}
+              {total.toLocaleString()} listings
             </p>
             <div className="flex items-center gap-2">
               <button
@@ -349,12 +348,8 @@ function StatCard({
 }) {
   return (
     <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-      <p className="mb-1 text-xs font-bold uppercase tracking-widest text-slate-400">
-        {label}
-      </p>
-      <h3
-        className={`text-2xl font-black ${valueColor ?? 'text-slate-900 dark:text-slate-50'}`}
-      >
+      <p className="mb-1 text-xs font-bold uppercase tracking-widest text-slate-400">{label}</p>
+      <h3 className={`text-2xl font-black ${valueColor ?? 'text-slate-900 dark:text-slate-50'}`}>
         {value}
       </h3>
     </div>
@@ -379,10 +374,7 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
-function getPageNumbers(
-  current: number,
-  total: number,
-): (number | '...')[] {
+function getPageNumbers(current: number, total: number): (number | '...')[] {
   if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
 
   const pages: (number | '...')[] = [1];

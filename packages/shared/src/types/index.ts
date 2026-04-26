@@ -10,7 +10,13 @@ export type ListingCategory =
   | 'penthouse';
 
 export type MessageStatus = 'sent' | 'delivered' | 'read';
-export type PaymentStatus = 'pending' | 'processing' | 'succeeded' | 'failed' | 'refunded' | 'partially_refunded';
+export type PaymentStatus =
+  | 'pending'
+  | 'processing'
+  | 'succeeded'
+  | 'failed'
+  | 'refunded'
+  | 'partially_refunded';
 export type PayoutStatus = 'pending' | 'processing' | 'completed' | 'failed';
 export type CancellationPolicyType = 'flexible' | 'moderate' | 'strict';
 export type VerificationStatus = 'pending' | 'approved' | 'rejected';
@@ -87,12 +93,7 @@ export interface SearchParams {
   limit?: number;
 }
 
-export type SearchSort =
-  | 'relevance'
-  | 'price_asc'
-  | 'price_desc'
-  | 'rating_desc'
-  | 'newest';
+export type SearchSort = 'relevance' | 'price_asc' | 'price_desc' | 'rating_desc' | 'newest';
 
 export interface SearchResult {
   hits: Listing[];

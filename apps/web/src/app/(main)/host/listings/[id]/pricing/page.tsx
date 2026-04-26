@@ -1,15 +1,6 @@
 'use client';
 
-import {
-  Calendar,
-  ChevronDown,
-  Clock,
-  Loader2,
-  Moon,
-  Plus,
-  Sun,
-  Trash2,
-} from 'lucide-react';
+import { Calendar, ChevronDown, Clock, Loader2, Moon, Plus, Sun, Trash2 } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -30,31 +21,29 @@ interface PricingRule {
   createdAt: string;
 }
 
-const RULE_META: Record<
-  RuleType,
-  { label: string; icon: React.ElementType; description: string }
-> = {
-  weekend: {
-    label: 'Weekend',
-    icon: Sun,
-    description: 'Adjust pricing for weekend stays',
-  },
-  seasonal: {
-    label: 'Seasonal',
-    icon: Calendar,
-    description: 'Set pricing for a specific date range',
-  },
-  last_minute: {
-    label: 'Last Minute',
-    icon: Clock,
-    description: 'Discount for last-minute bookings',
-  },
-  length_of_stay: {
-    label: 'Length of Stay',
-    icon: Moon,
-    description: 'Discount for longer reservations',
-  },
-};
+const RULE_META: Record<RuleType, { label: string; icon: React.ElementType; description: string }> =
+  {
+    weekend: {
+      label: 'Weekend',
+      icon: Sun,
+      description: 'Adjust pricing for weekend stays',
+    },
+    seasonal: {
+      label: 'Seasonal',
+      icon: Calendar,
+      description: 'Set pricing for a specific date range',
+    },
+    last_minute: {
+      label: 'Last Minute',
+      icon: Clock,
+      description: 'Discount for last-minute bookings',
+    },
+    length_of_stay: {
+      label: 'Length of Stay',
+      icon: Moon,
+      description: 'Discount for longer reservations',
+    },
+  };
 
 function formatMultiplier(m: number): string {
   if (m >= 1) return `+${Math.round((m - 1) * 100)}%`;
@@ -193,8 +182,7 @@ export default function PricingRulesPage() {
     } catch (err) {
       toast({
         title: 'Error',
-        description:
-          err instanceof Error ? err.message : 'Failed to create rule',
+        description: err instanceof Error ? err.message : 'Failed to create rule',
         variant: 'destructive',
       });
     } finally {
@@ -205,10 +193,9 @@ export default function PricingRulesPage() {
   async function handleDelete(ruleId: string) {
     setDeletingId(ruleId);
     try {
-      const res = await fetch(
-        `/api/host/listings/${listingId}/pricing/${ruleId}`,
-        { method: 'DELETE' },
-      );
+      const res = await fetch(`/api/host/listings/${listingId}/pricing/${ruleId}`, {
+        method: 'DELETE',
+      });
 
       const data = await res.json();
 
@@ -224,8 +211,7 @@ export default function PricingRulesPage() {
     } catch (err) {
       toast({
         title: 'Error',
-        description:
-          err instanceof Error ? err.message : 'Failed to delete rule',
+        description: err instanceof Error ? err.message : 'Failed to delete rule',
         variant: 'destructive',
       });
     } finally {
@@ -291,8 +277,7 @@ export default function PricingRulesPage() {
                   >
                     {(Object.keys(RULE_META) as RuleType[]).map((type) => (
                       <option key={type} value={type}>
-                        {RULE_META[type].label} &mdash;{' '}
-                        {RULE_META[type].description}
+                        {RULE_META[type].label} &mdash; {RULE_META[type].description}
                       </option>
                     ))}
                   </select>
@@ -365,8 +350,7 @@ export default function PricingRulesPage() {
                     className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none transition-colors focus:border-slate-400 focus:ring-1 focus:ring-slate-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-slate-500 dark:focus:ring-slate-500"
                   />
                   <p className="mt-1.5 text-xs text-slate-400">
-                    Apply this rule when booking is within this many days of
-                    check-in
+                    Apply this rule when booking is within this many days of check-in
                   </p>
                 </div>
               )}
@@ -469,30 +453,21 @@ export default function PricingRulesPage() {
                       </span>
                     </div>
                     <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1">
-                      {rule.type === 'seasonal' &&
-                        rule.startDate &&
-                        rule.endDate && (
-                          <p className="text-xs text-slate-500">
-                            {formatDate(rule.startDate)} &ndash;{' '}
-                            {formatDate(rule.endDate)}
-                          </p>
-                        )}
-                      {rule.type === 'last_minute' &&
-                        rule.daysBeforeCheckIn != null && (
-                          <p className="text-xs text-slate-500">
-                            Within {rule.daysBeforeCheckIn} days of check-in
-                          </p>
-                        )}
-                      {rule.type === 'length_of_stay' &&
-                        rule.minimumNights != null && (
-                          <p className="text-xs text-slate-500">
-                            {rule.minimumNights}+ nights
-                          </p>
-                        )}
-                      {rule.type === 'weekend' && (
+                      {rule.type === 'seasonal' && rule.startDate && rule.endDate && (
                         <p className="text-xs text-slate-500">
-                          Fri &amp; Sat nights
+                          {formatDate(rule.startDate)} &ndash; {formatDate(rule.endDate)}
                         </p>
+                      )}
+                      {rule.type === 'last_minute' && rule.daysBeforeCheckIn != null && (
+                        <p className="text-xs text-slate-500">
+                          Within {rule.daysBeforeCheckIn} days of check-in
+                        </p>
+                      )}
+                      {rule.type === 'length_of_stay' && rule.minimumNights != null && (
+                        <p className="text-xs text-slate-500">{rule.minimumNights}+ nights</p>
+                      )}
+                      {rule.type === 'weekend' && (
+                        <p className="text-xs text-slate-500">Fri &amp; Sat nights</p>
                       )}
                     </div>
                   </div>

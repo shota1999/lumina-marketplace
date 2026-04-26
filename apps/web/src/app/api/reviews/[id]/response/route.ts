@@ -43,7 +43,10 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
 
     if (review.listing.hostId !== user.id) {
       log.done(403);
-      return errorResponse({ code: 'FORBIDDEN', message: 'Only the listing host can respond to this review' }, 403);
+      return errorResponse(
+        { code: 'FORBIDDEN', message: 'Only the listing host can respond to this review' },
+        403,
+      );
     }
 
     // Check if a response already exists
@@ -52,7 +55,10 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     });
     if (existing) {
       log.done(409);
-      return errorResponse({ code: 'DUPLICATE', message: 'A response already exists for this review' }, 409);
+      return errorResponse(
+        { code: 'DUPLICATE', message: 'A response already exists for this review' },
+        409,
+      );
     }
 
     // Parse body – only need `body` field; reviewId comes from URL
@@ -63,7 +69,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     }
 
     const parsed = createReviewResponseSchema.safeParse({
-      ...bodyResult.data as Record<string, unknown>,
+      ...(bodyResult.data as Record<string, unknown>),
       reviewId,
     });
     if (!parsed.success) {
@@ -86,7 +92,10 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     captureError(error, { requestId, route: 'POST /api/reviews/:id/response' });
     log.done(500);
-    return errorResponse({ code: 'INTERNAL_ERROR', message: 'Failed to create review response' }, 500);
+    return errorResponse(
+      { code: 'INTERNAL_ERROR', message: 'Failed to create review response' },
+      500,
+    );
   }
 }
 
@@ -118,7 +127,10 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
     if (existing.hostId !== user.id) {
       log.done(403);
-      return errorResponse({ code: 'FORBIDDEN', message: 'Only the author can update this response' }, 403);
+      return errorResponse(
+        { code: 'FORBIDDEN', message: 'Only the author can update this response' },
+        403,
+      );
     }
 
     const bodyResult = await safeParseBody(request);
@@ -149,7 +161,10 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     captureError(error, { requestId, route: 'PATCH /api/reviews/:id/response' });
     log.done(500);
-    return errorResponse({ code: 'INTERNAL_ERROR', message: 'Failed to update review response' }, 500);
+    return errorResponse(
+      { code: 'INTERNAL_ERROR', message: 'Failed to update review response' },
+      500,
+    );
   }
 }
 
@@ -181,7 +196,10 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
 
     if (existing.hostId !== user.id) {
       log.done(403);
-      return errorResponse({ code: 'FORBIDDEN', message: 'Only the author can delete this response' }, 403);
+      return errorResponse(
+        { code: 'FORBIDDEN', message: 'Only the author can delete this response' },
+        403,
+      );
     }
 
     await db
@@ -195,6 +213,9 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     captureError(error, { requestId, route: 'DELETE /api/reviews/:id/response' });
     log.done(500);
-    return errorResponse({ code: 'INTERNAL_ERROR', message: 'Failed to delete review response' }, 500);
+    return errorResponse(
+      { code: 'INTERNAL_ERROR', message: 'Failed to delete review response' },
+      500,
+    );
   }
 }

@@ -152,7 +152,7 @@ export default function HomePage() {
               <span className="h-px w-8 bg-slate-300" />
               Curated Collection
             </span>
-            <h2 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-50 md:text-5xl">
+            <h2 className="text-4xl font-bold tracking-tight text-slate-900 md:text-5xl dark:text-slate-50">
               In the spotlight <span className="font-light italic text-amber-500">this week</span>
             </h2>
             <p className="mt-3 text-base text-slate-500">
@@ -199,7 +199,7 @@ export default function HomePage() {
                   Architectural Masterpiece
                 </span>
               </div>
-              <h3 className="mb-3 text-3xl font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-50 md:text-4xl">
+              <h3 className="mb-3 text-3xl font-bold leading-tight tracking-tight text-slate-900 md:text-4xl dark:text-slate-50">
                 The Glass Pavilion
               </h3>
               <p className="mb-6 text-sm uppercase tracking-widest text-slate-500">
@@ -224,8 +224,7 @@ export default function HomePage() {
                   From
                 </span>
                 <span className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
-                  $2,450{' '}
-                  <span className="text-sm font-normal text-slate-400">/ night</span>
+                  $2,450 <span className="text-sm font-normal text-slate-400">/ night</span>
                 </span>
               </div>
               <span className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-900 text-white transition-all group-hover:scale-110 group-hover:bg-amber-500 dark:bg-slate-50 dark:text-slate-900">
@@ -283,7 +282,7 @@ export default function HomePage() {
                 <span className="h-px w-8 bg-slate-300" />
                 Where To Next
               </span>
-              <h2 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-50 md:text-5xl">
+              <h2 className="text-4xl font-bold tracking-tight text-slate-900 md:text-5xl dark:text-slate-50">
                 Destinations our members
                 <span className="font-light italic text-amber-500"> can&rsquo;t stop booking</span>
               </h2>
@@ -322,7 +321,7 @@ export default function HomePage() {
                     />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h3 className="text-2xl font-bold tracking-tight text-slate-900 transition-colors group-hover:text-amber-600 dark:text-slate-50 md:text-3xl">
+                    <h3 className="text-2xl font-bold tracking-tight text-slate-900 transition-colors group-hover:text-amber-600 md:text-3xl dark:text-slate-50">
                       {dest.name}
                     </h3>
                     <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">
@@ -332,7 +331,7 @@ export default function HomePage() {
                 </div>
 
                 <div
-                  className={`col-span-12 flex items-center gap-3 text-sm font-semibold text-slate-900 dark:text-slate-50 md:col-span-4 md:justify-end ${
+                  className={`col-span-12 flex items-center gap-3 text-sm font-semibold text-slate-900 md:col-span-4 md:justify-end dark:text-slate-50 ${
                     idx % 2 === 1 ? 'md:order-1 md:justify-start' : ''
                   }`}
                 >
@@ -383,9 +382,9 @@ export default function HomePage() {
               <span className="font-light italic text-amber-400">Earn beautifully.</span>
             </h2>
             <p className="text-lg leading-relaxed text-slate-300">
-              Join a curated network of hosts welcoming travelers who care as much about your
-              space as you do. We handle the marketing, payments, and concierge — you focus on
-              making it memorable.
+              Join a curated network of hosts welcoming travelers who care as much about your space
+              as you do. We handle the marketing, payments, and concierge — you focus on making it
+              memorable.
             </p>
 
             <dl className="grid grid-cols-3 gap-6 border-y border-white/10 py-6">
@@ -433,4 +432,3 @@ export default function HomePage() {
     </>
   );
 }
-

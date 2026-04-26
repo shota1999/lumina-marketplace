@@ -11,7 +11,10 @@ interface RouteParams {
 }
 
 /** Transforms a raw DB listing row + images into the API response shape. */
-function serializeListing(row: typeof listings.$inferSelect, images: (typeof listingImages.$inferSelect)[]) {
+function serializeListing(
+  row: typeof listings.$inferSelect,
+  images: (typeof listingImages.$inferSelect)[],
+) {
   return {
     ...row,
     pricePerNight: Number(row.pricePerNight),

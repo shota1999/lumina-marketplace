@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  Clock,
-  Loader2,
-  ShieldCheck,
-  Upload,
-  XCircle,
-} from 'lucide-react';
+import { Clock, Loader2, ShieldCheck, Upload, XCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { Button, Input, Skeleton } from '@lumina/ui';
@@ -61,7 +55,11 @@ export default function VerificationPage() {
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        toast({ title: 'Submission failed', description: data.error?.message ?? 'Something went wrong', variant: 'destructive' });
+        toast({
+          title: 'Submission failed',
+          description: data.error?.message ?? 'Something went wrong',
+          variant: 'destructive',
+        });
         return;
       }
 
@@ -69,7 +67,11 @@ export default function VerificationPage() {
       setShowForm(false);
       toast({ title: 'Documents submitted', description: 'Your verification is under review' });
     } catch {
-      toast({ title: 'Network error', description: 'Could not submit verification', variant: 'destructive' });
+      toast({
+        title: 'Network error',
+        description: 'Could not submit verification',
+        variant: 'destructive',
+      });
     } finally {
       setSubmitting(false);
     }
@@ -110,7 +112,7 @@ export default function VerificationPage() {
               <select
                 value={documentType}
                 onChange={(e) => setDocumentType(e.target.value)}
-                className="flex h-10 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring dark:border-slate-700 dark:bg-slate-800"
+                className="ring-offset-background focus-visible:ring-ring flex h-10 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 dark:border-slate-700 dark:bg-slate-800"
               >
                 <option value="passport">Passport</option>
                 <option value="drivers_license">Driver&apos;s License</option>
@@ -130,9 +132,7 @@ export default function VerificationPage() {
                 required
                 type="url"
               />
-              <p className="text-xs text-slate-400">
-                Upload your document and paste the URL here
-              </p>
+              <p className="text-xs text-slate-400">Upload your document and paste the URL here</p>
             </div>
 
             {/* Selfie URL */}
@@ -182,14 +182,19 @@ export default function VerificationPage() {
             Verification Under Review
           </h1>
           <p className="text-sm text-slate-600 dark:text-slate-400">
-            We&apos;re reviewing your documents. This usually takes 1-2 business days.
-            You&apos;ll receive a notification once the review is complete.
+            We&apos;re reviewing your documents. This usually takes 1-2 business days. You&apos;ll
+            receive a notification once the review is complete.
           </p>
           <div className="mt-6 rounded-lg bg-white/60 p-4 dark:bg-slate-900/40">
             <p className="text-xs font-medium text-slate-500">
-              Submitted {new Date(verification.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+              Submitted{' '}
+              {new Date(verification.createdAt).toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+              })}
             </p>
-            <p className="mt-1 text-xs text-slate-400 capitalize">
+            <p className="mt-1 text-xs capitalize text-slate-400">
               Document: {verification.documentType.replace(/_/g, ' ')}
             </p>
           </div>
@@ -239,9 +244,7 @@ export default function VerificationPage() {
             <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-slate-400">
               Reviewer Notes
             </p>
-            <p className="text-sm text-slate-700 dark:text-slate-300">
-              {verification.adminNotes}
-            </p>
+            <p className="text-sm text-slate-700 dark:text-slate-300">{verification.adminNotes}</p>
           </div>
         )}
         <Button

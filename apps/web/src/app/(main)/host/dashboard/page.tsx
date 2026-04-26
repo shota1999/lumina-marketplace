@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  ArrowRight,
-  Building,
-  Calendar,
-  DollarSign,
-  Loader2,
-  Star,
-} from 'lucide-react';
+import { ArrowRight, Building, Calendar, DollarSign, Loader2, Star } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
@@ -59,9 +52,7 @@ function StatCard({
             <p className="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
               {value}
             </p>
-            {trend && (
-              <p className="mt-1 text-xs text-slate-500">{trend}</p>
-            )}
+            {trend && <p className="mt-1 text-xs text-slate-500">{trend}</p>}
           </div>
           <div className="rounded-xl bg-slate-900 p-2.5 dark:bg-slate-100">
             <Icon className="h-4 w-4 text-white dark:text-slate-900" />
@@ -239,11 +230,7 @@ export default function HostDashboardPage() {
                         {formatDateShort(booking.endDate)}
                       </td>
                       <td className="whitespace-nowrap px-5 py-3.5">
-                        <Badge
-                          className={
-                            statusColors[booking.status] ?? ''
-                          }
-                        >
+                        <Badge className={statusColors[booking.status] ?? ''}>
                           {booking.status}
                         </Badge>
                       </td>

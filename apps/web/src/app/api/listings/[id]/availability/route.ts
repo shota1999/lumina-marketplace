@@ -5,10 +5,7 @@ import { eq, and, or, lte, gte } from 'drizzle-orm';
 
 import { errorResponse, successResponse } from '@/lib/api-response';
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
     const url = new URL(request.url);

@@ -16,12 +16,7 @@ export async function GET() {
     const result = await db
       .select({ count: sql<number>`count(*)` })
       .from(notifications)
-      .where(
-        and(
-          eq(notifications.userId, user.id),
-          isNull(notifications.readAt),
-        ),
-      );
+      .where(and(eq(notifications.userId, user.id), isNull(notifications.readAt)));
 
     return successResponse({ count: Number(result[0]?.count ?? 0) });
   } catch (error) {

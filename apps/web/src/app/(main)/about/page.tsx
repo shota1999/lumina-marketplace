@@ -6,14 +6,16 @@ import { Button, Card, CardContent } from '@lumina/ui';
 
 export const metadata: Metadata = {
   title: 'About – Lumina',
-  description: 'Learn about Lumina — a premium rental marketplace connecting travelers with extraordinary stays worldwide.',
+  description:
+    'Learn about Lumina — a premium rental marketplace connecting travelers with extraordinary stays worldwide.',
 };
 
 const values = [
   {
     icon: Heart,
     title: 'Curated quality',
-    description: 'Every listing is vetted to meet our standards for comfort, design, and hospitality.',
+    description:
+      'Every listing is vetted to meet our standards for comfort, design, and hospitality.',
   },
   {
     icon: Shield,
@@ -23,12 +25,14 @@ const values = [
   {
     icon: Globe,
     title: 'Global reach',
-    description: 'From treehouses in Costa Rica to penthouses in Tokyo — discover stays on every continent.',
+    description:
+      'From treehouses in Costa Rica to penthouses in Tokyo — discover stays on every continent.',
   },
   {
     icon: Users,
     title: 'Community first',
-    description: 'We empower hosts to share their spaces and guests to find unforgettable experiences.',
+    description:
+      'We empower hosts to share their spaces and guests to find unforgettable experiences.',
   },
 ];
 
@@ -42,23 +46,23 @@ export default function AboutPage() {
           <br />
           <span className="text-muted-foreground">effortlessly found</span>
         </h1>
-        <p className="mx-auto max-w-xl text-lg text-muted-foreground">
+        <p className="text-muted-foreground mx-auto max-w-xl text-lg">
           Lumina is a premium rental marketplace that connects discerning travelers with unique
-          properties around the world — from beachfront villas to secluded cabins and everything
-          in between.
+          properties around the world — from beachfront villas to secluded cabins and everything in
+          between.
         </p>
       </div>
 
       {/* Values */}
       <div className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-6 sm:grid-cols-2">
         {values.map((v) => (
-          <Card key={v.title} className="border-0 bg-secondary/50">
+          <Card key={v.title} className="bg-secondary/50 border-0">
             <CardContent className="p-6">
-              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                <v.icon className="h-5 w-5 text-primary" />
+              <div className="bg-primary/10 mb-3 flex h-10 w-10 items-center justify-center rounded-lg">
+                <v.icon className="text-primary h-5 w-5" />
               </div>
               <h3 className="mb-1 font-semibold">{v.title}</h3>
-              <p className="text-sm text-muted-foreground">{v.description}</p>
+              <p className="text-muted-foreground text-sm">{v.description}</p>
             </CardContent>
           </Card>
         ))}
@@ -73,15 +77,15 @@ export default function AboutPage() {
         ].map((stat) => (
           <div key={stat.label}>
             <div className="text-3xl font-bold tracking-tight">{stat.value}</div>
-            <div className="mt-1 text-sm text-muted-foreground">{stat.label}</div>
+            <div className="text-muted-foreground mt-1 text-sm">{stat.label}</div>
           </div>
         ))}
       </div>
 
       {/* CTA */}
-      <div className="mx-auto mt-16 max-w-xl rounded-2xl bg-primary p-8 text-center text-primary-foreground">
+      <div className="bg-primary text-primary-foreground mx-auto mt-16 max-w-xl rounded-2xl p-8 text-center">
         <h2 className="mb-2 text-2xl font-bold">Ready to explore?</h2>
-        <p className="mb-6 text-primary-foreground/80">
+        <p className="text-primary-foreground/80 mb-6">
           Browse our curated collection of extraordinary stays.
         </p>
         <Button variant="secondary" size="lg" asChild>

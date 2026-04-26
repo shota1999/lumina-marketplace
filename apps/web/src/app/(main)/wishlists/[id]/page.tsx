@@ -1,14 +1,6 @@
 'use client';
 
-import {
-  Check,
-  Globe,
-  Heart,
-  Loader2,
-  Lock,
-  Trash2,
-  X,
-} from 'lucide-react';
+import { Check, Globe, Heart, Loader2, Lock, Trash2, X } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -47,7 +39,7 @@ function DetailSkeleton() {
         {Array.from({ length: 3 }).map((_, i) => (
           <div
             key={i}
-            className="overflow-hidden rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-slate-100 dark:ring-slate-800"
+            className="overflow-hidden rounded-2xl bg-white ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800"
           >
             <Skeleton className="aspect-[4/3] w-full rounded-none" />
             <div className="flex flex-col gap-3 p-6">
@@ -147,9 +139,7 @@ export default function WishlistDetailPage() {
     try {
       setSavingDesc(true);
       const updated = await patchWishlist({ description: descValue.trim() || null });
-      setWishlist((prev) =>
-        prev ? { ...prev, description: updated.description } : prev,
-      );
+      setWishlist((prev) => (prev ? { ...prev, description: updated.description } : prev));
       setEditingDesc(false);
       toast({ title: 'Description updated' });
     } catch {
@@ -164,9 +154,7 @@ export default function WishlistDetailPage() {
     try {
       setTogglingPublic(true);
       const updated = await patchWishlist({ isPublic: !wishlist.isPublic });
-      setWishlist((prev) =>
-        prev ? { ...prev, isPublic: updated.isPublic } : prev,
-      );
+      setWishlist((prev) => (prev ? { ...prev, isPublic: updated.isPublic } : prev));
       toast({ title: updated.isPublic ? 'Collection is now public' : 'Collection is now private' });
     } catch {
       toast({ title: 'Failed to update visibility', variant: 'destructive' });
@@ -197,9 +185,7 @@ export default function WishlistDetailPage() {
       });
       if (!res.ok) throw new Error('Remove failed');
       setWishlist((prev) =>
-        prev
-          ? { ...prev, items: prev.items.filter((it) => it.id !== itemId) }
-          : prev,
+        prev ? { ...prev, items: prev.items.filter((it) => it.id !== itemId) } : prev,
       );
       toast({ title: 'Listing removed from collection' });
     } catch {
@@ -213,7 +199,7 @@ export default function WishlistDetailPage() {
   if (!wishlist) {
     return (
       <div className="container flex flex-col items-center justify-center py-32 text-center">
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-3">
+        <h2 className="mb-3 text-2xl font-bold text-slate-900 dark:text-slate-50">
           Collection not found
         </h2>
         <button
@@ -230,7 +216,7 @@ export default function WishlistDetailPage() {
     <div className="container py-16">
       {/* Header */}
       <header className="mb-12">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-3">
+        <p className="mb-3 text-[10px] font-bold uppercase tracking-widest text-slate-400">
           Collection
         </p>
 
@@ -249,7 +235,7 @@ export default function WishlistDetailPage() {
                   setEditingName(false);
                 }
               }}
-              className="text-4xl font-extrabold tracking-tight bg-transparent text-slate-900 dark:text-slate-50 border-b-2 border-slate-300 dark:border-slate-600 focus:border-slate-900 dark:focus:border-slate-50 outline-none pb-1"
+              className="border-b-2 border-slate-300 bg-transparent pb-1 text-4xl font-extrabold tracking-tight text-slate-900 outline-none focus:border-slate-900 dark:border-slate-600 dark:text-slate-50 dark:focus:border-slate-50"
             />
             <button
               onClick={handleSaveName}
@@ -275,7 +261,7 @@ export default function WishlistDetailPage() {
         ) : (
           <h1
             onClick={() => setEditingName(true)}
-            className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-slate-50 mb-2 cursor-pointer hover:opacity-70 transition-opacity"
+            className="mb-2 cursor-pointer text-4xl font-extrabold tracking-tight text-slate-900 transition-opacity hover:opacity-70 dark:text-slate-50"
             title="Click to edit"
           >
             {wishlist.name}
@@ -298,7 +284,7 @@ export default function WishlistDetailPage() {
               }}
               autoFocus
               placeholder="Add a description..."
-              className="flex-1 bg-transparent text-slate-500 dark:text-slate-400 font-medium border-b border-slate-300 dark:border-slate-600 focus:border-slate-900 dark:focus:border-slate-50 outline-none pb-1"
+              className="flex-1 border-b border-slate-300 bg-transparent pb-1 font-medium text-slate-500 outline-none focus:border-slate-900 dark:border-slate-600 dark:text-slate-400 dark:focus:border-slate-50"
             />
             <button
               onClick={handleSaveDesc}
@@ -315,7 +301,7 @@ export default function WishlistDetailPage() {
         ) : (
           <p
             onClick={() => setEditingDesc(true)}
-            className="text-slate-500 dark:text-slate-400 font-medium mb-4 cursor-pointer hover:opacity-70 transition-opacity"
+            className="mb-4 cursor-pointer font-medium text-slate-500 transition-opacity hover:opacity-70 dark:text-slate-400"
             title="Click to edit"
           >
             {wishlist.description || 'Add a description...'}
@@ -355,14 +341,14 @@ export default function WishlistDetailPage() {
 
       {/* Items */}
       {wishlist.items.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-24 text-center max-w-md mx-auto">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 mb-5">
+        <div className="mx-auto flex max-w-md flex-col items-center justify-center py-24 text-center">
+          <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
             <Heart className="h-7 w-7 text-slate-400 dark:text-slate-500" />
           </div>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-2">
+          <h2 className="mb-2 text-xl font-bold text-slate-900 dark:text-slate-50">
             No listings yet
           </h2>
-          <p className="text-slate-500 dark:text-slate-400 leading-relaxed mb-6">
+          <p className="mb-6 leading-relaxed text-slate-500 dark:text-slate-400">
             Browse listings and add them to this collection using the heart icon.
           </p>
           <a

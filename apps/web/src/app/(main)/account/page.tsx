@@ -66,7 +66,9 @@ export default function AccountPage() {
           // Fetch saved searches once authenticated
           fetch('/api/saved-searches')
             .then((r) => (r.ok ? r.json() : null))
-            .then((d) => { if (d?.success) setSavedSearches(d.data); })
+            .then((d) => {
+              if (d?.success) setSavedSearches(d.data);
+            })
             .catch(() => {});
         }
       })
@@ -84,13 +86,21 @@ export default function AccountPage() {
       });
       const data = await res.json();
       if (!res.ok || !data.success) {
-        toast({ title: 'Delete failed', description: data.error?.message ?? 'Something went wrong', variant: 'destructive' });
+        toast({
+          title: 'Delete failed',
+          description: data.error?.message ?? 'Something went wrong',
+          variant: 'destructive',
+        });
         return;
       }
       setSavedSearches((prev) => prev.filter((s) => s.id !== id));
       toast({ title: 'Search deleted', description: 'Saved search has been removed' });
     } catch {
-      toast({ title: 'Network error', description: 'Could not delete saved search', variant: 'destructive' });
+      toast({
+        title: 'Network error',
+        description: 'Could not delete saved search',
+        variant: 'destructive',
+      });
     } finally {
       setDeletingSearch(null);
     }
@@ -107,13 +117,21 @@ export default function AccountPage() {
       });
       const data = await res.json();
       if (!res.ok || !data.success) {
-        toast({ title: 'Update failed', description: data.error?.message ?? 'Something went wrong', variant: 'destructive' });
+        toast({
+          title: 'Update failed',
+          description: data.error?.message ?? 'Something went wrong',
+          variant: 'destructive',
+        });
         return;
       }
-      setUser((prev) => prev ? { ...prev, name, email } : null);
+      setUser((prev) => (prev ? { ...prev, name, email } : null));
       toast({ title: 'Profile updated', description: 'Your changes have been saved' });
     } catch {
-      toast({ title: 'Network error', description: 'Could not save changes', variant: 'destructive' });
+      toast({
+        title: 'Network error',
+        description: 'Could not save changes',
+        variant: 'destructive',
+      });
     } finally {
       setSaving(false);
     }
@@ -126,7 +144,11 @@ export default function AccountPage() {
       return;
     }
     if (newPassword.length < 8) {
-      toast({ title: 'Password too short', description: 'Minimum 8 characters required', variant: 'destructive' });
+      toast({
+        title: 'Password too short',
+        description: 'Minimum 8 characters required',
+        variant: 'destructive',
+      });
       return;
     }
     setSavingPassword(true);
@@ -138,7 +160,11 @@ export default function AccountPage() {
       });
       const data = await res.json();
       if (!res.ok || !data.success) {
-        toast({ title: 'Password update failed', description: data.error?.message ?? 'Something went wrong', variant: 'destructive' });
+        toast({
+          title: 'Password update failed',
+          description: data.error?.message ?? 'Something went wrong',
+          variant: 'destructive',
+        });
         return;
       }
       setCurrentPassword('');
@@ -146,7 +172,11 @@ export default function AccountPage() {
       setConfirmPassword('');
       toast({ title: 'Password updated', description: 'Your password has been changed' });
     } catch {
-      toast({ title: 'Network error', description: 'Could not update password', variant: 'destructive' });
+      toast({
+        title: 'Network error',
+        description: 'Could not update password',
+        variant: 'destructive',
+      });
     } finally {
       setSavingPassword(false);
     }
@@ -167,9 +197,9 @@ export default function AccountPage() {
   if (!user) {
     return (
       <div className="container flex min-h-[60vh] flex-col items-center justify-center py-20 text-center">
-        <User className="mb-4 h-12 w-12 text-muted-foreground" />
+        <User className="text-muted-foreground mb-4 h-12 w-12" />
         <h1 className="mb-2 text-2xl font-bold">Sign in to manage your account</h1>
-        <p className="mb-6 text-muted-foreground">
+        <p className="text-muted-foreground mb-6">
           You need to be signed in to access account settings.
         </p>
         <Button asChild>
@@ -188,23 +218,28 @@ export default function AccountPage() {
     <div className="container max-w-2xl py-8">
       <div className="mb-8">
         <h1 className="text-2xl font-bold">Account settings</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Manage your profile and preferences
-        </p>
+        <p className="text-muted-foreground mt-1 text-sm">Manage your profile and preferences</p>
       </div>
 
       {/* Profile overview */}
       <Card className="mb-6">
         <CardContent className="flex items-center gap-4 p-6">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-xl font-bold text-primary-foreground">
-            {user.name.split(' ').map((p) => p[0]).join('').toUpperCase().slice(0, 2)}
+          <div className="bg-primary text-primary-foreground flex h-16 w-16 items-center justify-center rounded-full text-xl font-bold">
+            {user.name
+              .split(' ')
+              .map((p) => p[0])
+              .join('')
+              .toUpperCase()
+              .slice(0, 2)}
           </div>
           <div className="flex-1">
             <h2 className="text-lg font-semibold">{user.name}</h2>
-            <p className="text-sm text-muted-foreground">{user.email}</p>
+            <p className="text-muted-foreground text-sm">{user.email}</p>
             <div className="mt-1.5 flex items-center gap-2">
-              <Badge variant="secondary" className="capitalize">{user.role}</Badge>
-              <span className="text-xs text-muted-foreground">Member since {memberSince}</span>
+              <Badge variant="secondary" className="capitalize">
+                {user.role}
+              </Badge>
+              <span className="text-muted-foreground text-xs">Member since {memberSince}</span>
             </div>
           </div>
         </CardContent>
@@ -219,16 +254,15 @@ export default function AccountPage() {
         <CardContent>
           <form onSubmit={handleProfileSave} className="space-y-4">
             <div className="space-y-2">
-              <label htmlFor="name" className="text-sm font-medium">Name</label>
-              <Input
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
+              <label htmlFor="name" className="text-sm font-medium">
+                Name
+              </label>
+              <Input id="name" value={name} onChange={(e) => setName(e.target.value)} required />
             </div>
             <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium">Email</label>
+              <label htmlFor="email" className="text-sm font-medium">
+                Email
+              </label>
               <Input
                 id="email"
                 type="email"
@@ -239,9 +273,13 @@ export default function AccountPage() {
             </div>
             <Button type="submit" disabled={saving || (name === user.name && email === user.email)}>
               {saving ? (
-                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</>
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...
+                </>
               ) : (
-                <><Save className="mr-2 h-4 w-4" /> Save changes</>
+                <>
+                  <Save className="mr-2 h-4 w-4" /> Save changes
+                </>
               )}
             </Button>
           </form>
@@ -265,34 +303,48 @@ export default function AccountPage() {
                 const chips: string[] = [];
                 if (params.query) chips.push(`"${params.query}"`);
                 if (Array.isArray(params.category)) chips.push(...(params.category as string[]));
-                if (params.priceMin || params.priceMax) chips.push(`$${params.priceMin || 0}–$${params.priceMax || '∞'}`);
+                if (params.priceMin || params.priceMax)
+                  chips.push(`$${params.priceMin || 0}–$${params.priceMax || '∞'}`);
                 if (params.guests) chips.push(`${params.guests}+ guests`);
                 if (params.location) chips.push(params.location as string);
 
                 // Build URL from params
                 const sp = new URLSearchParams();
                 if (params.query) sp.set('q', params.query as string);
-                if (Array.isArray(params.category)) (params.category as string[]).forEach((c) => sp.append('category', c));
+                if (Array.isArray(params.category))
+                  (params.category as string[]).forEach((c) => sp.append('category', c));
                 if (params.priceMin) sp.set('priceMin', String(params.priceMin));
                 if (params.priceMax) sp.set('priceMax', String(params.priceMax));
                 if (params.guests) sp.set('guests', String(params.guests));
                 if (params.bedrooms) sp.set('bedrooms', String(params.bedrooms));
-                if (Array.isArray(params.amenities)) (params.amenities as string[]).forEach((a) => sp.append('amenity', a));
-                if (params.sort && params.sort !== 'relevance') sp.set('sort', params.sort as string);
+                if (Array.isArray(params.amenities))
+                  (params.amenities as string[]).forEach((a) => sp.append('amenity', a));
+                if (params.sort && params.sort !== 'relevance')
+                  sp.set('sort', params.sort as string);
 
                 return (
-                  <div key={s.id} className="flex items-center justify-between rounded-lg border p-3">
+                  <div
+                    key={s.id}
+                    className="flex items-center justify-between rounded-lg border p-3"
+                  >
                     <Link href={`/search?${sp.toString()}`} className="flex-1 hover:underline">
                       <div className="font-medium">{s.name}</div>
                       {chips.length > 0 && (
                         <div className="mt-1 flex flex-wrap gap-1">
                           {chips.map((c) => (
-                            <Badge key={c} variant="secondary" className="text-xs capitalize">{c}</Badge>
+                            <Badge key={c} variant="secondary" className="text-xs capitalize">
+                              {c}
+                            </Badge>
                           ))}
                         </div>
                       )}
-                      <div className="mt-1 text-xs text-muted-foreground">
-                        Saved {new Date(s.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      <div className="text-muted-foreground mt-1 text-xs">
+                        Saved{' '}
+                        {new Date(s.createdAt).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                          year: 'numeric',
+                        })}
                       </div>
                     </Link>
                     <Button
@@ -300,9 +352,13 @@ export default function AccountPage() {
                       size="sm"
                       disabled={deletingSearch === s.id}
                       onClick={() => handleDeleteSearch(s.id)}
-                      className="ml-2 text-muted-foreground hover:text-destructive"
+                      className="text-muted-foreground hover:text-destructive ml-2"
                     >
-                      {deletingSearch === s.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                      {deletingSearch === s.id ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Trash2 className="h-4 w-4" />
+                      )}
                     </Button>
                   </div>
                 );
@@ -321,7 +377,9 @@ export default function AccountPage() {
         <CardContent>
           <form onSubmit={handlePasswordSave} className="space-y-4">
             <div className="space-y-2">
-              <label htmlFor="current-password" className="text-sm font-medium">Current password</label>
+              <label htmlFor="current-password" className="text-sm font-medium">
+                Current password
+              </label>
               <div className="relative">
                 <Input
                   id="current-password"
@@ -335,14 +393,16 @@ export default function AccountPage() {
                 <button
                   type="button"
                   onClick={() => setShowPasswords(!showPasswords)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground absolute right-3 top-1/2 -translate-y-1/2"
                 >
                   {showPasswords ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
             </div>
             <div className="space-y-2">
-              <label htmlFor="new-password" className="text-sm font-medium">New password</label>
+              <label htmlFor="new-password" className="text-sm font-medium">
+                New password
+              </label>
               <Input
                 id="new-password"
                 type={showPasswords ? 'text' : 'password'}
@@ -355,7 +415,9 @@ export default function AccountPage() {
               />
             </div>
             <div className="space-y-2">
-              <label htmlFor="confirm-password" className="text-sm font-medium">Confirm new password</label>
+              <label htmlFor="confirm-password" className="text-sm font-medium">
+                Confirm new password
+              </label>
               <Input
                 id="confirm-password"
                 type={showPasswords ? 'text' : 'password'}
@@ -366,9 +428,14 @@ export default function AccountPage() {
                 autoComplete="new-password"
               />
             </div>
-            <Button type="submit" disabled={savingPassword || !currentPassword || !newPassword || !confirmPassword}>
+            <Button
+              type="submit"
+              disabled={savingPassword || !currentPassword || !newPassword || !confirmPassword}
+            >
               {savingPassword ? (
-                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Updating...</>
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Updating...
+                </>
               ) : (
                 'Update password'
               )}

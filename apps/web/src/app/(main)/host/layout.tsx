@@ -34,8 +34,7 @@ export default function HostLayout({ children }: { children: React.ReactNode }) 
     return <>{children}</>;
   }
 
-  const isActive = (href: string) =>
-    pathname === href || pathname.startsWith(href + '/');
+  const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)]">
@@ -50,7 +49,7 @@ export default function HostLayout({ children }: { children: React.ReactNode }) 
       {/* Sidebar */}
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-50 mt-16 flex flex-col border-r border-slate-100 bg-white transition-all duration-200 dark:border-slate-800 dark:bg-slate-950 lg:relative lg:mt-0',
+          'fixed inset-y-0 left-0 z-50 mt-16 flex flex-col border-r border-slate-100 bg-white transition-all duration-200 lg:relative lg:mt-0 dark:border-slate-800 dark:bg-slate-950',
           collapsed ? 'w-16' : 'w-60',
           sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
         )}
@@ -69,7 +68,7 @@ export default function HostLayout({ children }: { children: React.ReactNode }) 
           </button>
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="hidden rounded-lg p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 lg:block"
+            className="hidden rounded-lg p-1 text-slate-400 hover:text-slate-600 lg:block dark:hover:text-slate-300"
           >
             {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
           </button>
@@ -103,7 +102,7 @@ export default function HostLayout({ children }: { children: React.ReactNode }) 
       {/* Main content */}
       <div className="flex flex-1 flex-col">
         {/* Mobile header */}
-        <div className="flex items-center gap-3 border-b border-slate-100 px-4 py-3 dark:border-slate-800 lg:hidden">
+        <div className="flex items-center gap-3 border-b border-slate-100 px-4 py-3 lg:hidden dark:border-slate-800">
           <Button
             variant="ghost"
             size="sm"

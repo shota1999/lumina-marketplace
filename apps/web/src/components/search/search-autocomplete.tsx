@@ -32,10 +32,7 @@ interface SearchAutocompleteProps {
   className?: string;
 }
 
-export function SearchAutocomplete({
-  onSelect,
-  className,
-}: SearchAutocompleteProps) {
+export function SearchAutocomplete({ onSelect, className }: SearchAutocompleteProps) {
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
@@ -57,9 +54,7 @@ export function SearchAutocomplete({
     let cancelled = false;
     setLoading(true);
 
-    fetch(
-      `/api/search/autocomplete?q=${encodeURIComponent(debouncedQuery)}&limit=5`,
-    )
+    fetch(`/api/search/autocomplete?q=${encodeURIComponent(debouncedQuery)}&limit=5`)
       .then((r) => r.json())
       .then((json) => {
         if (!cancelled && json.success) {
@@ -79,10 +74,7 @@ export function SearchAutocomplete({
   // Close on outside click
   useEffect(() => {
     function handleClick(e: MouseEvent) {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(e.target as Node)
-      ) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setOpen(false);
       }
     }
@@ -91,15 +83,12 @@ export function SearchAutocomplete({
   }, []);
 
   // Close on Escape
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setOpen(false);
-        inputRef.current?.blur();
-      }
-    },
-    [],
-  );
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      setOpen(false);
+      inputRef.current?.blur();
+    }
+  }, []);
 
   const handleDestinationClick = useCallback(
     (city: string) => {
@@ -121,13 +110,8 @@ export function SearchAutocomplete({
     [onSelect, router],
   );
 
-  const hasResults =
-    results &&
-    (results.destinations.length > 0 || results.listings.length > 0);
-  const noResults =
-    results &&
-    results.destinations.length === 0 &&
-    results.listings.length === 0;
+  const hasResults = results && (results.destinations.length > 0 || results.listings.length > 0);
+  const noResults = results && results.destinations.length === 0 && results.listings.length === 0;
   const showDropdown = open && debouncedQuery.length >= 2;
 
   return (
@@ -203,8 +187,7 @@ export function SearchAutocomplete({
                           {dest.city}, {dest.country}
                         </p>
                         <p className="text-xs text-slate-500 dark:text-slate-400">
-                          {dest.listingCount}{' '}
-                          {dest.listingCount === 1 ? 'listing' : 'listings'}
+                          {dest.listingCount} {dest.listingCount === 1 ? 'listing' : 'listings'}
                         </p>
                       </div>
                     </button>
@@ -223,9 +206,7 @@ export function SearchAutocomplete({
                       key={listing.id}
                       type="button"
                       role="option"
-                      onClick={() =>
-                        handleListingClick(listing.slug, listing.title)
-                      }
+                      onClick={() => handleListingClick(listing.slug, listing.title)}
                       className="flex w-full items-center gap-3 rounded-xl px-2 py-2 text-left transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"
                     >
                       <div className="h-10 w-14 shrink-0 overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-800">
@@ -247,15 +228,11 @@ export function SearchAutocomplete({
                         <p className="truncate text-sm font-medium text-slate-900 dark:text-slate-50">
                           {listing.title}
                         </p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">
-                          {listing.city}
-                        </p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">{listing.city}</p>
                       </div>
                       <span className="shrink-0 text-sm font-medium text-slate-900 dark:text-slate-50">
                         ${listing.pricePerNight}
-                        <span className="text-xs font-normal text-slate-400">
-                          /night
-                        </span>
+                        <span className="text-xs font-normal text-slate-400">/night</span>
                       </span>
                     </button>
                   ))}

@@ -7,15 +7,11 @@
 // Provides offline fallback page when network is unavailable.
 // ---------------------------------------------------------------------------
 
-const CACHE_VERSION = 'lumina-v1';
+const CACHE_VERSION = 'lumina-v2';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
-const PRECACHE_URLS = [
-  '/',
-  '/offline',
-  '/manifest.json',
-];
+const PRECACHE_URLS = ['/', '/offline', '/manifest.json'];
 
 const STATIC_EXTENSIONS = /\.(js|css|png|jpg|jpeg|svg|webp|avif|woff2?|ico)$/;
 
@@ -36,13 +32,16 @@ self.addEventListener('install', (event) => {
 // ---------------------------------------------------------------------------
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys
-          .filter((key) => key !== STATIC_CACHE && key !== RUNTIME_CACHE)
-          .map((key) => caches.delete(key)),
-      ),
-    ).then(() => self.clients.claim()),
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(
+          keys
+            .filter((key) => key !== STATIC_CACHE && key !== RUNTIME_CACHE)
+            .map((key) => caches.delete(key)),
+        ),
+      )
+      .then(() => self.clients.claim()),
   );
 });
 

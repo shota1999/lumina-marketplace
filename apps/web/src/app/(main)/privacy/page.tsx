@@ -8,24 +8,22 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <div className="container py-12">
-      <article className="prose prose-neutral mx-auto max-w-3xl dark:prose-invert">
+      <article className="prose prose-neutral dark:prose-invert mx-auto max-w-3xl">
         <h1>Privacy Policy</h1>
-        <p className="lead">
-          Last updated: January 1, 2024
-        </p>
+        <p className="lead">Last updated: January 1, 2024</p>
 
         <p>
-          Lumina Marketplace (&ldquo;Lumina,&rdquo; &ldquo;we,&rdquo; &ldquo;our&rdquo;) is committed to
-          protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and
-          safeguard your information when you visit our platform.
+          Lumina Marketplace (&ldquo;Lumina,&rdquo; &ldquo;we,&rdquo; &ldquo;our&rdquo;) is
+          committed to protecting your privacy. This Privacy Policy explains how we collect, use,
+          disclose, and safeguard your information when you visit our platform.
         </p>
 
         <h2>Information We Collect</h2>
         <h3>Personal Information</h3>
         <p>
-          When you create an account, we collect your name, email address, and password (stored
-          as a bcrypt hash). If you make a booking, we collect additional details such as check-in
-          and check-out dates and guest count.
+          When you create an account, we collect your name, email address, and password (stored as a
+          bcrypt hash). If you make a booking, we collect additional details such as check-in and
+          check-out dates and guest count.
         </p>
 
         <h3>Usage Data</h3>
@@ -37,8 +35,8 @@ export default function PrivacyPage() {
 
         <h3>Cookies</h3>
         <p>
-          We use a session cookie (<code>lumina_session</code>) to keep you signed in. This cookie is
-          HTTP-only, secure in production, and expires after 30 days of inactivity.
+          We use a session cookie (<code>lumina_session</code>) to keep you signed in. This cookie
+          is HTTP-only, secure in production, and expires after 30 days of inactivity.
         </p>
 
         <h2>How We Use Your Information</h2>

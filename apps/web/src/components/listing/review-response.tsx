@@ -36,11 +36,7 @@ function getInitials(name: string): string {
     .slice(0, 2);
 }
 
-export function ReviewResponse({
-  reviewId,
-  existingResponse,
-  isHost,
-}: ReviewResponseProps) {
+export function ReviewResponse({ reviewId, existingResponse, isHost }: ReviewResponseProps) {
   const router = useRouter();
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -192,11 +188,7 @@ export function ReviewResponse({
                   disabled={deleting}
                   className="inline-flex items-center gap-1 rounded-xl bg-red-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-red-700 disabled:opacity-50"
                 >
-                  {deleting ? (
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                  ) : (
-                    'Confirm'
-                  )}
+                  {deleting ? <Loader2 className="h-3 w-3 animate-spin" /> : 'Confirm'}
                 </button>
                 <button
                   type="button"

@@ -24,7 +24,10 @@ test.describe('Navigation', () => {
     const nav = page.getByRole('navigation');
 
     // Find a link that points to an internal page
-    const internalLink = nav.getByRole('link').filter({ hasNotText: /lumina/i }).first();
+    const internalLink = nav
+      .getByRole('link')
+      .filter({ hasNotText: /lumina/i })
+      .first();
     const href = await internalLink.getAttribute('href');
     expect(href).toBeTruthy();
 
@@ -67,9 +70,9 @@ test.describe('Navigation', () => {
     await page.goto('/');
 
     // Menu toggle button should be visible on mobile
-    const menuButton = page.getByRole('button', { name: /menu|toggle|hamburger/i }).or(
-      page.getByLabel(/menu/i),
-    );
+    const menuButton = page
+      .getByRole('button', { name: /menu|toggle|hamburger/i })
+      .or(page.getByLabel(/menu/i));
     await expect(menuButton).toBeVisible();
 
     // Open menu
@@ -80,24 +83,22 @@ test.describe('Navigation', () => {
     await expect(mobileNav.getByRole('link').first()).toBeVisible();
 
     // Close menu
-    const closeButton = page.getByRole('button', { name: /close|menu|toggle/i }).or(
-      page.getByLabel(/close|menu/i),
-    );
+    const closeButton = page
+      .getByRole('button', { name: /close|menu|toggle/i })
+      .or(page.getByLabel(/close|menu/i));
     await closeButton.click();
 
     // Menu content should be hidden again
-    await expect(
-      mobileNav.getByRole('link').first(),
-    ).toBeHidden({ timeout: 5_000 });
+    await expect(mobileNav.getByRole('link').first()).toBeHidden({ timeout: 5_000 });
   });
 
   test('skip-to-content link exists', async ({ page }) => {
     await page.goto('/');
 
     // Skip link is typically the first focusable element
-    const skipLink = page.getByRole('link', { name: /skip to (main )?content/i }).or(
-      page.locator('a[href="#main-content"]'),
-    );
+    const skipLink = page
+      .getByRole('link', { name: /skip to (main )?content/i })
+      .or(page.locator('a[href="#main-content"]'));
 
     // It may be visually hidden until focused
     await expect(skipLink).toBeAttached();
@@ -115,9 +116,11 @@ test.describe('Navigation', () => {
     await searchInput.fill('mountain');
 
     // Either suggestions appear or Enter navigates to search results
-    const hasSuggestions = await page.getByRole('listbox').or(
-      page.getByRole('option'),
-    ).isVisible().catch(() => false);
+    const hasSuggestions = await page
+      .getByRole('listbox')
+      .or(page.getByRole('option'))
+      .isVisible()
+      .catch(() => false);
 
     if (!hasSuggestions) {
       await searchInput.press('Enter');

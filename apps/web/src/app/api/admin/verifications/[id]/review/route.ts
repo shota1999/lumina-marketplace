@@ -6,10 +6,7 @@ import { errorResponse, safeParseBody, successResponse } from '@/lib/api-respons
 import { getCurrentUser } from '@/lib/auth';
 import { reviewVerification } from '@/lib/services/verification';
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const user = await getCurrentUser();
     if (!user || user.role !== 'admin') {
@@ -24,7 +21,7 @@ export async function POST(
     }
 
     const parsed = reviewVerificationSchema.safeParse({
-      ...bodyResult.data as Record<string, unknown>,
+      ...(bodyResult.data as Record<string, unknown>),
       verificationId: id,
     });
     if (!parsed.success) {
@@ -34,12 +31,7 @@ export async function POST(
       );
     }
 
-    await reviewVerification(
-      id,
-      user.id,
-      parsed.data.status,
-      parsed.data.adminNotes,
-    );
+    await reviewVerification(id, user.id, parsed.data.status, parsed.data.adminNotes);
 
     return successResponse({ reviewed: true });
   } catch (error) {

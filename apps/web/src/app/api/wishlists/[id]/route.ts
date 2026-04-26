@@ -7,10 +7,7 @@ import { updateWishlistSchema } from '@lumina/shared';
 import { errorResponse, safeParseBody, successResponse } from '@/lib/api-response';
 import { getCurrentUser } from '@/lib/auth';
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const user = await getCurrentUser();
     if (!user) {
@@ -63,10 +60,7 @@ export async function GET(
   }
 }
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const user = await getCurrentUser();
     if (!user) {
@@ -132,9 +126,7 @@ export async function DELETE(
       return errorResponse({ code: 'NOT_FOUND', message: 'Wishlist not found' }, 404);
     }
 
-    await db
-      .delete(wishlists)
-      .where(and(eq(wishlists.id, id), eq(wishlists.userId, user.id)));
+    await db.delete(wishlists).where(and(eq(wishlists.id, id), eq(wishlists.userId, user.id)));
 
     return successResponse({ deleted: true });
   } catch {

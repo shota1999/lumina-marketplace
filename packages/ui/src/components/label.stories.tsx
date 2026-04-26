@@ -35,6 +35,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  args: { children: 'Email' },
   render: () => (
     <div className="grid w-full max-w-sm items-center gap-1.5">
       <LabelDemo htmlFor="email">Email</LabelDemo>
@@ -44,6 +45,7 @@ export const Default: Story = {
 };
 
 export const WithTextarea: Story = {
+  args: { children: 'Your message' },
   render: () => (
     <div className="grid w-full max-w-sm items-center gap-1.5">
       <LabelDemo htmlFor="message">Your message</LabelDemo>
@@ -53,6 +55,7 @@ export const WithTextarea: Story = {
 };
 
 export const Required: Story = {
+  args: { children: 'Name' },
   render: () => (
     <div className="grid w-full max-w-sm items-center gap-1.5">
       <LabelDemo htmlFor="name">

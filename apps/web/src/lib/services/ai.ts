@@ -37,18 +37,22 @@ function getOpenAI(): OpenAI {
  * Used for both listing content (at index time) and search queries (at query time).
  */
 export async function generateEmbedding(text: string): Promise<number[]> {
-  return withSpan('ai.embedding', {
-    'ai.model': 'text-embedding-3-small',
-    'ai.input_length': text.length,
-  }, async () => {
-    const client = getOpenAI();
-    const response = await client.embeddings.create({
-      model: 'text-embedding-3-small',
-      input: text,
-      dimensions: 1536,
-    });
-    return response.data[0]!.embedding;
-  });
+  return withSpan(
+    'ai.embedding',
+    {
+      'ai.model': 'text-embedding-3-small',
+      'ai.input_length': text.length,
+    },
+    async () => {
+      const client = getOpenAI();
+      const response = await client.embeddings.create({
+        model: 'text-embedding-3-small',
+        input: text,
+        dimensions: 1536,
+      });
+      return response.data[0]!.embedding;
+    },
+  );
 }
 
 /**
@@ -140,10 +144,7 @@ Return ONLY the description text, no headers or labels.`;
     async start(controller) {
       try {
         for await (const event of stream) {
-          if (
-            event.type === 'content_block_delta' &&
-            event.delta.type === 'text_delta'
-          ) {
+          if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
             controller.enqueue(encoder.encode(event.delta.text));
           }
         }

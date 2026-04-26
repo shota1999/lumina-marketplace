@@ -124,10 +124,7 @@ export async function createBlock(
   };
 }
 
-export async function removeBlock(
-  blockId: string,
-  hostId: string,
-): Promise<void> {
+export async function removeBlock(blockId: string, hostId: string): Promise<void> {
   const db = getDb();
 
   const block = await db.query.availabilityBlocks.findFirst({
@@ -148,14 +145,10 @@ export async function removeBlock(
     throw new Error('Only the host can remove availability blocks');
   }
 
-  await db
-    .delete(availabilityBlocks)
-    .where(eq(availabilityBlocks.id, blockId));
+  await db.delete(availabilityBlocks).where(eq(availabilityBlocks.id, blockId));
 }
 
-export async function getBlocks(
-  listingId: string,
-): Promise<AvailabilityBlock[]> {
+export async function getBlocks(listingId: string): Promise<AvailabilityBlock[]> {
   const db = getDb();
 
   const rows = await db

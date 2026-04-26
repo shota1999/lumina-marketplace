@@ -47,6 +47,9 @@ export async function POST(request: NextRequest) {
 
     return successResponse({ uploadUrl, publicUrl, storageKey });
   } catch (error) {
-    return errorResponse({ code: 'INTERNAL_ERROR', message: 'Failed to generate presigned URL' }, 500);
+    return errorResponse(
+      { code: 'INTERNAL_ERROR', message: 'Failed to generate presigned URL' },
+      500,
+    );
   }
 }

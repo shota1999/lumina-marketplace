@@ -6,10 +6,7 @@ import { CANCELLATION_POLICIES } from '@lumina/shared';
 
 import { errorResponse, successResponse } from '@/lib/api-response';
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
     const db = getDb();
@@ -33,6 +30,9 @@ export async function GET(
       rules: CANCELLATION_POLICIES.flexible.rules,
     });
   } catch (error) {
-    return errorResponse({ code: 'INTERNAL_ERROR', message: 'Failed to fetch cancellation policy' }, 500);
+    return errorResponse(
+      { code: 'INTERNAL_ERROR', message: 'Failed to fetch cancellation policy' },
+      500,
+    );
   }
 }

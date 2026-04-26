@@ -4,9 +4,7 @@ import { getDb, cancellationPolicies, listings } from '@lumina/db';
 import type { CancellationPolicy, CancellationRule } from '@lumina/shared';
 import { CANCELLATION_POLICIES } from '@lumina/shared';
 
-export async function getCancellationPolicy(
-  listingId: string,
-): Promise<CancellationPolicy | null> {
+export async function getCancellationPolicy(listingId: string): Promise<CancellationPolicy | null> {
   const db = getDb();
 
   const policy = await db.query.cancellationPolicies.findFirst({
@@ -52,9 +50,7 @@ export function calculateRefund(
 
   // Rules are sorted by daysBeforeCheckin descending.
   // Find the first rule where actual days >= rule.daysBeforeCheckin.
-  const sortedRules = [...rules].sort(
-    (a, b) => b.daysBeforeCheckin - a.daysBeforeCheckin,
-  );
+  const sortedRules = [...rules].sort((a, b) => b.daysBeforeCheckin - a.daysBeforeCheckin);
 
   let refundPercent = 0;
   for (const rule of sortedRules) {

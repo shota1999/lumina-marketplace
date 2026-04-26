@@ -38,7 +38,10 @@ export function metricFailure(name: string, durationMs?: number) {
 }
 
 /** Get a snapshot of all metrics for health/diagnostics. */
-export function getMetricsSnapshot(): Record<string, { count: number; errors: number; avgDurationMs: number }> {
+export function getMetricsSnapshot(): Record<
+  string,
+  { count: number; errors: number; avgDurationMs: number }
+> {
   const snapshot: Record<string, { count: number; errors: number; avgDurationMs: number }> = {};
   for (const [name, bucket] of counters) {
     const total = bucket.count + bucket.errors;

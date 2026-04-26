@@ -10,11 +10,15 @@ test.describe('Hero search bar — destination', () => {
     await gotoHome(page);
   });
 
-  test('typing an exact city name and submitting goes to /search?location=City', async ({ page }) => {
+  test('typing an exact city name and submitting goes to /search?location=City', async ({
+    page,
+  }) => {
     const input = page.getByPlaceholder('Search destinations', { exact: true });
     await input.click();
     await input.fill('Malibu');
-    await page.waitForResponse((r) => r.url().includes('/api/listings/destinations'), { timeout: 10_000 }).catch(() => {});
+    await page
+      .waitForResponse((r) => r.url().includes('/api/listings/destinations'), { timeout: 10_000 })
+      .catch(() => {});
     await Promise.all([
       page.waitForURL(/\/search\?[^#]*location=Malibu/),
       page.getByRole('button', { name: /^Search$/ }).click(),
@@ -39,7 +43,9 @@ test.describe('Hero search bar — destination', () => {
     }
   });
 
-  test('selecting a city from the dropdown fills the input but does not navigate (user picks dates/guests next)', async ({ page }) => {
+  test('selecting a city from the dropdown fills the input but does not navigate (user picks dates/guests next)', async ({
+    page,
+  }) => {
     const input = page.getByPlaceholder('Search destinations', { exact: true });
     await input.click();
     const malibuOption = page.getByRole('option', { name: /Malibu/i }).first();
@@ -49,7 +55,9 @@ test.describe('Hero search bar — destination', () => {
     await expect(page).toHaveURL(/\/$/);
   });
 
-  test('full flow: pick destination then click Search submits with location param', async ({ page }) => {
+  test('full flow: pick destination then click Search submits with location param', async ({
+    page,
+  }) => {
     const input = page.getByPlaceholder('Search destinations', { exact: true });
     await input.click();
     const malibuOption = page.getByRole('option', { name: /Malibu/i }).first();
@@ -74,7 +82,9 @@ test.describe('Hero search bar — destination', () => {
     await expect(page).not.toHaveURL(/[?&]location=/);
   });
 
-  test('submitting with empty fields produces a clean /search URL (no empty params)', async ({ page }) => {
+  test('submitting with empty fields produces a clean /search URL (no empty params)', async ({
+    page,
+  }) => {
     await Promise.all([
       page.waitForURL(/\/search(\?|$)/),
       page.getByRole('button', { name: /^Search$/ }).click(),
@@ -109,7 +119,9 @@ test.describe('Hero search API — location filter', () => {
     }
   });
 
-  test('GET /api/search?q=Malibu auto-promotes to location filter (only Malibu hits)', async ({ request }) => {
+  test('GET /api/search?q=Malibu auto-promotes to location filter (only Malibu hits)', async ({
+    request,
+  }) => {
     const res = await request.get('/api/search?q=Malibu');
     expect(res.ok()).toBeTruthy();
     const body = await res.json();
@@ -131,15 +143,21 @@ test.describe('Hero search API — location filter', () => {
     }
   });
 
-  test('GET /api/search?q=NoSuchCityZZZ does NOT auto-promote (falls through to fuzzy)', async ({ request }) => {
+  test('GET /api/search?q=NoSuchCityZZZ does NOT auto-promote (falls through to fuzzy)', async ({
+    request,
+  }) => {
     const res = await request.get('/api/search?q=NoSuchCityZZZ');
     expect(res.ok()).toBeTruthy();
     const body = await res.json();
     expect(body.success).toBe(true);
   });
 
-  test('combined filter (location + checkIn + checkOut + guests) returns matching listing', async ({ request }) => {
-    const res = await request.get('/api/search?location=Malibu&checkIn=2026-05-01&checkOut=2026-05-05&guests=2');
+  test('combined filter (location + checkIn + checkOut + guests) returns matching listing', async ({
+    request,
+  }) => {
+    const res = await request.get(
+      '/api/search?location=Malibu&checkIn=2026-05-01&checkOut=2026-05-05&guests=2',
+    );
     expect(res.ok()).toBeTruthy();
     const body = await res.json();
     expect(body.success).toBe(true);
@@ -166,7 +184,9 @@ test.describe('Hero search API — location filter', () => {
     expect(body.data.totalHits).toBe(0);
   });
 
-  test('search results page shows a removable pill for location, dates and guests passed via URL', async ({ page }) => {
+  test('search results page shows a removable pill for location, dates and guests passed via URL', async ({
+    page,
+  }) => {
     await page.goto('/search?location=Malibu&checkIn=2026-05-01&checkOut=2026-05-05&guests=2');
     await expect(page.getByRole('heading', { name: 'Filters' })).toBeVisible();
     await expect(page.getByText('Malibu', { exact: true }).first()).toBeVisible();
@@ -178,7 +198,9 @@ test.describe('Hero search API — location filter', () => {
     await expect(page).not.toHaveURL(/checkOut=/);
   });
 
-  test('GET /api/listings/destinations returns the seeded city/country pairs', async ({ request }) => {
+  test('GET /api/listings/destinations returns the seeded city/country pairs', async ({
+    request,
+  }) => {
     const res = await request.get('/api/listings/destinations');
     expect(res.ok()).toBeTruthy();
     const body = await res.json();

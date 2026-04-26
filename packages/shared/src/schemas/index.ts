@@ -13,16 +13,8 @@ import { SUPPORTED_LOCALES } from '../constants/index';
 // ---------------------------------------------------------------------------
 
 export const registerSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(2, 'Name must be at least 2 characters')
-    .max(100, 'Name is too long'),
-  email: z
-    .string()
-    .trim()
-    .toLowerCase()
-    .email('Enter a valid email address'),
+  name: z.string().trim().min(2, 'Name must be at least 2 characters').max(100, 'Name is too long'),
+  email: z.string().trim().toLowerCase().email('Enter a valid email address'),
   password: z
     .string()
     .min(8, 'Password must be at least 8 characters')
@@ -31,21 +23,13 @@ export const registerSchema = z.object({
 export type RegisterInput = z.infer<typeof registerSchema>;
 
 export const loginSchema = z.object({
-  email: z
-    .string()
-    .trim()
-    .toLowerCase()
-    .email('Enter a valid email address'),
+  email: z.string().trim().toLowerCase().email('Enter a valid email address'),
   password: z.string().min(1, 'Password is required'),
 });
 export type LoginInput = z.infer<typeof loginSchema>;
 
 export const forgotPasswordSchema = z.object({
-  email: z
-    .string()
-    .trim()
-    .toLowerCase()
-    .email('Enter a valid email address'),
+  email: z.string().trim().toLowerCase().email('Enter a valid email address'),
 });
 export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
 
@@ -89,8 +73,14 @@ export const searchParamsSchema = z.object({
   guests: z.coerce.number().min(1).max(20).optional(),
   bedrooms: z.coerce.number().min(0).max(15).optional(),
   bathrooms: z.coerce.number().min(0).max(10).optional(),
-  checkIn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
-  checkOut: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  checkIn: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
+  checkOut: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
   bounds: z
     .object({
       north: z.number(),

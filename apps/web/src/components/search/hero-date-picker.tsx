@@ -2,11 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import {
-  DateRangePicker,
-  type DateRangeValue,
-  toIsoDate,
-} from '@/components/date-range-picker';
+import { DateRangePicker, type DateRangeValue, toIsoDate } from '@/components/date-range-picker';
 
 function formatShort(iso: string | null) {
   if (!iso) return '';
@@ -40,9 +36,7 @@ export function HeroDatePicker() {
 
   return (
     <div className="flex w-56 flex-shrink-0 flex-col items-start px-6 py-2">
-      <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-        When
-      </span>
+      <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">When</span>
       <DateRangePicker
         value={value}
         onChange={setValue}

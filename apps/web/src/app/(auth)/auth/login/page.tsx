@@ -59,7 +59,11 @@ export default function LoginPage() {
       router.refresh();
     } catch {
       setError('Something went wrong. Please try again.');
-      toast({ title: 'Something went wrong', description: 'Please try again', variant: 'destructive' });
+      toast({
+        title: 'Something went wrong',
+        description: 'Please try again',
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }
@@ -69,7 +73,10 @@ export default function LoginPage() {
     <div className="w-full max-w-md">
       {/* Branding */}
       <div className="mb-12 text-center">
-        <Link href="/" className="mb-2 inline-block text-3xl font-bold tracking-tighter text-slate-900 dark:text-slate-50">
+        <Link
+          href="/"
+          className="mb-2 inline-block text-3xl font-bold tracking-tighter text-slate-900 dark:text-slate-50"
+        >
           Lumina
         </Link>
         <p className="font-medium tracking-tight text-slate-500 dark:text-slate-400">
@@ -208,7 +215,15 @@ export default function LoginPage() {
         <div className="flex items-center justify-center gap-6">
           <Shield className="h-5 w-5 text-slate-300 dark:text-slate-600" />
           <Lock className="h-5 w-5 text-slate-300 dark:text-slate-600" />
-          <svg className="h-5 w-5 text-slate-300 dark:text-slate-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            className="h-5 w-5 text-slate-300 dark:text-slate-600"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
             <line x1="1" y1="10" x2="23" y2="10" />
           </svg>

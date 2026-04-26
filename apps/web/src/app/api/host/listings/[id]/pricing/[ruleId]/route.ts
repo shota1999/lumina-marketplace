@@ -50,12 +50,7 @@ export async function PATCH(
     const [updated] = await db
       .update(pricingRules)
       .set(updates)
-      .where(
-        and(
-          eq(pricingRules.id, ruleId),
-          eq(pricingRules.listingId, id),
-        ),
-      )
+      .where(and(eq(pricingRules.id, ruleId), eq(pricingRules.listingId, id)))
       .returning();
 
     if (!updated) {
@@ -88,12 +83,7 @@ export async function DELETE(
     const db = getDb();
     await db
       .delete(pricingRules)
-      .where(
-        and(
-          eq(pricingRules.id, ruleId),
-          eq(pricingRules.listingId, id),
-        ),
-      );
+      .where(and(eq(pricingRules.id, ruleId), eq(pricingRules.listingId, id)));
 
     return successResponse({ deleted: true });
   } catch (error) {

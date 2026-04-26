@@ -88,30 +88,38 @@ vi.mock('@lumina/db', () => ({
     insert: () => ({
       values: (data: Record<string, unknown>) => {
         // Track what was inserted
-        const table = data.listingId ? (data.rating !== undefined ? 'reviews' : 'bookings') : 'other';
+        const table = data.listingId
+          ? data.rating !== undefined
+            ? 'reviews'
+            : 'bookings'
+          : 'other';
         mockInsertValues[table]?.(data);
         return {
           returning: () => {
             if (table === 'bookings') {
-              return Promise.resolve([{
-                id: 'booking-e2e',
-                listingId: data.listingId,
-                userId: data.userId,
-                startDate: data.startDate,
-                endDate: data.endDate,
-                totalPrice: data.totalPrice,
-                status: 'pending',
-              }]);
+              return Promise.resolve([
+                {
+                  id: 'booking-e2e',
+                  listingId: data.listingId,
+                  userId: data.userId,
+                  startDate: data.startDate,
+                  endDate: data.endDate,
+                  totalPrice: data.totalPrice,
+                  status: 'pending',
+                },
+              ]);
             }
             if (table === 'reviews') {
-              return Promise.resolve([{
-                id: 'review-e2e',
-                listingId: data.listingId,
-                userId: data.userId,
-                rating: data.rating,
-                comment: data.comment,
-                createdAt: new Date(),
-              }]);
+              return Promise.resolve([
+                {
+                  id: 'review-e2e',
+                  listingId: data.listingId,
+                  userId: data.userId,
+                  rating: data.rating,
+                  comment: data.comment,
+                  createdAt: new Date(),
+                },
+              ]);
             }
             return Promise.resolve([]);
           },
@@ -129,10 +137,24 @@ vi.mock('@lumina/db', () => ({
       },
     }),
   }),
-  bookings: { id: 'id', listingId: 'listingId', status: 'status', startDate: 'startDate', endDate: 'endDate', userId: 'userId' },
+  bookings: {
+    id: 'id',
+    listingId: 'listingId',
+    status: 'status',
+    startDate: 'startDate',
+    endDate: 'endDate',
+    userId: 'userId',
+  },
   listings: { id: 'id', slug: 'slug', status: 'status', category: 'category', rating: 'rating' },
   listingImages: {},
-  reviews: { id: 'id', listingId: 'listingId', userId: 'userId', rating: 'rating', comment: 'comment', createdAt: 'createdAt' },
+  reviews: {
+    id: 'id',
+    listingId: 'listingId',
+    userId: 'userId',
+    rating: 'rating',
+    comment: 'comment',
+    createdAt: 'createdAt',
+  },
   users: { id: 'id', name: 'name', avatarUrl: 'avatarUrl' },
 }));
 
@@ -187,7 +209,15 @@ const LISTING = {
   createdAt: new Date('2024-01-01'),
   updatedAt: new Date('2024-01-01'),
   images: [
-    { id: 'img-1', url: 'https://example.com/1.jpg', alt: 'Villa', width: 1200, height: 800, isPrimary: true, sortOrder: 0 },
+    {
+      id: 'img-1',
+      url: 'https://example.com/1.jpg',
+      alt: 'Villa',
+      width: 1200,
+      height: 800,
+      isPrimary: true,
+      sortOrder: 0,
+    },
   ],
 };
 
@@ -243,10 +273,9 @@ describe('E2E: Search → Listing → Booking → Confirm', () => {
 
     const { POST: confirmBooking } = await import('@/app/api/bookings/[id]/confirm/route');
     const confirmRes = await parse(
-      await confirmBooking(
-        makeReq(`/api/bookings/${bookingId}/confirm`, { method: 'POST' }),
-        { params: Promise.resolve({ id: bookingId }) },
-      ),
+      await confirmBooking(makeReq(`/api/bookings/${bookingId}/confirm`, { method: 'POST' }), {
+        params: Promise.resolve({ id: bookingId }),
+      }),
     );
 
     expect(confirmRes.status).toBe(200);
@@ -263,7 +292,12 @@ describe('E2E: Unauthenticated booking shows login prompt', () => {
       await POST(
         makeReq('/api/bookings', {
           method: 'POST',
-          body: { listingId: '00000000-0000-0000-0000-0000000000e2', startDate: '2026-07-01', endDate: '2026-07-05', guests: 2 },
+          body: {
+            listingId: '00000000-0000-0000-0000-0000000000e2',
+            startDate: '2026-07-01',
+            endDate: '2026-07-05',
+            guests: 2,
+          },
         }),
       ),
     );
@@ -279,7 +313,10 @@ describe('E2E: Submit review flow', () => {
   it('creates review and returns with author info', async () => {
     mockGetCurrentUser.mockResolvedValueOnce(TEST_USER);
     // Listing exists
-    mockListingsQueryFindFirst.mockResolvedValueOnce({ id: '00000000-0000-0000-0000-0000000000e2', slug: 'ocean-villa' });
+    mockListingsQueryFindFirst.mockResolvedValueOnce({
+      id: '00000000-0000-0000-0000-0000000000e2',
+      slug: 'ocean-villa',
+    });
     // No existing review
     mockReviewsFindFirst.mockResolvedValueOnce(null);
 

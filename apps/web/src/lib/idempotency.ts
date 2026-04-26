@@ -49,7 +49,9 @@ export async function checkIdempotencyKey(key: string): Promise<boolean> {
     try {
       return await redisCheck(key);
     } catch (error) {
-      logger.warn('Redis idempotency check failed, falling back to memory', { error: String(error) });
+      logger.warn('Redis idempotency check failed, falling back to memory', {
+        error: String(error),
+      });
     }
   }
 

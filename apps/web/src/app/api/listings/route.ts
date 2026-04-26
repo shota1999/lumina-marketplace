@@ -28,7 +28,10 @@ export async function GET(request: NextRequest) {
         limit,
         offset,
       }),
-      db.select({ count: sql<number>`count(*)` }).from(listings).where(eq(listings.status, 'published')),
+      db
+        .select({ count: sql<number>`count(*)` })
+        .from(listings)
+        .where(eq(listings.status, 'published')),
     ]);
 
     const total = Number(countResult[0]?.count ?? 0);

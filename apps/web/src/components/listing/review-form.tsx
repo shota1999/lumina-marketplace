@@ -21,59 +21,73 @@ export function ReviewForm({ listingId }: ReviewFormProps) {
   const [submitted, setSubmitted] = useState(false);
   const [authError, setAuthError] = useState(false);
 
-  const handleSubmit = useCallback(async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (rating === 0) {
-      toast({ title: 'Please select a rating', variant: 'destructive' });
-      return;
-    }
-    if (comment.length < 10) {
-      toast({ title: 'Review too short', description: 'Please write at least 10 characters', variant: 'destructive' });
-      return;
-    }
-
-    setSubmitting(true);
-    try {
-      const res = await fetch('/api/reviews', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ listingId, rating, comment }),
-      });
-      const data = await res.json();
-
-      if (res.status === 401) {
-        setAuthError(true);
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      if (rating === 0) {
+        toast({ title: 'Please select a rating', variant: 'destructive' });
+        return;
+      }
+      if (comment.length < 10) {
+        toast({
+          title: 'Review too short',
+          description: 'Please write at least 10 characters',
+          variant: 'destructive',
+        });
         return;
       }
 
-      if (!res.ok || !data.success) {
-        const msg = data.error?.message ?? 'Failed to submit review';
-        if (data.error?.code === 'DUPLICATE') {
-          toast({ title: 'Already reviewed', description: 'You have already reviewed this listing' });
-          setSubmitted(true);
-        } else {
-          toast({ title: 'Review failed', description: msg, variant: 'destructive' });
+      setSubmitting(true);
+      try {
+        const res = await fetch('/api/reviews', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ listingId, rating, comment }),
+        });
+        const data = await res.json();
+
+        if (res.status === 401) {
+          setAuthError(true);
+          return;
         }
-        return;
-      }
 
-      setSubmitted(true);
-      toast({ title: 'Review submitted!', description: 'Thank you for your feedback' });
-      router.refresh();
-    } catch {
-      toast({ title: 'Network error', description: 'Could not submit review', variant: 'destructive' });
-    } finally {
-      setSubmitting(false);
-    }
-  }, [listingId, rating, comment, router]);
+        if (!res.ok || !data.success) {
+          const msg = data.error?.message ?? 'Failed to submit review';
+          if (data.error?.code === 'DUPLICATE') {
+            toast({
+              title: 'Already reviewed',
+              description: 'You have already reviewed this listing',
+            });
+            setSubmitted(true);
+          } else {
+            toast({ title: 'Review failed', description: msg, variant: 'destructive' });
+          }
+          return;
+        }
+
+        setSubmitted(true);
+        toast({ title: 'Review submitted!', description: 'Thank you for your feedback' });
+        router.refresh();
+      } catch {
+        toast({
+          title: 'Network error',
+          description: 'Could not submit review',
+          variant: 'destructive',
+        });
+      } finally {
+        setSubmitting(false);
+      }
+    },
+    [listingId, rating, comment, router],
+  );
 
   if (authError) {
     return (
       <Card className="border-dashed">
         <CardContent className="flex flex-col items-center p-6 text-center">
-          <LogIn className="mb-3 h-8 w-8 text-muted-foreground" />
+          <LogIn className="text-muted-foreground mb-3 h-8 w-8" />
           <p className="mb-1 font-medium">Sign in to leave a review</p>
-          <p className="mb-4 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mb-4 text-sm">
             Share your experience with other travelers.
           </p>
           <Button asChild size="sm">
@@ -92,7 +106,7 @@ export function ReviewForm({ listingId }: ReviewFormProps) {
             <Star className="h-6 w-6 fill-green-600 text-green-600" />
           </div>
           <p className="font-medium">Thanks for your review!</p>
-          <p className="text-sm text-muted-foreground">Your feedback helps other travelers.</p>
+          <p className="text-muted-foreground text-sm">Your feedback helps other travelers.</p>
         </CardContent>
       </Card>
     );
@@ -115,7 +129,7 @@ export function ReviewForm({ listingId }: ReviewFormProps) {
                 <button
                   key={star}
                   type="button"
-                  className="rounded p-0.5 transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="focus:ring-ring rounded p-0.5 transition-transform hover:scale-110 focus:outline-none focus:ring-2"
                   onMouseEnter={() => setHoveredRating(star)}
                   onMouseLeave={() => setHoveredRating(0)}
                   onClick={() => setRating(star)}
@@ -130,7 +144,7 @@ export function ReviewForm({ listingId }: ReviewFormProps) {
                 </button>
               ))}
               {rating > 0 && (
-                <span className="ml-2 self-center text-sm text-muted-foreground">
+                <span className="text-muted-foreground ml-2 self-center text-sm">
                   {['', 'Poor', 'Fair', 'Good', 'Very good', 'Excellent'][rating]}
                 </span>
               )}
@@ -145,20 +159,23 @@ export function ReviewForm({ listingId }: ReviewFormProps) {
             <textarea
               id="review-comment"
               rows={4}
-              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-none"
+              className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring w-full resize-none rounded-md border px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2"
               placeholder="Tell others about your stay — what did you love? What could be improved?"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               maxLength={2000}
             />
-            <p className="mt-1 text-xs text-muted-foreground">
-              {comment.length}/2000 characters {comment.length > 0 && comment.length < 10 && '(minimum 10)'}
+            <p className="text-muted-foreground mt-1 text-xs">
+              {comment.length}/2000 characters{' '}
+              {comment.length > 0 && comment.length < 10 && '(minimum 10)'}
             </p>
           </div>
 
           <Button type="submit" disabled={submitting || rating === 0 || comment.length < 10}>
             {submitting ? (
-              <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Submitting...</>
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Submitting...
+              </>
             ) : (
               'Submit review'
             )}

@@ -22,12 +22,7 @@ export async function GET(request: NextRequest) {
       })
       .from(bookings)
       .innerJoin(listings, eq(bookings.listingId, listings.id))
-      .where(
-        and(
-          eq(listings.hostId, user.id),
-          eq(bookings.status, 'confirmed'),
-        ),
-      )
+      .where(and(eq(listings.hostId, user.id), eq(bookings.status, 'confirmed')))
       .groupBy(sql`TO_CHAR(${bookings.createdAt}, 'YYYY-MM')`)
       .orderBy(sql`TO_CHAR(${bookings.createdAt}, 'YYYY-MM')`);
 
