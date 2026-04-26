@@ -1,3 +1,4 @@
+CREATE EXTENSION IF NOT EXISTS vector;--> statement-breakpoint
 CREATE TYPE "public"."analytics_event_type" AS ENUM('search', 'listing_view', 'listing_click', 'favorite_add', 'favorite_remove', 'filter_apply', 'compare_add', 'compare_remove', 'conversion');--> statement-breakpoint
 CREATE TYPE "public"."booking_status" AS ENUM('pending', 'confirmed', 'cancelled');--> statement-breakpoint
 CREATE TYPE "public"."cancellation_policy_type" AS ENUM('flexible', 'moderate', 'strict');--> statement-breakpoint
