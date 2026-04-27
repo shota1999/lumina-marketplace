@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import type { ReactNode } from 'react';
 
+import { DemoQuickLogin } from '@/components/demo-quick-login';
 import { PWARegister } from '@/components/pwa-register';
 import { WebVitals } from '@/components/web-vitals';
 
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" className={inter.variable} suppressHydrationWarning>
       <body className="min-h-screen font-sans antialiased" suppressHydrationWarning>
         <Providers>{children}</Providers>
+        <DemoQuickLogin />
         <PWARegister />
         <WebVitals />
       </body>

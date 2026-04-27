@@ -1,6 +1,6 @@
 'use client';
 
-import { Eye, EyeOff, Lock, LogIn, Shield } from 'lucide-react';
+import { Eye, EyeOff, Lock, LogIn, Shield, Sparkles, Home, User as UserIcon, Plane } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -10,6 +10,20 @@ import { loginSchema } from '@lumina/shared';
 import { toast } from '@/hooks/use-toast';
 
 type FieldErrors = Partial<Record<'email' | 'password', string>>;
+type DemoPersona = 'admin' | 'host' | 'guest' | 'traveler';
+
+const DEMO_PERSONAS: Array<{
+  id: DemoPersona;
+  label: string;
+  hint: string;
+  icon: typeof Shield;
+  accent: string;
+}> = [
+  { id: 'admin', label: 'Admin', hint: 'Analytics & moderation', icon: Shield, accent: 'from-violet-500 to-fuchsia-500' },
+  { id: 'host', label: 'Host', hint: 'Listings & earnings', icon: Home, accent: 'from-amber-500 to-orange-500' },
+  { id: 'guest', label: 'Guest', hint: 'Bookings & favorites', icon: UserIcon, accent: 'from-emerald-500 to-teal-500' },
+  { id: 'traveler', label: 'Traveler', hint: 'Second guest', icon: Plane, accent: 'from-sky-500 to-indigo-500' },
+];
 
 export default function LoginPage() {
   const router = useRouter();
@@ -19,6 +33,35 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [loading, setLoading] = useState(false);
+  const [demoPending, setDemoPending] = useState<DemoPersona | null>(null);
+  const demoEnabled = process.env['NEXT_PUBLIC_DEMO_MODE'] === 'true';
+
+  async function signInAsDemo(persona: DemoPersona) {
+    setDemoPending(persona);
+    setError('');
+    try {
+      const res = await fetch('/api/auth/demo-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ persona }),
+      });
+      const data = await res.json();
+      if (!data.success) {
+        const msg = data.error?.message ?? 'Demo login failed';
+        setError(msg);
+        toast({ title: 'Demo login failed', description: msg, variant: 'destructive' });
+        return;
+      }
+      toast({ title: `Signed in as ${persona}`, description: 'Welcome to the demo' });
+      const dest = persona === 'admin' ? '/admin' : persona === 'host' ? '/host' : '/';
+      router.push(dest);
+      router.refresh();
+    } catch {
+      setError('Network error. Please try again.');
+    } finally {
+      setDemoPending(null);
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -95,6 +138,64 @@ export default function LoginPage() {
               Sign in to your Lumina account to manage your curated rentals and experiences.
             </p>
           </div>
+
+          {demoEnabled && (
+            <div className="mb-8 rounded-xl border border-amber-200/70 bg-gradient-to-br from-amber-50 to-orange-50/60 p-5 dark:border-amber-900/30 dark:from-amber-950/30 dark:to-orange-950/20">
+              <div className="mb-3 flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                <p className="text-xs font-bold uppercase tracking-wider text-amber-900 dark:text-amber-200">
+                  Recruiter quick access
+                </p>
+              </div>
+              <p className="mb-4 text-xs leading-relaxed text-amber-900/80 dark:text-amber-200/70">
+                One click signs you in. No password needed. Destructive actions are disabled on demo accounts.
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                {DEMO_PERSONAS.map((p) => {
+                  const Icon = p.icon;
+                  const isPending = demoPending === p.id;
+                  const disabled = demoPending !== null || loading;
+                  return (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => signInAsDemo(p.id)}
+                      disabled={disabled}
+                      className="group flex items-center gap-2.5 rounded-lg bg-white px-3 py-2.5 text-left shadow-sm ring-1 ring-slate-200/80 transition-all hover:shadow-md hover:ring-slate-300 disabled:opacity-60 dark:bg-slate-900 dark:ring-slate-700 dark:hover:ring-slate-600"
+                    >
+                      <div
+                        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-gradient-to-br ${p.accent} text-white`}
+                      >
+                        {isPending ? (
+                          <span className="h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                        ) : (
+                          <Icon className="h-4 w-4" />
+                        )}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold leading-tight text-slate-900 dark:text-slate-50">
+                          {p.label}
+                        </p>
+                        <p className="truncate text-[11px] leading-tight text-slate-500 dark:text-slate-400">
+                          {p.hint}
+                        </p>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {demoEnabled && (
+            <div className="mb-6 flex items-center gap-3">
+              <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+                Or sign in manually
+              </span>
+              <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800" />
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
