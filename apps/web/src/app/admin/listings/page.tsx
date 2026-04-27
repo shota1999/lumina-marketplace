@@ -84,13 +84,50 @@ export default function AdminListingsPage() {
   const toggleFeatured = async (id: string, featured: boolean) => {
     setListings((prev) => prev.map((l) => (l.id === id ? { ...l, featured: !featured } : l)));
     try {
-      await fetch('/api/admin/listings', {
+      const res = await fetch('/api/admin/listings', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, featured: !featured }),
       });
+      const json = await res.json();
+      if (!json.success) {
+        setListings((prev) => prev.map((l) => (l.id === id ? { ...l, featured } : l)));
+        toast({
+          title: 'Could not update',
+          description: json.error?.message ?? 'Action blocked',
+          variant: 'destructive',
+        });
+      }
     } catch {
       setListings((prev) => prev.map((l) => (l.id === id ? { ...l, featured } : l)));
+    }
+  };
+
+  const togglePublished = async (id: string, currentStatus: string) => {
+    const nextStatus = currentStatus === 'published' ? 'draft' : 'published';
+    setListings((prev) => prev.map((l) => (l.id === id ? { ...l, status: nextStatus } : l)));
+    try {
+      const res = await fetch('/api/admin/listings', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, status: nextStatus }),
+      });
+      const json = await res.json();
+      if (!json.success) {
+        setListings((prev) => prev.map((l) => (l.id === id ? { ...l, status: currentStatus } : l)));
+        toast({
+          title: 'Could not change status',
+          description: json.error?.message ?? 'Action blocked',
+          variant: 'destructive',
+        });
+        return;
+      }
+      toast({
+        title: nextStatus === 'published' ? 'Listing published' : 'Listing unpublished',
+        description: 'Search index will refresh shortly.',
+      });
+    } catch {
+      setListings((prev) => prev.map((l) => (l.id === id ? { ...l, status: currentStatus } : l)));
     }
   };
 
@@ -265,19 +302,27 @@ export default function AdminListingsPage() {
                       </td>
                       <td className="px-6 py-5">
                         <div className="flex items-center gap-4">
-                          {/* Toggle switch */}
-                          <label className="relative inline-flex cursor-pointer items-center">
+                          <button
+                            type="button"
+                            onClick={() => togglePublished(listing.id, listing.status)}
+                            title={listing.status === 'published' ? 'Unpublish' : 'Publish'}
+                            className="relative inline-flex cursor-pointer items-center"
+                          >
                             <input
                               type="checkbox"
                               checked={listing.status === 'published'}
                               readOnly
                               className="peer sr-only"
                             />
-                            <div className="h-6 w-11 rounded-full bg-slate-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-slate-900 peer-checked:after:translate-x-full peer-checked:after:border-white dark:bg-slate-700 dark:peer-checked:bg-slate-300" />
-                          </label>
-                          <button className="text-slate-400 transition-colors hover:text-slate-900 dark:hover:text-slate-50">
-                            <MoreVertical className="h-5 w-5" />
+                            <span className="h-6 w-11 rounded-full bg-slate-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-slate-900 peer-checked:after:translate-x-full peer-checked:after:border-white dark:bg-slate-700 dark:peer-checked:bg-slate-300" />
                           </button>
+                          <Link
+                            href={`/listings/${listing.slug}`}
+                            className="text-slate-400 transition-colors hover:text-slate-900 dark:hover:text-slate-50"
+                            title="View on site"
+                          >
+                            <MoreVertical className="h-5 w-5" />
+                          </Link>
                         </div>
                       </td>
                     </tr>

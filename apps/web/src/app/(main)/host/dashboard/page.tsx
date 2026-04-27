@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import { formatPrice } from '@lumina/shared';
 import { Badge, Button, Card, CardContent, Skeleton } from '@lumina/ui';
 
+import { HostNav } from '@/components/dashboard/host-nav';
+
 interface DashboardStats {
   totalEarnings: number;
   upcomingBookings: number;
@@ -118,33 +120,27 @@ export default function HostDashboardPage() {
 
   if (loading) {
     return (
-      <div className="px-6 py-8 lg:px-10">
-        <Skeleton className="mb-1 h-8 w-40" />
-        <Skeleton className="mb-8 h-5 w-56" />
-        <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={i} className="h-28 rounded-2xl" />
+      <>
+        <HostNav />
+        <div className="mx-auto max-w-7xl px-6 py-8 lg:px-10">
+          <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton key={i} className="h-28 rounded-2xl" />
+            ))}
+          </div>
+          <Skeleton className="mb-4 h-6 w-40" />
+          {Array.from({ length: 3 }).map((_, i) => (
+            <Skeleton key={i} className="mb-3 h-14 rounded-xl" />
           ))}
         </div>
-        <Skeleton className="mb-4 h-6 w-40" />
-        {Array.from({ length: 3 }).map((_, i) => (
-          <Skeleton key={i} className="mb-3 h-14 rounded-xl" />
-        ))}
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="px-6 py-8 lg:px-10">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
-          Dashboard
-        </h1>
-        <p className="mt-1 text-sm text-slate-500">
-          Welcome back. Here is an overview of your hosting activity.
-        </p>
-      </div>
+    <>
+      <HostNav />
+      <div className="mx-auto max-w-7xl px-6 py-8 lg:px-10">
 
       {/* Stat Cards */}
       <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -291,6 +287,8 @@ export default function HostDashboardPage() {
           ))}
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
+

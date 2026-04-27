@@ -11,5 +11,9 @@ export default async function AdminLayout({ children }: { children: ReactNode })
     redirect('/');
   }
 
-  return <AdminShell>{children}</AdminShell>;
+  return (
+    <AdminShell user={{ name: user.name, email: user.email, avatarUrl: user.avatarUrl ?? null }}>
+      {children}
+    </AdminShell>
+  );
 }

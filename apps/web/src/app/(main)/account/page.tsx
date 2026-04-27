@@ -16,6 +16,7 @@ import {
   Skeleton,
 } from '@lumina/ui';
 
+import { GuestNav } from '@/components/dashboard/guest-nav';
 import { toast } from '@/hooks/use-toast';
 
 interface AuthUser {
@@ -215,11 +216,9 @@ export default function AccountPage() {
   });
 
   return (
-    <div className="container max-w-2xl py-8">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold">Account settings</h1>
-        <p className="text-muted-foreground mt-1 text-sm">Manage your profile and preferences</p>
-      </div>
+    <>
+      <GuestNav />
+      <div className="container max-w-2xl py-8">
 
       {/* Profile overview */}
       <Card className="mb-6">
@@ -443,6 +442,7 @@ export default function AccountPage() {
           </form>
         </CardContent>
       </Card>
-    </div>
+      </div>
+    </>
   );
 }

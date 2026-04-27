@@ -1,6 +1,12 @@
 import { logger } from '@/lib/logger';
 
-type AuditAction = 'booking.created' | 'booking.confirmed' | 'booking.cancelled' | 'review.created';
+type AuditAction =
+  | 'booking.created'
+  | 'booking.confirmed'
+  | 'booking.cancelled'
+  | 'booking.approved_by_host'
+  | 'booking.declined_by_host'
+  | 'review.created';
 
 interface AuditEntry {
   action: AuditAction;

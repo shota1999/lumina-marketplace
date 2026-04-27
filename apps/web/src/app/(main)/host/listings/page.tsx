@@ -30,6 +30,7 @@ import {
   Textarea,
 } from '@lumina/ui';
 
+import { HostNav } from '@/components/dashboard/host-nav';
 import { toast } from '@/hooks/use-toast';
 
 interface HostListing {
@@ -394,23 +395,26 @@ export default function HostListingsPage() {
 
   if (loading) {
     return (
-      <div className="container py-8">
-        <Skeleton className="mb-6 h-8 w-48" />
-        <div className="space-y-4">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <Skeleton key={i} className="h-40 w-full rounded-lg" />
-          ))}
+      <>
+        <HostNav />
+        <div className="mx-auto max-w-7xl px-6 py-8 lg:px-10">
+          <div className="space-y-4">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <Skeleton key={i} className="h-40 w-full rounded-lg" />
+            ))}
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="container py-8">
+    <>
+      <HostNav />
+      <div className="mx-auto max-w-7xl px-6 py-8 lg:px-10">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">My listings</h1>
-          <p className="text-muted-foreground mt-1 text-sm">
+          <p className="text-muted-foreground text-sm">
             {listings.length} listing{listings.length !== 1 ? 's' : ''}
           </p>
         </div>
@@ -677,6 +681,7 @@ export default function HostListingsPage() {
           ))}
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

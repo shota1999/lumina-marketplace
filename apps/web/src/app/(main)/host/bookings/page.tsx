@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { formatPrice } from '@lumina/shared';
 import { Badge, Button, Skeleton } from '@lumina/ui';
 
+import { HostNav } from '@/components/dashboard/host-nav';
 import { toast } from '@/hooks/use-toast';
 
 interface HostBooking {
@@ -141,34 +142,33 @@ export default function HostBookingsPage() {
 
   if (loading) {
     return (
-      <div className="px-6 py-8 lg:px-10">
-        <Skeleton className="mb-2 h-8 w-40" />
-        <Skeleton className="mb-8 h-5 w-56" />
-        <div className="mb-6 flex gap-2">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={i} className="h-9 w-24 rounded-lg" />
-          ))}
+      <>
+        <HostNav />
+        <div className="mx-auto max-w-7xl px-6 py-8 lg:px-10">
+          <div className="mb-6 flex gap-2">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton key={i} className="h-9 w-24 rounded-lg" />
+            ))}
+          </div>
+          <div className="space-y-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton key={i} className="h-36 w-full rounded-2xl" />
+            ))}
+          </div>
         </div>
-        <div className="space-y-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={i} className="h-36 w-full rounded-2xl" />
-          ))}
-        </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="px-6 py-8 lg:px-10">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
-          Bookings
-        </h1>
-        <p className="mt-1 text-sm text-slate-500">
-          {bookings.length} booking{bookings.length !== 1 ? 's' : ''} total
-        </p>
-      </div>
+    <>
+      <HostNav />
+      <div className="mx-auto max-w-7xl px-6 py-8 lg:px-10">
+        <div className="mb-6">
+          <p className="text-sm text-slate-500">
+            {bookings.length} booking{bookings.length !== 1 ? 's' : ''} total
+          </p>
+        </div>
 
       {/* Tabs */}
       <div className="mb-6 flex gap-2">
@@ -299,6 +299,7 @@ export default function HostBookingsPage() {
           })}
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

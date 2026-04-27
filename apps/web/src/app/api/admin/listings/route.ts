@@ -1,5 +1,6 @@
 import { eq, desc, sql } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
 import { getDb, listings } from '@lumina/db';
 import { updateListingSchema } from '@lumina/shared';
@@ -8,6 +9,11 @@ import { getCurrentUser } from '@/lib/auth';
 import { blockDemoMutation } from '@/lib/demo-guard';
 import { enqueueIndexingJob } from '@/lib/queue';
 import { logger } from '@/lib/logger';
+
+const adminPatchSchema = updateListingSchema.extend({
+  featured: z.boolean().optional(),
+  status: z.enum(['draft', 'published', 'archived']).optional(),
+});
 
 async function requireAdmin() {
   const user = await getCurrentUser();
@@ -81,7 +87,7 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    const parsed = updateListingSchema.safeParse(body);
+    const parsed = adminPatchSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
         { success: false, error: { code: 'VALIDATION_ERROR', message: parsed.error.message } },
@@ -102,12 +108,16 @@ export async function PATCH(request: NextRequest) {
     if (input.maxGuests !== undefined) updateData['maxGuests'] = input.maxGuests;
     if (input.bedrooms !== undefined) updateData['bedrooms'] = input.bedrooms;
     if (input.bathrooms !== undefined) updateData['bathrooms'] = input.bathrooms;
+    if (input.featured !== undefined) updateData['featured'] = input.featured;
+    if (input.status !== undefined) updateData['status'] = input.status;
 
     if (Object.keys(updateData).length > 0) {
       updateData['updatedAt'] = new Date();
       await db.update(listings).set(updateData).where(eq(listings.id, id));
 
-      await enqueueIndexingJob('index-listing', { listingId: id, action: 'upsert' });
+      // If unpublished/archived, request removal from search; otherwise upsert
+      const action = input.status && input.status !== 'published' ? 'delete' : 'upsert';
+      await enqueueIndexingJob('index-listing', { listingId: id, action });
     }
 
     return NextResponse.json({ success: true });

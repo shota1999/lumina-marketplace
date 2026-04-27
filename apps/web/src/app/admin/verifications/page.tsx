@@ -9,7 +9,7 @@ import {
   ShieldCheck,
   XCircle,
 } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 
 import { Skeleton } from '@lumina/ui';
 
@@ -155,9 +155,8 @@ export default function AdminVerificationsPage() {
             </thead>
             <tbody className="bg-white/30 dark:bg-slate-900/30">
               {verifications.map((v) => (
-                <>
+                <Fragment key={v.id}>
                   <tr
-                    key={v.id}
                     className="transition-colors hover:bg-white/60 dark:hover:bg-slate-900/60"
                   >
                     <td className="px-8 py-6">
@@ -230,7 +229,7 @@ export default function AdminVerificationsPage() {
                   </tr>
                   {/* Expanded detail row */}
                   {expandedId === v.id && (
-                    <tr key={`${v.id}-detail`}>
+                    <tr>
                       <td colSpan={5} className="bg-white/50 px-8 py-4 dark:bg-slate-900/50">
                         <div className="flex flex-wrap gap-6 text-sm">
                           <div>
@@ -277,7 +276,7 @@ export default function AdminVerificationsPage() {
                   )}
                   {/* Action modal row */}
                   {actionId === v.id && actionType && (
-                    <tr key={`${v.id}-action`}>
+                    <tr>
                       <td colSpan={5} className="bg-white/70 px-8 py-4 dark:bg-slate-900/70">
                         <div className="max-w-md space-y-3">
                           <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">
@@ -319,7 +318,7 @@ export default function AdminVerificationsPage() {
                       </td>
                     </tr>
                   )}
-                </>
+                </Fragment>
               ))}
               {verifications.length === 0 && (
                 <tr>

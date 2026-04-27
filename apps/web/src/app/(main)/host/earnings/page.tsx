@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { formatPrice } from '@lumina/shared';
 import { Card, CardContent, Skeleton } from '@lumina/ui';
 
+import { HostNav } from '@/components/dashboard/host-nav';
 import { toast } from '@/hooks/use-toast';
 
 interface EarningsData {
@@ -104,17 +105,17 @@ export default function HostEarningsPage() {
 
   if (loading) {
     return (
-      <div className="px-6 py-8 lg:px-10">
-        <Skeleton className="mb-2 h-8 w-40" />
-        <Skeleton className="mb-8 h-5 w-56" />
-        <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <Skeleton key={i} className="h-28 rounded-2xl" />
-          ))}
+      <>
+        <HostNav />
+        <div className="mx-auto max-w-7xl px-6 py-8 lg:px-10">
+          <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <Skeleton key={i} className="h-28 rounded-2xl" />
+            ))}
+          </div>
+          <Skeleton className="h-64 w-full rounded-xl" />
         </div>
-        <Skeleton className="mb-6 h-64 w-full rounded-xl" />
-        <Skeleton className="h-48 w-full rounded-xl" />
-      </div>
+      </>
     );
   }
 
@@ -123,14 +124,9 @@ export default function HostEarningsPage() {
   const recentTransactions = data?.recentTransactions ?? [];
 
   return (
-    <div className="px-6 py-8 lg:px-10">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
-          Earnings
-        </h1>
-        <p className="mt-1 text-sm text-slate-500">Track your revenue and payout history</p>
-      </div>
+    <>
+      <HostNav />
+      <div className="mx-auto max-w-7xl px-6 py-8 lg:px-10">
 
       {/* Stat Cards */}
       <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -138,14 +134,12 @@ export default function HostEarningsPage() {
           label="Total Earned"
           value={formatPrice(data?.totalEarned ?? 0)}
           icon={DollarSign}
-          trend="All time"
+          trend="All-time confirmed bookings"
         />
         <StatCard
           label="This Month"
           value={formatPrice(data?.thisMonth ?? 0)}
           icon={TrendingUp}
-          trend="+12% vs last month"
-          trendUp
         />
         <StatCard
           label="Avg. per Booking"
@@ -253,6 +247,7 @@ export default function HostEarningsPage() {
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </>
   );
 }

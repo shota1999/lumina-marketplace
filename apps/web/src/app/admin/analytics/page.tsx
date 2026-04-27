@@ -119,15 +119,13 @@ export default async function AdminAnalyticsPage() {
         <StatCard
           label="Total Events"
           value={totalEvents.toLocaleString()}
-          badge="+12%"
-          badgePositive
+          badge="7d"
           icon={BarChart3}
         />
         <StatCard
           label="Searches"
           value={searchCount.toLocaleString()}
-          badge="+8.4%"
-          badgePositive
+          badge="7d"
           icon={Search}
         />
         <div className="rounded-xl bg-slate-900 p-6 dark:bg-slate-50">
@@ -136,11 +134,11 @@ export default async function AdminAnalyticsPage() {
               <TrendingUp className="h-5 w-5 text-white dark:text-slate-900" />
             </div>
             <span className="rounded bg-white/20 px-2 py-1 text-xs font-bold text-white dark:bg-slate-900/20 dark:text-slate-900">
-              +0.5%
+              {conversionCount} bookings
             </span>
           </div>
           <p className="mb-1 text-xs font-bold uppercase tracking-widest text-white/50 dark:text-slate-900/50">
-            Conversions
+            Conversion rate
           </p>
           <h3 className="text-3xl font-bold tracking-tight text-white dark:text-slate-900">
             {conversionRate}%
@@ -329,13 +327,11 @@ function StatCard({
   label,
   value,
   badge,
-  badgePositive,
   icon: Icon,
 }: {
   label: string;
   value: string;
   badge: string;
-  badgePositive?: boolean;
   icon: typeof BarChart3;
 }) {
   return (
@@ -344,13 +340,7 @@ function StatCard({
         <div className="rounded-lg bg-slate-50 p-2 dark:bg-slate-800">
           <Icon className="h-5 w-5 text-slate-600 dark:text-slate-300" />
         </div>
-        <span
-          className={`rounded px-2 py-1 text-xs font-bold ${
-            badgePositive
-              ? 'bg-green-50 text-green-600 dark:bg-green-900/30 dark:text-green-400'
-              : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400'
-          }`}
-        >
+        <span className="rounded bg-slate-100 px-2 py-1 text-xs font-bold text-slate-500 dark:bg-slate-800 dark:text-slate-400">
           {badge}
         </span>
       </div>
