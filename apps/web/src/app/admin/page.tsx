@@ -1,19 +1,8 @@
-import {
-  ArrowDownRight,
-  ArrowUpRight,
-  Building,
-  CalendarCheck,
-  CheckCircle2,
-  ImageOff,
-  ShieldCheck,
-  TrendingUp,
-  UserPlus,
-  Users,
-} from 'lucide-react';
+import { ImageOff } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { desc, eq, sql } from 'drizzle-orm';
+import { desc, sql } from 'drizzle-orm';
 import { getDb, listingImages, listings, users } from '@lumina/db';
 import { formatPrice } from '@lumina/shared';
 
@@ -178,16 +167,3 @@ function StatusBadge({ status }: { status: string }) {
     </span>
   );
 }
-
-// Re-export for typed use
-export {
-  ArrowDownRight,
-  ArrowUpRight,
-  Building,
-  CalendarCheck,
-  CheckCircle2,
-  ShieldCheck,
-  TrendingUp,
-  UserPlus,
-  Users,
-};
