@@ -18,6 +18,27 @@
 
 ---
 
+## Screenshots
+
+### Search results — listings + map + sub-second performance
+![Search results with map](./screenshots/02-search-results.png)
+
+`24 of 30 results · 27ms` — Meilisearch + pgvector pipeline returns ranked, geo-faceted listings while the map renders matching pins. The performance counter is real, not a mockup.
+
+### Landing — premium hero
+![Landing](./screenshots/01-landing.png)
+
+### Listing detail — image gallery + booking sidebar
+![Listing detail](./screenshots/03-listing-detail.png)
+![Booking sidebar](./screenshots/04-listing-booking.png)
+
+Photo grid with deep-link to all images, breadcrumb nav, amenities, and a sticky reservation panel showing nightly rate × nights + cleaning fee + service fee.
+
+### Mobile responsive
+<img src="./screenshots/05-mobile-search.png" alt="Mobile search" width="320" />
+
+---
+
 Full-stack production-grade application with AI-powered semantic search, map-based discovery, Stripe payments, distributed tracing, i18n (8 languages), PWA support, and comprehensive testing.
 
 ```
